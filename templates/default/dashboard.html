@@ -1,0 +1,171 @@
+{# version, hostname, uptime, loadavg, #}
+
+{% extends "layout.html" %}
+
+{% block title %} {{ _('Dashboard') }} {% endblock %}
+{% block navlinks_active_dashboard %}class="active"{% endblock %}
+
+{% block main %}
+{% if session.get('enableAmavisdLoggingIntoSQL') is sameas true %}
+<div class="columns clear">
+    <div class="col1-3">
+        <h2>{{ _('Statistics of latest 24 hours') |title }}</h2>
+        <table class="basic" cellspacing="0">
+            <tbody>
+            <tr>
+                <td><img src="{{ctx.homepath}}/static/{{skin}}/images/ball_green_16.png" class="block" alt="" /></td>
+                <th>{{ _('Received') }}</th>
+                <td class="full"><a href="{{ctx.homepath}}/activities/received">{{ numberOfIncomingMails }}</a></td>
+            </tr>
+            <tr>
+                <td><img src="{{ctx.homepath}}/static/{{skin}}/images/ball_blue_16.png" class="block" alt="" /></td>
+                <th>{{ _('Sent') }}</th>
+                <td><a href="{{ctx.homepath}}/activities/sent">{{ numberOfOutgoingMails }}</a></td>
+            </tr>
+
+            {% if session.get('enableAmavisdQuarantine') is sameas true %}
+            <tr>
+                <td><img src="{{ctx.homepath}}/static/{{skin}}/images/ball_red_16.png" class="block" alt="" /></td>
+                <th>{{ _('Virus') }}</th>
+                <td class="full"><a href="{{ctx.homepath}}/activities/quarantined">{{ numberOfVirusMails }}</a></td>
+            </tr>
+
+            <tr>
+                <td><img src="{{ctx.homepath}}/static/{{skin}}/images/ball_black_16.png" class="block" alt="" /></td>
+                <th>{{ _('Quarantined') }}</th>
+                <td class="full"><a href="{{ctx.homepath}}/activities/quarantined">{{ amavisdQuarantineCount }}</a></td>
+            </tr>
+            {% endif %}
+
+        </table>
+    </div>
+
+    <div class="col1-3">
+        <h2>{{ _('Top 10 senders') |title }}</h2>
+        <table class="basic" cellspacing="0">
+            <tbody>
+                {% for s in topSenders %}
+                    <tr>
+                        <td>{{ s.total |e }}</td>
+                        <td class="full"><a href="{{ctx.homepath}}/activities/sent/user/{{ s.mail |e }}">{{ s.mail |e |cutString(45) }}</a></td>
+                    </tr>
+                {% endfor %}
+        </table>
+    </div>
+
+    <div class="col1-3">
+        <h2>{{ _('Top 10 recipients') |title }}</h2>
+        <table class="basic" cellspacing="0">
+            <tbody>
+                {% for s in topRecipients %}
+                    <tr>
+                        <td>{{ s.total |e }}</td>
+                        <td class="full"><a href="{{ctx.homepath}}/activities/received/user/{{ s.mail |e }}">{{ s.mail |e |cutString(45) }}</a></td>
+                    </tr>
+                {% endfor %}
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<div class="columns clear">
+    <div class="col1-3">
+        <h2>{{ _('System Information') }}</h2>
+        <div class="box-wrap clear">
+            <table class="basic" cellspacing="0">
+                <tbody>
+
+                    {# Show number of total domains, users, aliases #}
+                    <tr>
+                        <th>{{ _('Number of domains') }}</th>
+                        <td class="full"><a href="{{ctx.homepath}}/domains">{{ numberOfDomains |e }}</a></td>
+                    </tr>
+
+                    {% if backend == 'mysql' %}
+                        <tr>
+                            <th>{{ _('Number of users') }}</th>
+                            <td class="full">{{ numberOfUsers |e }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>{{ _('Number of aliases') }}</th>
+                            <td class="full">{{ numberOfAliases |e }}</td>
+                        </tr>
+                    {% endif %}
+
+                {% if session.get('domainGlobalAdmin') is sameas true %}
+                    {% if session.get('enableShowUsedQuota') is sameas true %}
+                        <tr>
+                            <th>{{ _('Stored Emails') }}</th>
+                            <td class="full">{% if totalMessages is not sameas none %}{{ totalMessages |e }} {{ _('Emails') }}.{% endif %} {% if totalBytes is not sameas none %}{{ totalBytes |filesizeformat }}.{% endif %}</td>
+                        </tr>
+                    {% endif %}
+
+                    <tr>
+                        <th>{% if backend == 'dbmail_mysql' %}DBMailAdmin{% else %}iRedAdmin-Pro{% endif %}</th>
+                        <td>v{{ version |e }}
+                            {% if backend == 'mysql' %}
+                                (MySQL)
+                            {% elif backend == 'ldap' %}
+                                (LDAP)
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    {% if newVersionInfo[0] is sameas false %}
+                        <tr>
+                            <td colspan="2">
+                                {# Error while checking #}
+                                <span class="required">{{ _('Error while checking new version: %s') |format(newVersionInfo[1] |e) }}</span>
+                            </td>
+                        </tr>
+                    {% elif newVersionInfo[0] is sameas true %}
+                        {# New version available #}
+                        {% if newVersionInfo[1].version > version %}
+                            <tr>
+                                <td colspan="2">
+                                    <span class="required">{{ _("Update available: <a href='%s' target='_blank'>v%s</a>") |format(newVersionInfo[1].url |e, newVersionInfo[1].version |e,) }}</span>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+
+                    {# ---- System Information ---- #}
+                    <tr>
+                        <th>{{ _('Hostname') }}</th>
+                        <td>{{ hostname |e }}</td>
+                    </tr>
+
+                    {% if uptime is not sameas none and uptime|length == 3 %}
+                    <tr>
+                        <th>{{ _('Uptime') }}</th>
+                        <td>{{ _('%s days, %s hours, %s minutes.') |format(uptime[0] |e, uptime[1] |e, uptime[2] |e ) }}</td>
+                    </tr>
+                    {% endif %}
+
+                    <tr>
+                        <th>{{ _('Server Load') }}</th>
+                        <td>{{ '%s, %s, %s.' |format(loadavg[0] |e, loadavg[1] |e, loadavg[2] |e) }}</td>
+                    </tr>
+
+                    {# ---- Network interfaces and IP info ---- #}
+                    {% for netif in netif_data.items() %}
+                        {% if netif[0] != 'lo' %}
+                        <tr>
+                            <th>{{ _('Network') }} ({{ netif[0] |e }})</th>
+                            <td>{{ netif[1]['addr'] }}<span class="grey">/{{ netif[1]['netmask'] |e }}</span></td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}{# global admin #}
+                </tbody>
+            </table>
+        </div> {# .box-wrap #}
+    </div>{# .col1-3 #}
+</div>{# .columns #}
+
+{% endblock main %}
+
+{% block js %}
+    {{ load_jquery(['tablesorter'], nonSortedCols=[0,6]) }}
+{% endblock js %}

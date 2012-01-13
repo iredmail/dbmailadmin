@@ -1,0 +1,108 @@
+[general]
+# Site webmaster's mail address.
+webmaster = zhb@iredmail.org
+
+# Debug mode: True, False.
+# Warning: Do *NOT* enable debug in product server.
+debug = False
+
+# Mail detail message of '500 internal server error' to webmaster: True, False.
+# If set to True, iredadmin will mail detail error to webmaster when
+# it catches 'internal server error' via LOCAL mail server to aid
+# in debugging production servers.
+mail_error_to_webmaster = False
+
+# Default language.
+lang = en_US
+
+# Database backend: dbmail_mysql.
+backend = dbmail_mysql
+
+# Min/Max admin password length.
+#   - min_passwd_length: 0 means unlimited, but at least 1 character
+#                        is required.
+#   - max_passwd_length: 0 means unlimited.
+# User password length is controlled in domain profile.
+min_passwd_length = 0
+max_passwd_length = 0
+
+[dbmailadmin]
+# Database used to store iRedAdmin data. e.g. sessions, log.
+host = 127.0.0.1
+port = 3306
+db = dbmailadmin
+user = dbmailadmin
+passwd = plain_passwd
+
+############################################
+# Database used to store mail accounts.
+#
+[dbmail]
+host = 127.0.0.1
+port = 3306
+db = dbmail
+user = dbmail
+passwd = password_of_dbmail
+
+#################################################################
+# Settings used for Policyd (1.8.x) integration. Provides global
+# white-/blacklist, sender/recipient throttling, etc.
+#
+[policyd]
+
+# Enable policyd integration: True, False.
+enabled = False
+
+# SQL Database used to store policyd data, eg. whitelist, blacklist.
+# You can find related information in policyd config files:
+#   - On RHEL/CentOS:   /etc/policyd.conf
+#   - On Debian/Ubuntu: /etc/postfix-policyd.conf
+#   - On FreeBSD:       /usr/local/etc/policyd.conf
+# Related parameters:
+#   host    -> MYSQLHOST
+#   port    -> 3306 (Default)
+#   db      -> MYSQLDBASE
+#   user    -> MYSQLUSER
+#   passwd  -> MYSQLPASS
+host = 127.0.0.1
+port = 3306
+db = policyd
+user = policyd
+passwd = passwd
+
+##############################################################################
+# Settings used for Amavisd-new integration. Provides spam/virus quaranting,
+# releasing, etc.
+#
+[amavisd]
+
+########### Logging into SQL (@storage_sql_dsn) ##########
+# Logging into SQL: True, False.
+# Log info of incoming/outgoing emails into SQL.
+# It's @storage_sql_dsn setting in amavisd. You can find this setting
+# in amavisd-new config files:
+#   - On RHEL/CentOS:   /etc/amavisd.conf
+#   - On Debian/Ubuntu: /etc/amavis/conf.d/50-user.conf
+#   - On FreeBSD:       /usr/local/etc/amavisd.conf
+# Reference:
+# http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/Integrate.MySQL.in.Amavisd
+logging_into_sql = False
+
+host = 127.0.0.1
+port = 3306
+db = amavisd
+user = amavisd
+passwd = passwd
+
+# #### Quarantining ####
+# Release quarantined SPAM/Virus mails: True, False.
+# iRedAdmin-Pro will connect to @quarantine_server to release quarantined mails.
+# How to enable quarantining in Amavisd-new:
+# http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/Quarantining.SPAM
+quarantine = False
+
+# Amavisd server address.
+server = 127.0.0.1
+
+# Port of 'AM.PDP-INET'. Default is 9998.
+quarantine_port = 9998

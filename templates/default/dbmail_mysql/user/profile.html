@@ -1,0 +1,461 @@
+{% extends "layout.html" %}
+
+{% from "macros/general.html" import
+        display_csrf_token,
+        display_subnav,
+        set_account_activity_img,
+        display_input_cn,
+        display_quota,
+        display_input_employeeid,
+        display_input_jobtitle,
+        display_input_mobile,
+        display_input_phone,
+        display_account_status,
+        display_reset_password,
+        display_random_password,
+        display_per_user_wblist,
+        display_recipient_bcc,
+        display_sender_bcc,
+        display_button_submit,
+        with context
+        %}
+
+{% from "macros/mysql.html" import
+        display_enabled_services,
+        with context
+        %}
+
+{% from "macros/policyd.html" import
+        display_policyd_enable_throttling,
+        display_policyd_timeunit_of_throttle,
+        display_policyd_max_messages_per_timeunit,
+        display_policyd_max_message_size_per_timeunit,
+        display_policyd_size_of_single_message,
+        display_policyd_higher_priority_of_throttle,
+        with context
+        %}
+
+{% from "macros/msgHandlers.html" import userMsgHandler with context %}
+
+{% block title %}{{ _('Edit account profile') }}{% endblock %}
+{% block navlinks_active_domains %}class="active"{% endblock %}
+
+{% block breadcrumb %}
+    {% set crumbs = [
+            (ctx.homepath + '/domains', _('All domains'),),
+            (ctx.homepath + '/profile/domain/general/' + cur_domain, cur_domain,),
+            (ctx.homepath + '/users/' + cur_domain, _('Users'),),
+            (None, _('Profile of user:') + '&nbsp;' + mail,),
+            (ctx.homepath + '/aliases/' + cur_domain, _('Aliases'),),
+            ]
+            %}
+    {{ display_subnav(crumbs) }}
+{% endblock %}
+
+{% block main %}
+
+{% set input_csrf_token = display_csrf_token() %}
+{% set user_idnr = profile.user_idnr | string %}
+
+{# Show system message #}
+{{ userMsgHandler(msg) }}
+
+{% set navlinks = [
+            ('general', _('General'), [true,]),
+            ('forwarding', _('Forwarding'), [true,]),
+            ('aliases', _('Aliases'), [true,]),
+            ('bcc', _('BCC'), [false,]),
+            ('relay', _('Relay'), [false,]),
+            ('throttle', _('Throttling'), [false, session.get('domainGlobalAdmin'), session.get('enablePolicyd'),]),
+            ('wblist', _('White/Blacklist'), [false, session.get('domainGlobalAdmin'),]),
+            ('password', _('Password'), [true,]),
+            ('advanced', _('Advanced'), [false,]),
+            ]
+            %}
+
+<div class="content-box">
+    <div class="box-body">
+        <div class="box-header clear">
+            <ul class="tabs clear">
+                {% for nav in navlinks %}
+                    {% if not false in nav[2] and not none in nav[2] %}
+                        <li><a href="#profile_{{nav[0]}}">{{ nav[1] }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <h2>{{ _('Profile of user:') }} {{ mail }} {{ set_account_activity_img('sent', 'user', mail, float=false) }}</h2>
+        </div>
+
+        <div class="box-wrap clear">
+            <div id="profile_general">
+                <form method="post" action="{{ctx.homepath}}/profile/user/general/{{mail}}">
+                    {{ input_csrf_token }}
+                    <div class="columns clear">
+                        <div class="col2-3">
+                            {#
+                            {{ display_account_status(profile.active) }}
+
+                            <div class="bt-space10"></div>
+                            #}
+                            {{ display_input_cn(profile.name) }}
+
+                            {#
+                            <div class="bt-space10"></div>
+                            {{ display_input_employeeid(profile.employeeid) }}
+                            {{ display_input_jobtitle(jobtitle) }}
+
+                            <div class="bt-space10"></div>
+                            {{ display_input_mobile(value=mobile) }}
+                            {{ display_input_phone(value=telephoneNumber) }}
+                            #}
+                        </div>
+                    </div>
+
+                    <div class="columns clear">
+                        <div class="col2-3">
+                            {{ display_quota(value=(profile.maxmail_size/1024/1024) |int,
+                                                    show_value_in_input=true,
+                                                    used_quota=profile.curmail_size,
+                                                    show_used_quota=true,
+                                                    show_spare_quota=false,
+                                                    hide_zero=false
+                                                    ) }}
+                        </div>
+
+                        <div class="col1-3 lastcol">
+                            <div class="mark_blue bt-space10">
+                                <ul class="standard clean-padding bt-space10">
+                                    <li class="bt-space5">{{ _('Set value to 0 or leave it empty for unlimited.') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>{#-- .columns --#}
+
+                    <div class="rule"></div>
+                    <div class="columns clear">
+                        <div class="col2-3">
+                            <div class="form-field clear">
+                                <h4 class="size-250 fl-space">{{ _('Member of Mail Aliases') }}</h4>
+                                <div class="checklist clear">
+                                    <fieldset>
+                                        {% for als in allAliases %}
+                                            {% set alscn = als.name |e %}
+                                            {% set als_address = als.alias |e %}
+
+                                            {% if alscn in [none, ''] %}
+                                                {% set alscn = als.alias .split('@', 1)[0] |e %}
+                                            {% endif %}
+
+                                            <div class="checklist-item">
+                                                <span class="fl-space">
+                                                    {% if mail in als.deliver_to.replace(' ', '').split(',') %}
+                                                        <input type="hidden" name="oldMemberOfAlias" value="{{ als_address }}" />
+                                                        <input type="checkbox" name="memberOfAlias" value="{{ als_address }}" checked />
+                                                    {% else %}
+                                                        <input type="checkbox" name="memberOfAlias" value="{{ als_address }}" />
+                                                    {% endif %}
+                                                </span>
+                                                <label><a href="{{ctx.homepath}}/profile/alias/general/{{ als_address }}">{{ alscn }}</a>&nbsp;({{ als_address }})</label>
+                                            </div>
+                                            <div class="clear"></div>
+                                        {% endfor %}
+                                    </fieldset>
+                                </div>{#-- .checklist --#}
+                            </div>{#-- form-field --#}
+                        </div>{#-- End col2-3 -- #}
+
+                        <div class="col1-3 lastcol">
+                            <div class="mark_blue bt-space10">
+                                <ul class="standard clean-padding bt-space10">
+                                    <li class="bt-space5"><a href="{{ctx.homepath}}/create/alias/{{ cur_domain }}">{{ _('Add mail alias') }}</a></li>
+                                </ul>
+                            </div>
+                        </div>{# .col1-3 #}
+                    </div>{#-- .columns --#}
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>{# #profile_general #}
+
+            {# profile_type == 'forwarding' #}
+            <div id="profile_forwarding">
+                <form method="post" action="{{ctx.homepath}}/profile/user/forwarding/{{mail}}">
+                    {{ input_csrf_token }}
+
+                    <div class="form-field clear">
+                        <h4 class="size-250 fl-space">{{ _('Save a copy in mailbox') }}</h4>
+                        <span class="clean-padding">
+                            <input type="checkbox" name="savecopy" {% if user_idnr in mailForwardingAddresses %}checked{%endif%} />
+                        </span>
+                    </div>
+
+                    <div class="bt-space0">&nbsp;</div>
+
+                    <div class="form-field clear">
+                        <h4 class="size-250 fl-space">{{ _('Forward mails to address') }}</h4>
+                        <small>{{ _('One mail address per line.') }}</small>
+                        <textarea name="mailForwardingAddresses" rows="6" style="width: 50%" class="textarea">{%- for addr in mailForwardingAddresses |sort %}{% if addr != user_idnr %}{{ addr |e }}
+{% endif %}{%- endfor -%}
+                        </textarea>
+                    </div>
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>
+
+            {# profile_type == 'aliases' #}
+            <div id="profile_aliases">
+                <form method="post" action="{{ctx.homepath}}/profile/user/aliases/{{mail}}">
+                    {{ input_csrf_token }}
+
+                    <div class="col2-3">
+                        <div class="form-field clear">
+                            <h4 class="size-250 fl-space">{{ _('Email addresses of alias accounts') }}</h4>
+                            <small>{{ _('One mail address per line.') }}</small>
+                            <textarea name="userAliasAddresses" rows="6" style="width: 50%" class="textarea">{%- for addr in userAliasAddresses |sort %}{% if addr != mail %}{{ addr |e }}
+{% endif %}
+{%- endfor -%}
+                            </textarea>
+                        </div>
+
+                        {{ display_button_submit() }}
+                    </div>
+
+                    <div class="col1-3 lastcol">
+                        <div class="mark_blue bt-space10">
+                            <ul class="standard clean-padding bt-space10">
+                                <li class="bt-space5">{{ _('Emails sent to alias accounts will be delivered to user %s.') |format('<strong>' + mail + '</strong>') }}</li>
+                                <li class="bt-space5">{{ _('Email address of alias account must end with domain name(s): %s.') |format('<strong>' + profile.domain + '</strong>') }}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </form>
+            </div>{#-- .columns --#}
+
+            {# profile_type: bcc #}
+            {#
+            <div id="profile_bcc">
+                <form method="post" action="{{ctx.homepath}}/profile/user/bcc/{{mail}}">
+                    {{ input_csrf_token }}
+
+                    <div class="columns clear">
+                        <div class="col2-3 ">
+                            <div class="form-field clear">
+                                <h4 class="size-250 fl-space">{{ _('Monitor incoming emails via BCC') }}</h4>
+                                <div class="clear">
+                                    <input type="checkbox" name="recipientbcc" {% if profile.rbcc_active in [1, '1'] %}checked{%endif%} class="checkbox" rel="checkboxhorizont" />
+                                </div>
+                            </div>
+
+                            <div class="form-field clear">
+                                <h4 class="size-250 fl-space">{{ _('Monitor outgoing emails via BCC') }}</h4>
+                                <div class="clear">
+                                    <input type="checkbox" name="senderbcc" {% if profile.sbcc_active in [1, '1'] %}checked{%endif%} class="checkbox" rel="checkboxhorizont" />
+                                </div>
+                            </div>
+
+                            {{ display_recipient_bcc(address=profile.rbcc_bcc_address) }}
+                            {{ display_sender_bcc(address=profile.sbcc_bcc_address) }}
+                        </div>
+
+                        <div class="col1-3 lastcol">
+                            <div class="mark_blue bt-space10">
+                                <ul class="standard clean-padding bt-space10">
+                                    <li class="bt-space5">{{ _('Multiple addresses are NOT supported.') }}</li>
+                                    <li class="bt-space5">{{ _('Per-domain bcc settings will override per-user bcc settings.') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>
+            #}
+
+            {#
+            <div id="profile_relay">
+                <form method="post" action="{{ctx.homepath}}/profile/user/relay/{{mail}}">
+                    {{ input_csrf_token }}
+
+                    <div class="columns clear">
+                        <div class="col2-3 ">
+                            <div class="form-field clear">
+                                <h4 class="size-250 fl-space">{{ _('Relay/Transport Setting') }}</h4>
+                                <div class="clear">
+                                    <input type="text" name="mtaTransport" value="{{ profile.transport |default('') |e }}" size="35" class="text" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col1-3 lastcol">
+                            <div class="mark_blue bt-space10">
+                                <ul class="standard clean-padding bt-space10">
+                                    <li class="bt-space5"><a href="http://www.postfix.org/transport.5.html" target="_blank">{{ _('Sample') }}</a></li>
+                                    <li class="bt-space5">{{ _("Or leave it empty to use <a href='%s'>domain setting</a>.") |format(ctx.homepath + '/profile/domain/relay/' + cur_domain) }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>
+            #}
+
+        {# profile_type == 'wblist' #}
+        {#
+        <div class="columns clear">
+            <div class="col2-3">
+                {{ display_per_user_wblist(
+                        values=whitelistSender,
+                        htmlInputName='whitelistSender',
+                        label=_('Bypass mails from below senders'),
+                    )
+                }}
+
+                {{ display_per_user_wblist(
+                        values=blacklistSender,
+                        htmlInputName='blacklistSender',
+                        label=_('Reject mails from below senders'),
+                    )
+                }}
+
+                {{ display_per_user_wblist(
+                        values=whitelistRecipient,
+                        htmlInputName='whitelistRecipient',
+                        label=_('Bypass mails sent to below recipients'),
+                    )
+                }}
+
+                {{ display_per_user_wblist(
+                        values=blacklistRecipient,
+                        htmlInputName='blacklistRecipient',
+                        label=_('Reject mails sent to below recipients'),
+                    )
+                }}
+            </div>
+
+            <div class="col1-3 lastcol">
+                {% if session.get('domainGlobalAdmin') is sameas true %}
+                    <div class="notification note-attention">
+                        <p><strong>{{ _('Note') }}:</strong> {{ _("Make sure you have iRedAPD work as expected:") }} <a href="http://iredmail.org/wiki/index.php?title=Install/iRedAPD/OpenLDAP" target="_blank">{{ _('Install iRedAPD') }}</a></p>
+                    </div>
+                {% endif %}
+
+                <div class="mark_blue bt-space10">
+                    <ul class="standard clean-padding bt-space10">
+                        <li class="bt-space5">{{ _('This is per-user white/blacklist.') }}</li>
+                        <li class="bt-space5">{{ _('Whitelist has higher priority than blacklist.') }}</li>
+                    </ul>
+
+                    <h4>{{ _('Format of sender and recipient') }}</h4>
+                    <ul class="standard clean-padding bt-space10">
+                        <li class="bt-space5"><strong>{{ _('Single user') }}:</strong> <u>user@domain.ltd</u></li>
+                        <li class="bt-space5"><strong>{{ _('Entire domain') }}:</strong> <u>@domain.ltd</u></li>
+                        <li class="bt-space5"><strong>{{ _('Domain and its sub-domains') }}:</strong> <u>@.domain.ltd</u></li>
+                        <li class="bt-space5"><strong>{{ _('All accounts') }}: <u style="color: red;">@.</u></li>
+                    </ul>
+                </div>
+            </div>
+        </div>#}{# .columns #}
+
+
+        {# Throttling in Policyd #}
+        {% if session.get('domainGlobalAdmin') is sameas true and session.get('enablePolicyd') is sameas true %}
+            {# Sender throttle in Policyd #}
+            <div id="profile_throttle">
+                <form method="post" action="{{ctx.homepath}}/profile/user/throttle/{{mail}}">
+                    {{ input_csrf_token }}
+                    <div class="columns clear">
+                        <div class="col2-3 ">
+                            {{ display_policyd_enable_throttling(accountType='sender', enabled=throttleOfSender.get('_from', false)) }}
+
+                            {{ display_policyd_higher_priority_of_throttle(
+                                    value=throttleOfSender.get('_priority', priorityOfUserThrottling),
+                                    accountDomain=cur_domain,
+                                    accountType='sender',
+                                    ) }}
+                            {{ display_policyd_size_of_single_message(value=throttleOfSender.get('_mail_size', 0)) }}
+
+                            {{ display_policyd_max_messages_per_timeunit(
+                                    value=throttleOfSender.get('_count_max', 0),
+                                    accountType='sender',)
+                                    }}
+                            {{ display_policyd_max_message_size_per_timeunit(
+                                value=throttleOfSender.get('_quota_max', 0),
+                                accountType='sender')
+                                }}
+                            {{ display_policyd_timeunit_of_throttle(
+                                    value=throttleOfSender.get('_time_limit', 0),
+                                    accountType='sender')
+                                    }}
+
+                            {# Recipient throttle in Policyd #}
+                            <div class="rule">&nbsp;</div>
+                            {{ display_policyd_enable_throttling(
+                                    accountType='recipient',
+                                    enabled=throttleOfRecipient.get('_rcpt', false),
+                                    ) }}
+                            {{ display_policyd_max_messages_per_timeunit(
+                                    value=throttleOfRecipient.get('_count_max', 0),
+                                    accountType='recipient',
+                                    ) }}
+                            {{ display_policyd_timeunit_of_throttle(
+                                    value=throttleOfRecipient.get('_time_limit', 0),
+                                    accountType='recipient',
+                                    ) }}
+                        </div>{#-- .col2-3 --#}
+
+                        <div class="col1-3 lastcol">
+                            <div class="mark_blue bt-space10">
+                                <ul class="standard clean-padding bt-space10">
+                                    <li class="bt-space5">{{ _('Set value to 0 or leave it empty for unlimited.') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>{#-- .columns --#}
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>{# profile_throttle #}
+        {% endif %}
+
+            <div id="profile_password">
+                <form method="post" action="{{ctx.homepath}}/profile/user/password/{{mail}}">
+                    {{ input_csrf_token }}
+                    <div class="columns clear">
+                        <div class="col3-4">
+                            {{ display_reset_password(
+                                    show_confirmpw=true,
+                                    store_in_plain=true,
+                                    )
+                            }}
+                        </div>
+                        <div class="col1-4 lastcol">
+                            {{ display_random_password(minPasswordLength) }}
+                        </div>
+                    </div>
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>
+
+            {#
+            <div id="profile_advanced">
+                <form method="post" action="{{ctx.homepath}}/profile/user/advanced/{{mail}}">
+                    {{ input_csrf_token }}
+
+                    <div class="bt-space0">&nbsp;</div>
+                    {{ display_enabled_services(accountType='user', profile=profile) }}
+
+                    {{ display_button_submit() }}
+                </form>
+            </div>
+            #}
+        </div>
+    </div>
+</div>
+{% endblock main %}

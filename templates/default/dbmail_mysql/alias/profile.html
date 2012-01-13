@@ -1,0 +1,186 @@
+{% extends "layout.html" %}
+
+{% from "macros/general.html" import
+        display_csrf_token,
+        display_subnav,
+        display_input_cn,
+        display_account_status,
+        set_account_status_img,
+        display_button_submit,
+        with context
+        %}
+
+{% from "macros/msgHandlers.html" import aliasMsgHandler with context %}
+
+{% block title %}{{ _('Edit account profile') }}{% endblock %}
+{% block navlinks_active_domains %}class="active"{% endblock %}
+
+{% block breadcrumb %}
+    {% set crumbs = [
+            (ctx.homepath + '/domains', _('All domains'),),
+            (ctx.homepath + '/profile/domain/general/' + cur_domain, cur_domain,),
+            (ctx.homepath + '/users/' + cur_domain, _('Users'),),
+            (ctx.homepath + '/aliases/' + cur_domain, _('Aliases'),),
+            (None, _('Profile of alias:') + '&nbsp;' + mail,),
+            ]
+            %}
+    {{ display_subnav(crumbs) }}
+{% endblock %}
+
+{% block main %}
+
+{# Show system message #}
+{{ aliasMsgHandler(msg) }}
+
+{% set navlinks = [
+            ('general', _('General'), [true,]),
+            ]
+            %}
+
+<div class="content-box">
+    <div class="box-body">
+        <div class="box-header clear">
+            <h2>{{ _('Profile of alias:') }} {{ mail }}</h2>
+
+            <ul class="tabs clear">
+                {% for nav in navlinks %}
+                    {% if not false in nav[2] and not none in nav[2] %}
+                        <li><a href="#profile_{{nav[0]}}">{{ nav[1] }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>{# -- box-header -- #}
+
+        <div class="box-wrap clear">
+            <div id="profile_general">
+                <form id="list_table" method="post" action="{{ctx.homepath}}/profile/alias/{{profile_type}}/{{mail}}">
+                    {{ display_csrf_token() }}
+                    <div class="columns clear">
+                        <div class="col3-4 clear">
+                            {#
+                            {{ display_account_status(profile.active) }}
+                            #}
+                            {{ display_input_cn(profile.name) }}
+
+                            {# -- Access policy -- #}
+                            {#
+                            <div class="bt-space20"></div>
+                            {% set accessPolicy = profile.get('accesspolicy', 'public').lower() |e %}
+                            {% if accessPolicy == '' %}
+                                {% set accessPolicy = 'public' %}
+                            {% endif %}
+
+                            {% set policies = [
+                                ('public', _('Unrestricted') + '.&nbsp;' + _('Everyone can send mail to this address')),
+                                ('domain', _("<a href='%s'>Users under domain <strong>%s</strong></a>") |format(ctx.homepath + '/users/' + cur_domain, cur_domain),),
+                                ('subdomain', _("<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-domains") |format(ctx.homepath + '/users/' + cur_domain, cur_domain),),
+                                ('membersonly', '<a href="#members">' + _('Members') + '</a>',),
+                                ('allowedonly', '<a href="#moderators">' + _('Moderators') + "</a>",),
+                                ('membersandmoderatorsonly', _("<a href='%s'>Members</a> and <a href='%s'>moderators</a>") |format("#members", "#moderators"),),
+                                ]
+                            %}
+
+                            {% for policy in policies %}
+                            <div class="form-field clear">
+                                {% if not loop.first %}
+                                    <h4 class="size-250 fl-space">&nbsp;</h4>
+                                {% else %}
+                                    <h4 class="size-250 fl-space">{{ _('Who can send email to this list') }}</h4>
+                                {% endif %}
+                                <span class="clean-padding">
+                                    <input type="radio" name="accessPolicy" value="{{ policy[0] }}" {% if accessPolicy == policy[0] %}checked{%endif%} />{{ policy[1] }}
+                                </span>
+                            </div>
+                            {% endfor %}
+                            #}
+
+                        </div>{# col2-3 #}
+                    </div>{# .columns #}
+
+                    <div class="bt-space0">&nbsp;</div>
+
+                    {# List all members. #}
+                    <div class="form-field clear">
+                        <h4 class="size-250 fl-space">{{ _('Members') }}<a name="members">&nbsp;</a></h4>
+                        <small>{{ _('Mail sent to alias will be forwarded to members.') }}</small>
+                        <div class="checklist clear" style="max-height: 15em;">
+                            <fieldset>
+                                {% if members |length > 0 %}
+                                    {% for m in members |sort %}
+                                        {% if m |length > 0 %}
+                                            <div class="checklist-item">
+                                                <span class="fl-space">
+                                                    <input type="checkbox" name="mailForwardingAddress" value="{{ m |e }}" checked />
+                                                </span>
+                                                <label>
+                                                    {% if m.endswith('@'+cur_domain) %}<a href="{{ctx.homepath}}/profile/user/general/{{ m |e }}" title="{{ _('Edit account profile') }}">{{ m |e }}</a>{% else %}{{ m |e }}{% endif %}
+                                                </label>
+                                            </div>
+                                            <div class="clear"></div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </fieldset>
+                        </div>{#-- .checklist --#}
+                    </div>{#-- .form-field --#}
+
+
+                    <div class="bt-space0">&nbsp;</div>
+                    {# List all moderators. #}
+                    {#
+                    <div class="form-field clear">
+                        <h4 class="size-250 fl-space">{{ _('Moderators') }}<a name="moderators">&nbsp;</a></h4>
+                        <div class="checklist clear" style="max-height: 15em;">
+                            <fieldset>
+                                {% if profile.moderators is not sameas none %}
+                                    {% set moderators = profile.moderators.split(',') %}
+                                    {% if moderators == [''] %}
+                                        {% set moderators = [] %}
+                                    {% endif %}
+                                {% else %}
+                                    {% set moderators = [] %}
+                                {% endif %}
+
+                                {% if moderators |length > 0 %}
+                                    {% for m in moderators |sort %}
+                                        <div class="checklist-item">
+                                            <span class="fl-space">
+                                                <input type="checkbox" name="moderators" value="{{ m |e }}" checked />
+                                            </span>
+                                            <label>
+                                                {% if m.endswith('@'+cur_domain) %}<a href="{{ctx.homepath}}/profile/user/general/{{ m |e }}" title="{{ _('Edit account profile') }}">{{ m |e }}</a>{% else %}{{ m |e }}{% endif %}
+                                            </label>
+                                        </div>
+                                        <div class="clear"></div>
+                                    {% endfor %}
+                                {% endif %}
+                            </fieldset>
+                        </div><!-- .checklist -->
+                    </div><!-- .form-field -->
+                    #}
+
+                    <div class="bt-space0">&nbsp;</div>
+                    <div class="form-field clear">
+                        <h4 class="size-250 fl-space">{{ _('Add new members') }}</h4>
+                        <small>{{ _('One mail address per line.') }}</small>
+                        <textarea name="newMailForwardingAddresses" class="textarea" rows="5" style="width: 50%;"></textarea>
+                    </div>
+
+
+                    {#
+                    <div class="bt-space0">&nbsp;</div>
+                    <div class="form-field clear">
+                        <h4 class="size-250 fl-space">{{ _('Add new moderators') }}</h4>
+                        <small>{{ _('One mail address per line.') }}</small>
+                        <textarea name="newModerators" class="textarea" rows="5" style="width: 50%;"></textarea>
+                    </div>
+                    #}
+
+                </div><!-- #profile_general -->
+                {{ display_button_submit() }}
+            </form>
+        </div><!-- .box-wrap -->
+    </div>{#-- .box-body --#}
+</div>{#-- .content-box --#}
+
+{% endblock main %}

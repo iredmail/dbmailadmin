@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% from "macros/general.html" import
+        display_csrf_token,
+        set_account_status_img,
+        set_account_activity_img,
+        highlight_username_in_mail,
+        show_pages,
+        with context %}
+{% from "macros/msgHandlers.html" import aliasMsgHandler with context %}
+
+{% block title %}{{ _('Mail Aliases') }}{% endblock %}
+{% block navlinks_active_domains %}class="active"{% endblock %}
+
+
+{% block main %}
+{# Show system message #}
+{{ aliasMsgHandler(msg) }}
+
+{% if aliases is defined %}
+<div class="content-box">
+    <div class="box-body">
+        <div class="box-header clear">
+            <ul class="tabs clear">
+                <li><a href="{{ctx.homepath}}/users/{{cur_domain}}">{{ _('Users') }}</a></li>
+                <li class="active"><a href="{{ctx.homepath}}/aliases/{{cur_domain}}">{{ _('Aliases') }}</a></li>
+                <li><a href="{{ctx.homepath}}/create/user/{{cur_domain}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/ico_add_12.png" /> {{ _('User') }}</a>
+                <li><a href="{{ctx.homepath}}/create/alias/{{cur_domain}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/ico_add_12.png" /> {{ _('Alias') }}</a>
+            </ul>
+
+            <h2>
+                {{ _('Aliases under domain: %s.') |format(cur_domain) }}
+                {% if total is defined and aliases|length > 0 %}
+                    ({{ (cur_page-1) * pageSizeLimit + 1 }}-{{ (cur_page-1) * pageSizeLimit + aliases|length}}/{{total}})
+                {% endif %}
+
+                <a href="{{ctx.homepath}}/profile/domain/general/{{cur_domain}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/action_edit.png" title="{{ _('Edit domain profile') }}" class="vcenter"/></a>
+                {{ set_account_activity_img('sent', 'domain', cur_domain, float=false) }}
+            </h2>
+        </div>{# -- box-header -- #}
+
+    {# List all aliases. #}
+    <form id="list_table" action="{{ctx.homepath}}/aliases/{{cur_domain}}" method="post">
+    {{ display_csrf_token() }}
+    <table class="style1 tablesorter" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="checkbox"><input type="checkbox" class="checkbox select-all" /></th>
+            <th>{{ _('Display Name') }}</th>
+            <th>{{ _('Mail Address') }}</th>
+            {#
+            <th>{{ _('Created') }}</th>
+            #}
+        </tr>
+        </thead>
+
+        {# List alias attributes/avalues. #}
+        <tbody>
+    {% if aliases |length > 0 %}
+        {% for r in aliases %}
+            {% set address = r.alias |e %}
+            {% set name = r.name |e %}
+            <tr>
+                <td class="checkbox"><input type="checkbox" name="username" value="{{ address }}" /></td>
+                <td>
+                    <a href="{{ctx.homepath}}/profile/alias/general/{{address}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/action_edit.png" class="fr-space" title="{{ _('Edit account profile') }}" /></a>
+                    {#{{ set_account_status_img(r.active) }}#}
+                    {% if name %}{{ name |cutString |e }}{% else %}{{ address.split('@', 1)[0] }}{% endif %}
+                </td>
+                <td>{{ highlight_username_in_mail(address) }}</td>
+                {#
+                <td>{{ r.created |setDatetimeFormat(hour=False) }}</td>
+                #}
+            </tr>
+        {% endfor %}
+    {% else %}
+        <tr>
+            <td class="checkbox"></td>
+            <td colspan="3">{{ _('No mail alias available.') }} <a href="{{ctx.homepath}}/create/alias/{{ cur_domain }}">{{ _('Add one') }}</a>?</td>
+        </tr>
+    {% endif %}
+        </tbody>
+    </table>
+
+    <div class="tab-footer clear f1">
+        <div class="fl">
+            <select name="action" class="fl-space">
+                <option>{{ _('Choose Action') }}</option>
+                {#
+                <option value="enable">{{ _('Enable') }}</option>
+                <option value="disable">{{ _('Disable') }}</option>
+                #}
+                <option value="delete">{{ _('Delete') }}</option>
+            </select>
+            <input type="submit" value="{{ _('Apply') }}" class="button fl-space" />
+        </div>
+
+        {{ show_pages(baseurl=ctx.homepath + '/aliases/' + cur_domain, total=total, cur_page=cur_page) }}
+    </div>
+</form>
+
+</div>{# -- box-body -- #}
+</div>{# -- content-body -- #}
+{% endif %}
+{% endblock main %}
+
+{% block js %}
+    {{ load_jquery(['tablesorter'], nonSortedCols=[0]) }}
+{% endblock js %}

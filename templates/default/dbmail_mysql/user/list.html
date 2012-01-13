@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+
+{% from "macros/general.html" import
+        display_csrf_token,
+        set_account_status_img,
+        set_account_activity_img,
+        highlight_username_in_mail,
+        display_progress_bar,
+        show_pages,
+        with context %}
+
+{% from "macros/msgHandlers.html" import userMsgHandler with context %}
+
+{% block title %}{{ _('Mail Users') }}{% endblock %}
+{% block navlinks_active_domains %}class="active"{% endblock %}
+
+{% block main %}
+
+{# Show system message #}
+{{ userMsgHandler(msg) }}
+
+{% if users is defined %}
+    {# List all users. #}
+    <div class="content-box">
+        <div class="box-body">
+            <div class="box-header clear">
+                <ul class="tabs clear">
+                    <li class="active"><a href="{{ctx.homepath}}/users/{{cur_domain}}">{{ _('Users') }}</a></li>
+                    <li><a href="{{ctx.homepath}}/aliases/{{cur_domain}}">{{ _('Aliases') }}</a></li>
+                    <li><a href="{{ctx.homepath}}/create/user/{{cur_domain}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/ico_add_12.png" /> {{ _('User') }}</a>
+                    <li><a href="{{ctx.homepath}}/create/alias/{{cur_domain}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/ico_add_12.png" /> {{ _('Alias') }}</a>
+                </ul>
+
+                <h2>
+                    {{ _('Users under domain: %s') |format(cur_domain) }}
+                    {% if total is defined and users|length > 0 %}
+                        ({{ (cur_page-1) * pageSizeLimit + 1 }}-{{ (cur_page-1) * pageSizeLimit + users|length}}/{{ total }})
+                    {% endif %}
+
+                    <a href="{{ctx.homepath}}/profile/domain/general/{{cur_domain}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/action_edit.png" title="{{ _('Edit domain profile') }}" class="vcenter"/></a>
+                    {{ set_account_activity_img('sent', 'domain', cur_domain, float=false) }}
+                </h2>
+            </div>
+
+            <div class="box-wrapper clear">
+            <div id="user_list">
+    <form id="account_list" method="post" action="{{ctx.homepath}}/users/{{cur_domain}}">
+    {{ display_csrf_token() }}
+    <table class="style1 tablesorter" cellspacing="0">
+        <thead>
+        <tr>
+            <th class="checkbox"><input type="checkbox" class="checkbox select-all" /></th>
+            <th>{{ _('Display Name') }}</th>
+            <th>{{ _('Mail Address') }}</th>
+            {#
+            <th>{{ _('User ID') }}</th>
+            <th>{{ _('Job Title') }}</th>
+            #}
+            <th>{{ _('Quota') }}</th>
+            <th>{{ _('Last Login') }}</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% if users|length > 0 %}
+            {% for r in users %}
+                {% set username = r.userid |e %}
+                <tr>
+                    <td class="checkbox"><input type="checkbox" name="username" value="{{username}}" /></td>
+                    <td class="vcenter">
+                        <a href="{{ctx.homepath}}/profile/user/general/{{username}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/action_edit.png" title="{{ _('Edit account profile') }}" class="fr-space"/></a>
+                        {{ set_account_activity_img('sent', 'user', username) }}
+                        {#{{ set_account_status_img(r.active) }}#}
+                        {% if r.name %}
+                            {{ r.name |cutString |e }}
+                        {% else %}
+                            {{ username.split('@', 1)[0] }}
+                        {% endif %}
+                    </td>
+                    <td class="vcenter">{{ highlight_username_in_mail(username) }}</td>
+                    {#
+                    <td class="vcenter">{% if r.employeeid %}{{ r.employeeid |e }}{% endif %}</td>
+                    <td class="vcenter">{{ jobTitle }}</td>
+                    #}
+
+                    {### mail quota #}
+
+                    {% if r.maxmail_size == 0 %}
+                        {% if session.get('enableShowUsedQuota') is sameas true %}
+                            <td class="vcenter">{{ r.curmail_size |filesizeformat }} / {{ _('Unlimited') }}</td>
+                        {% else %}
+                            <td class="vcenter">{{ _('Unlimited') }}</td>
+                        {% endif %}
+                    {% else %}
+                        {% set percent = r.curmail_size |getPercentage(r.maxmail_size |int * 1024 * 1024) %}
+                        <td class="vcenter">
+                            <div>
+                                <span title="{{ _('Edit quota setting') }}"><a href="{{ctx.homepath}}/profile/user/general/{{username}}">{{ percent }}%</a></span>
+                                <span class="grey">(<span title="{{ _('Stored') }}">{{ r.curmail_size |filesizeformat }}</span> / <span title="{{ _('Mailbox Quota') }}">{{ r.maxmail_size |filesizeformat }}</span>)</span>
+                            </div>
+                            {{ display_progress_bar(percent, show_zero=true, width='60%', style='thin') }}
+                        </td>
+                    {% endif %}
+
+                    <td class="vcenter" style="whiespace: nowrap;">{{ r.last_login |setDatetimeFormat |convert_utc_to_timezone }}</td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td class="checkbox"></td>
+                <td colspan="7">{{ _('No mail user available.') }} <a href="{{ctx.homepath}}/create/user/{{ cur_domain }}">{{ _('Add one') }}</a>?</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <input type="hidden" name="cur_page" value="{{cur_page}}" />
+
+    <div class="tab-footer clear f1">
+        <div class="fl">
+            <select name="action" class="fl-space">
+                <option>{{ _('Choose Action') }}</option>
+                {#
+                <option value="enable">{{ _('Enable') }}</option>
+                <option value="disable">{{ _('Disable') }}</option>
+                #}
+                <option value="delete">{{ _('Delete') }}</option>
+            </select>
+            <input type="submit" value="{{ _('Apply') }}" class="button fl-space" />
+        </div>
+
+        {{ show_pages(baseurl=ctx.homepath + '/users/' + cur_domain, total=total, cur_page=cur_page) }}
+    </div>
+</div>{# #user_list #}
+    </div>{# .box-wrapper #}
+</form>
+</div>{# -- End id=user_list -- #}
+</div>
+{% endif %}
+{% endblock main %}
+
+{% block js %}
+    {{ load_jquery(['tablesorter'], nonSortedCols=[0]) }}
+{% endblock js %}
