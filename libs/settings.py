@@ -7,14 +7,46 @@
 #################################### WARNING ####################################
 
 # Local timezone. It must be one of below:
-#   - GMT-11 to GMT-1
-#   - GMT
-#   - GMT+1 to GMT+12
-# Examples:
-#   LOCAL_TIMEZONE = 'GMT-3'    # Brazil Eastern Time
-#   LOCAL_TIMEZONE = 'GMT'      # Greenwich Mean Time
-#   LOCAL_TIMEZONE = 'GMT+8'    # Asia/Hong_Kong
-#   LOCAL_TIMEZONE = 'GMT+10'
+#   GMT-12:00
+#   GMT-11:00
+#   GMT-10:00
+#   GMT-09:30
+#   GMT-09:00
+#   GMT-08:00
+#   GMT-07:00
+#   GMT-06:00
+#   GMT-05:00
+#   GMT-04:30
+#   GMT-04:00
+#   GMT-03:30
+#   GMT-03:00
+#   GMT-02:00
+#   GMT-01:00
+#   GMT
+#   GMT+01:00
+#   GMT+02:00
+#   GMT+03:00
+#   GMT+03:30
+#   GMT+04:00
+#   GMT+04:30
+#   GMT+05:00
+#   GMT+05:30
+#   GMT+05:45
+#   GMT+06:00
+#   GMT+06:30
+#   GMT+07:00
+#   GMT+08:00
+#   GMT+08:45
+#   GMT+09:00
+#   GMT+09:30
+#   GMT+10:00
+#   GMT+10:30
+#   GMT+11:00
+#   GMT+11:30
+#   GMT+12:00
+#   GMT+12:45
+#   GMT+13:00
+#   GMT+14:00
 LOCAL_TIMEZONE = 'GMT'
 
 # Allow to store password in plain text.

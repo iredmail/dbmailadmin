@@ -1,5 +1,6 @@
 import time, re
-from datetime import tzinfo, timedelta, datetime, date, time as time_
+from datetime import tzinfo, timedelta, datetime
+from languages import allTimezonesOffsets
 from settings import LOCAL_TIMEZONE
 
 __timezone__ = None
@@ -60,43 +61,26 @@ class FixedOffset(tzinfo):
     def dst(self, dt):
         return ZERO
 
-    def __repr__(self):
-        return "<tzinfo %s>" % self.__name
+for (tzname, offset) in allTimezonesOffsets.items():
+    __timezones__[tzname] = FixedOffset(offset, tzname)
 
-for i in range(-12, 13):
-    if i == 0:
-        continue
-    if i>0:
-        k = 'GMT +%d' % i
-    else:
-        k = 'GMT %d' % i
-    __timezones__[k] = FixedOffset(i*60, k)
-
-__timezones__['UTC'] = UTC
-re_timezone = re.compile(r'GMT\s?([+-]?)(\d+)', re.IGNORECASE)
-
-if LOCAL_TIMEZONE == 'GMT':
-    LOCAL_TIMEZONE = 'UTC'
+re_timezone = re.compile(r'GMT\s?([+-]?)(\d+):(\d\d)', re.IGNORECASE)
 
 def fix_gmt_timezone(tz):
     if isinstance(tz, (str, unicode)):
         b = re_timezone.match(tz)
         if b:
-            n = b.group(2)
-            if n == '0':
-                return 'UTC'
             sign = b.group(1)
             if not sign:
                 sign = '+'
-            return 'GMT ' + sign + n
+
+            hour = b.group(2)
+            if hour in ['0', '00', ]:
+                return 'UTC'
+
+            minute = b.group(3)
+            return 'GMT' + sign + hour + ':' + minute
     return tz
-
-def set_timezone(tz):
-    global __timezone__
-    __timezone__ = timezone(tz)
-
-def get_timezone():
-    return __timezone__
 
 def set_local_timezone(tz):
     global __local_timezone__
@@ -105,13 +89,8 @@ def set_local_timezone(tz):
 def get_local_timezone():
     return __local_timezone__
 
-def get_timezones():
-    return __timezones__
-
-def register_timezone(name, tz):
-    __timezones__[name] = tz
-
 def timezone(tzname):
+    # Validate tzname and return it
     if not tzname:
         return None
 
@@ -133,14 +112,6 @@ def pick_timezone(*args):
         if tz:
             return tz
 
-def now(tzinfo=None):
-    tz = pick_timezone(tzinfo, __timezone__)
-    return datetime.now(tz)
-
-def today(tzinfo=None):
-    d = now(tzinfo)
-    return to_date(d, tzinfo)
-
 def to_timezone(dt, tzinfo=None):
     """
     Convert a datetime to timezone
@@ -156,25 +127,7 @@ def to_timezone(dt, tzinfo=None):
     else:
         return dt.astimezone(tz)
 
-def to_date(dt, tzinfo=None, format=None):
-    """
-    Convert a datetime to date with tzinfo
-    """
-    d = to_datetime(dt, tzinfo, format)
-    if not d:
-        return d
-    return date(d.year, d.month, d.day)
-
-def to_time(dt, tzinfo=None, format=None):
-    """
-    Convert a datetime to time with tzinfo
-    """
-    d = to_datetime(dt, tzinfo, format)
-    if not d:
-        return d
-    return time_(d.hour, d.minute, d.second, d.microsecond, tzinfo=d.tzinfo)
-
-def to_datetime(dt, tzinfo=None, format=None):
+def to_datetime_with_tzinfo(dt, tzinfo=None, format=None):
     """
     Convert a date or time to datetime with tzinfo
     """
@@ -208,31 +161,21 @@ def to_datetime(dt, tzinfo=None, format=None):
             d = d.replace(tzinfo=dt.tzinfo)
     return to_timezone(d, tzinfo)
 
-def to_local(dt, tzinfo=None):
-    tz = pick_timezone(tzinfo, __local_timezone__)
-    return to_datetime(dt, tzinfo=tz)
-
-def to_string(dt):
-    if isinstance(dt, datetime):
-        return dt.strftime('%Y-%m-%d %H:%M:%S %Z')
-    elif isinstance(dt, date):
-        return dt.strftime('%Y-%m-%d')
-    elif isinstance(dt, time_):
-        return dt.strftime('%H:%M:%S')
-
-def convert_utc_to_timezone(dt):
+def convert_utc_to_timezone(dt, format='%Y-%m-%d %H:%M:%S'):
     if LOCAL_TIMEZONE in ['UTC', 'GMT']:
         return dt
 
-    t = to_datetime(dt, tzinfo=UTC)
-    return to_datetime(t, tzinfo=LOCAL_TIMEZONE).strftime('%Y-%m-%d %H:%M:%S')
+    # Convert original timestamp to new timestamp with UTC timezone.
+    t = to_datetime_with_tzinfo(dt, tzinfo=UTC)
 
-#if __name__ == '__main__':
-#    GMT8 = timezone('GMT +8')
-#    d = to_datetime('2011-9-13 20:14:15', tzinfo=GMT8)
-#    print repr(d)
-#    set_timezone(UTC)
-#    print repr(to_datetime(d))
-#    set_local_timezone('GMT +8')
-#    print get_local_timezone()
-#    print repr(to_local(d))
+    # Convert original timestamp (with UTC timezone) to timestamp with local timezone.
+    return to_datetime_with_tzinfo(t, tzinfo=LOCAL_TIMEZONE).strftime(format)
+
+if __name__ == '__main__':
+    timestamp = '2011-09-13 20:14:15'
+    t = to_datetime_with_tzinfo(timestamp, tzinfo=UTC)
+    print 'Original timestamp (timezone: UTC):', t
+    print 'Local timestamp (timezone: %s): %s' % (
+        LOCAL_TIMEZONE,
+        to_datetime_with_tzinfo(t, tzinfo=LOCAL_TIMEZONE).strftime('%Y-%m-%d %H:%M:%S'),
+    )

@@ -1,2 +1,6 @@
+= 1.1 =
+    * Fixed:
+            + Cannot handle timezones with minutes. e.g. GMT+5:45.
+
 = 1.0 =
     * Initial release.
