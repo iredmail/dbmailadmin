@@ -7,8 +7,6 @@ __timezone__ = None
 __local_timezone__ = None
 __timezones__ = {}
 
-class DateError(Exception):pass
-
 DEFAULT_DATETIME_INPUT_FORMATS = (
     '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
     '%Y-%m-%d %H:%M',        # '2006-10-25 14:30'
@@ -99,12 +97,12 @@ def timezone(tzname):
         tzname = fix_gmt_timezone(tzname)
         tz = __timezones__.get(tzname, None)
         if not tz:
-            raise DateError, "Can't find tzname %s" % tzname
+            tz = UTC
         return tz
     elif isinstance(tzname, tzinfo):
         return tzname
     else:
-        raise DateError, "Unsupported tzname %r type" % tzname
+        return UTC
 
 def pick_timezone(*args):
     for x in args:
