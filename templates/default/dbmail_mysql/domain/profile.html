@@ -22,15 +22,6 @@
         with context
         %}
 
-{% from "macros/policyd.html" import
-        display_policyd_enable_throttling,
-        display_policyd_timeunit_of_throttle,
-        display_policyd_max_messages_per_timeunit,
-        display_policyd_max_message_size_per_timeunit,
-        display_policyd_size_of_single_message,
-        with context
-        %}
-
 {% from "macros/msgHandlers.html" import domainMsgHandler with context %}
 
 {% block title %}{{ _('Edit account profile') }}{% endblock %}
@@ -62,7 +53,6 @@
                 ('relay', _('Relay'), [false, session.get('domainGlobalAdmin'),]),
                 ('catchall', _('Catch-all'), [false,]),
                 ('aliases', _('Aliases'), [false, session.get('domainGlobalAdmin'),]),
-                ('throttle', _('Throttling'), [false, session.get('domainGlobalAdmin'), session.get('enablePolicyd'),]),
                 ('advanced', _('Advanced'), [true,]),
                 ]
                 %}
@@ -318,62 +308,6 @@
                                     </ul>
                                 </div>
                             </div><!-- .col1-3 -->
-                        </div><!-- .columns -->
-                        {{ display_button_submit() }}
-                    </form>
-                </div>
-            {% endif %}
-            #}
-
-            {# profile_type: throttling #}
-            {#
-            {% if session.get('domainGlobalAdmin') is sameas true and session.get('enablePolicyd') is sameas true %}
-                <div id="profile_throttle">
-                    <form method="post" action="{{ctx.homepath}}/profile/domain/throttle/{{cur_domain}}">
-                        {{ input_csrf_token }}
-                        <div class="columns clear">
-                            <div class="col2-3 ">
-
-                            <!-- Sender throttle in Policyd -->
-                            {{ display_policyd_enable_throttling(accountType='sender', enabled=throttleOfSender.get('_from', false)) }}
-                            {{ display_policyd_size_of_single_message(value=throttleOfSender.get('_mail_size', 0)) }}
-
-                            {{ display_policyd_max_messages_per_timeunit(
-                                            value=throttleOfSender.get('_count_max', 0),
-                                            accountType='sender',)
-                                            }}
-                            {{ display_policyd_max_message_size_per_timeunit(
-                                            value=throttleOfSender.get('_quota_max', 0),
-                                            accountType='sender')
-                                            }}
-                            {{ display_policyd_timeunit_of_throttle(
-                                            value=throttleOfSender.get('_time_limit', 0),
-                                            accountType='sender')
-                                            }}
-
-                            <div class="rule">&nbsp;</div>
-                            <!-- Recipient throttle in Policyd -->
-                            {{ display_policyd_enable_throttling(
-                                            accountType='recipient',
-                                            enabled=throttleOfRecipient.get('_rcpt', false),
-                                            ) }}
-                            {{ display_policyd_max_messages_per_timeunit(
-                                            value=throttleOfRecipient.get('_count_max', 0),
-                                            accountType='recipient',
-                                            ) }}
-                            {{ display_policyd_timeunit_of_throttle(
-                                            value=throttleOfRecipient.get('_time_limit', 0),
-                                            accountType='recipient',
-                                            ) }}
-                            </div><!-- .col2-3 -->
-
-                            <div class="col1-3 lastcol">
-                                <div class="mark_blue bt-space10">
-                                    <ul class="standard clean-padding bt-space10">
-                                        <li class="bt-space5">{{ _('Set value to 0 or leave it empty for unlimited.') }}</li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div><!-- .columns -->
                         {{ display_button_submit() }}
                     </form>

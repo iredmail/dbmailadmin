@@ -25,16 +25,6 @@
         with context
         %}
 
-{% from "macros/policyd.html" import
-        display_policyd_enable_throttling,
-        display_policyd_timeunit_of_throttle,
-        display_policyd_max_messages_per_timeunit,
-        display_policyd_max_message_size_per_timeunit,
-        display_policyd_size_of_single_message,
-        display_policyd_higher_priority_of_throttle,
-        with context
-        %}
-
 {% from "macros/msgHandlers.html" import userMsgHandler with context %}
 
 {% block title %}{{ _('Edit account profile') }}{% endblock %}
@@ -66,7 +56,6 @@
             ('aliases', _('Aliases'), [true,]),
             ('bcc', _('BCC'), [false,]),
             ('relay', _('Relay'), [false,]),
-            ('throttle', _('Throttling'), [false, session.get('domainGlobalAdmin'), session.get('enablePolicyd'),]),
             ('wblist', _('White/Blacklist'), [false, session.get('domainGlobalAdmin'),]),
             ('password', _('Password'), [true,]),
             ('advanced', _('Advanced'), [false,]),
@@ -362,66 +351,6 @@
             </div>
         </div>#}{# .columns #}
 
-
-        {# Throttling in Policyd #}
-        {% if session.get('domainGlobalAdmin') is sameas true and session.get('enablePolicyd') is sameas true %}
-            {# Sender throttle in Policyd #}
-            <div id="profile_throttle">
-                <form method="post" action="{{ctx.homepath}}/profile/user/throttle/{{mail}}">
-                    {{ input_csrf_token }}
-                    <div class="columns clear">
-                        <div class="col2-3 ">
-                            {{ display_policyd_enable_throttling(accountType='sender', enabled=throttleOfSender.get('_from', false)) }}
-
-                            {{ display_policyd_higher_priority_of_throttle(
-                                    value=throttleOfSender.get('_priority', priorityOfUserThrottling),
-                                    accountDomain=cur_domain,
-                                    accountType='sender',
-                                    ) }}
-                            {{ display_policyd_size_of_single_message(value=throttleOfSender.get('_mail_size', 0)) }}
-
-                            {{ display_policyd_max_messages_per_timeunit(
-                                    value=throttleOfSender.get('_count_max', 0),
-                                    accountType='sender',)
-                                    }}
-                            {{ display_policyd_max_message_size_per_timeunit(
-                                value=throttleOfSender.get('_quota_max', 0),
-                                accountType='sender')
-                                }}
-                            {{ display_policyd_timeunit_of_throttle(
-                                    value=throttleOfSender.get('_time_limit', 0),
-                                    accountType='sender')
-                                    }}
-
-                            {# Recipient throttle in Policyd #}
-                            <div class="rule">&nbsp;</div>
-                            {{ display_policyd_enable_throttling(
-                                    accountType='recipient',
-                                    enabled=throttleOfRecipient.get('_rcpt', false),
-                                    ) }}
-                            {{ display_policyd_max_messages_per_timeunit(
-                                    value=throttleOfRecipient.get('_count_max', 0),
-                                    accountType='recipient',
-                                    ) }}
-                            {{ display_policyd_timeunit_of_throttle(
-                                    value=throttleOfRecipient.get('_time_limit', 0),
-                                    accountType='recipient',
-                                    ) }}
-                        </div>{#-- .col2-3 --#}
-
-                        <div class="col1-3 lastcol">
-                            <div class="mark_blue bt-space10">
-                                <ul class="standard clean-padding bt-space10">
-                                    <li class="bt-space5">{{ _('Set value to 0 or leave it empty for unlimited.') }}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>{#-- .columns --#}
-
-                    {{ display_button_submit() }}
-                </form>
-            </div>{# profile_throttle #}
-        {% endif %}
 
             <div id="profile_password">
                 <form method="post" action="{{ctx.homepath}}/profile/user/password/{{mail}}">
