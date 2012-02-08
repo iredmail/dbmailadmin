@@ -1,6 +1,7 @@
-= 1.1 =
+= 1.0.1 =
     * Fixed:
         + Cannot handle timezones with minutes. e.g. GMT+5:45.
+        + Code cleanup in HTML templates.
 
 = 1.0 =
     * Initial release.
