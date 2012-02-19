@@ -101,8 +101,8 @@ class Alias(core.MySQLWrap):
 
         # Delete domain and related records.
         try:
-            self.conn.delete('dbmail_aliases_extra', where='%s' % web.sqlors('alias = ', self.sqlMails),)
-            self.conn.delete('dbmail_aliases', where='%s' % web.sqlors('alias = ', self.sqlMails),)
+            self.conn.delete('dbmail_aliases_extra', where='%s' % web.sqlors('alias = ', self.mails),)
+            self.conn.delete('dbmail_aliases', where='%s' % web.sqlors('alias = ', self.mails),)
             self.conn.update('dbmail_domains',
                              defaultuseraliases=','.join(self.newDefaultAliases),
                              modified=iredutils.sqlNOW,

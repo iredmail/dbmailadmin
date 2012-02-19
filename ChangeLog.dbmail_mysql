@@ -1,3 +1,8 @@
+= 1.0.2 =
+    * Fixed:
+        + Cannot delete alias account.
+          Thanks svanrijn _at_ ictgrouphhw.nl for the report.
+
 = 1.0.1 =
     * Fixed:
         + Cannot handle timezones with minutes. e.g. GMT+5:45.
