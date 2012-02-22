@@ -33,7 +33,7 @@
                 {{ csrf_token }}
                 <div class="form-field clear">
                     <h4 class="size-150 fl-space">{{ _('Keyword') }} <span class="required">*</span></h4>
-                    <input type="text" name="searchString" size="30" class="text" />
+                    <input type="text" name="searchString" value="{{ searchString |e }}" size="30" class="text" />
                     <input type="submit" value="{{ _('Search') }}" size="30" class="button green" />
                 </div>
 

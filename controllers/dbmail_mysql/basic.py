@@ -224,7 +224,7 @@ class Search:
     @decorators.require_login
     def GET(self):
         i = web.input()
-        return web.render('dbmail_mysql/search.html',msg=i.get('msg'),)
+        return web.render('dbmail_mysql/search.html', msg=i.get('msg'), )
 
     @decorators.csrf_protected
     @decorators.require_login
@@ -244,9 +244,17 @@ class Search:
                                   accountStatus=accountStatus,
                                   )
             if qr[0] is False:
-                raise web.seeother('/search?msg=%s' % web.urlquote(qr[1]))
+                return web.render(
+                    'mysql/search.html',
+                    msg=qr[1],
+                    searchString=searchString,
+                )
         except Exception, e:
-            raise web.seeother('/search?msg=%s' % web.urlquote(str(e)))
+            return web.render(
+                'mysql/search.html',
+                msg=str(e),
+                searchString=searchString,
+            )
 
         # Group account types.
         admins = qr[1].get('admin', [])
@@ -257,6 +265,7 @@ class Search:
 
         return web.render(
             'dbmail_mysql/search.html',
+            searchString=searchString,
             totalResults=totalResults,
             admins=admins,
             users=users,
