@@ -39,22 +39,25 @@ class User(core.MySQLWrap):
             return (False, 'PERMISSION_DENIED')
 
         # Pre-defined.
+        sql_vars = {'domain': domain, }
         total = 0
 
         try:
             resultOfTotal = self.conn.select(
                 'dbmail_users',
+                vars=sql_vars,
                 what='COUNT(userid) AS total',
-                where='domain=%s' % web.sqlquote(domain),
+                where='domain=$domain',
             )
             if len(resultOfTotal) == 1:
                 total = resultOfTotal[0].total or 0
 
             resultOfRecords = self.conn.select(
                 'dbmail_users',
+                vars=sql_vars,
                 # Just query what we need to reduce memory use.
                 what='userid,name,curmail_size,maxmail_size,last_login',
-                where='domain=%s' % web.sqlquote(domain),
+                where='domain=$domain',
                 order='userid ASC',
                 limit=settings.PAGE_SIZE_LIMIT,
                 offset=(cur_page-1) * settings.PAGE_SIZE_LIMIT,
@@ -90,9 +93,6 @@ class User(core.MySQLWrap):
             # Delete user record.
             self.conn.delete('dbmail_users', where='%s' % web.sqlors('userid = ', self.mails))
 
-            #self.conn.delete('recipient_bcc_user', where='username IN %s' % sqlquoted_mails)
-            #self.conn.delete('sender_bcc_user', where='username IN %s' % sqlquoted_mails)
-
             web.logger(
                 msg="Delete user: %s." % ', '.join(self.mails),
                 domain=self.domain,
@@ -116,7 +116,8 @@ class User(core.MySQLWrap):
 
         try:
             result = self.conn.select('dbmail_users',
-                                      where='userid = %s' % web.sqlquote(self.mail),
+                                      vars={'mail': self.mail, },
+                                      where='userid = $mail',
                                       limit=1,
                                      )
             if result:
@@ -132,7 +133,7 @@ class User(core.MySQLWrap):
         self.domain = web.safestr(data.get('domainName')).strip().lower()
         self.username = web.safestr(data.get('username')).strip().lower()
         self.mail = self.username + '@' + self.domain
-        sqlquoted_mail = web.sqlquote(self.mail)
+        sql_vars = {'mail': self.mail, }
 
         if not iredutils.isDomain(self.domain):
             return (False, 'INVALID_DOMAIN_NAME')
@@ -244,8 +245,9 @@ class User(core.MySQLWrap):
 
             # Get dbmail_users.user_idnr.
             qr = self.conn.select('dbmail_users',
+                                  vars=sql_vars,
                                   what='user_idnr,client_idnr',
-                                  where='userid=%s' % sqlquoted_mail,
+                                  where='userid=$mail',
                                   limit=1,
                                  )
             p = qr[0]
@@ -274,8 +276,9 @@ class User(core.MySQLWrap):
                 for ali in assignedAliases:
                     try:
                         self.conn.update('dbmail_aliases',
-                                         where='alias = %s AND deliver_to <> %d' % (web.sqlquote(ali), user_idnr),
-                                         deliver_to=web.sqlliteral('CONCAT(%s, ",", deliver_to)' % sqlquoted_mail),
+                                         vars={'mail': self.mail, 'ali': ali, 'user_idnr': user_idnr, },
+                                         where='alias = $ali AND deliver_to <> $user_idnr',
+                                         deliver_to=web.sqlliteral('CONCAT($mail, ",", deliver_to)'),
                                         )
                     except:
                         pass
@@ -283,7 +286,7 @@ class User(core.MySQLWrap):
             # Create Amavisd policy for newly created user.
             if settings.AMAVISD_EXECUTE_SQL_WITHOUT_ENABLED and settings.AMAVISD_SQL_FOR_NEWLY_CREATED_USER:
                 vars_amavisd = {
-                    'mail': sqlquoted_mail,
+                    'mail': self.mail,
                     'username': web.sqlquote(self.username),
                     'domain': web.sqlquote(self.domain),
                 }
@@ -359,8 +362,9 @@ class User(core.MySQLWrap):
             if newly_assigned_aliases:
                 try:
                     self.conn.update('dbmail_aliases',
-                                     where='alias IN %s' % web.sqlquote(newly_assigned_aliases),
-                                     deliver_to=web.sqlliteral('CONCAT("%s", ",", deliver_to)' % self.mail),
+                                     vars={'mail': self.mail, 'newly_assigned_aliases': newly_assigned_aliases, },
+                                     where='alias IN $newly_assigned_aliases',
+                                     deliver_to=web.sqlliteral('CONCAT($mail, ",", deliver_to)'),
                                     )
                 except:
                     pass
@@ -369,8 +373,9 @@ class User(core.MySQLWrap):
             if removed_aliases:
                 # Get profiles of alias accounts.
                 alias_profiles = self.conn.select('dbmail_aliases',
+                                                  vars={'removed_aliases': removed_aliases, },
                                                   what='alias,deliver_to',
-                                                  where='alias IN %s' % web.sqlquote(removed_aliases),
+                                                  where='alias IN $removed_aliases',
                                                  )
 
                 for als in alias_profiles:
@@ -379,7 +384,8 @@ class User(core.MySQLWrap):
 
                         # Remove current user from alias accounts.
                         self.conn.update('dbmail_aliases',
-                                         where='alias = %s' % web.sqlquote(als.alias),
+                                         vars={'alias': als.alias, },
+                                         where='alias = $alias',
                                          goto=','.join(als_members),
                                         )
                     except:
@@ -396,7 +402,10 @@ class User(core.MySQLWrap):
 
             # Delete record first, then insert again.
             try:
-                self.conn.delete('dbmail_aliases', where='alias=%s' % web.sqlquote(self.mail))
+                self.conn.delete('dbmail_aliases',
+                                 vars={'mail': self.mail, },
+                                 where='alias=$mail',
+                                )
             except Exception, e:
                 return (False, str(e))
 
@@ -409,9 +418,9 @@ class User(core.MySQLWrap):
                 if len(forwarding_addresses_in_domain) > 0:
                     qr = self.conn.select(
                         'dbmail_users',
+                        vars={'domain': self.domain, },
                         what='userid',
-                        where='domain = %s AND %s' % (
-                            web.sqlquote(self.domain),
+                        where='domain = $domain AND %s' % (
                             web.sqlors('userid = ', forwarding_addresses_in_domain),
                         ),
                     )
@@ -438,7 +447,10 @@ class User(core.MySQLWrap):
         elif self.profile_type == 'aliases':
             # Delete record first, then insert again.
             try:
-                self.conn.delete('dbmail_aliases', where='deliver_to=%s' % web.sqlquote(self.user_idnr))
+                self.conn.delete('dbmail_aliases',
+                                 vars={'user_idnr': self.user_idnr, },
+                                 where='deliver_to=$user_idnr',
+                                )
             except Exception, e:
                 return (False, str(e))
 
@@ -513,8 +525,14 @@ class User(core.MySQLWrap):
 
             try:
                 # Delete bcc records first.
-                self.conn.delete('sender_bcc_user', where='username=%s' % web.sqlquote(self.mail))
-                self.conn.delete('recipient_bcc_user', where='username=%s' % web.sqlquote(self.mail))
+                self.conn.delete('sender_bcc_user',
+                                 vars={'mail': self.mail, },
+                                 where='username=$mail',
+                                )
+                self.conn.delete('recipient_bcc_user',
+                                 vars={'mail': self.mail, },
+                                 where='username=$mail',
+                                )
 
                 # Insert new records.
                 if updates_sender_bcc:
@@ -612,7 +630,8 @@ class User(core.MySQLWrap):
         try:
             self.conn.update(
                 'dbmail_users',
-                where='userid=%s' % (web.sqlquote(self.mail)),
+                vars={'mail': self.mail, },
+                where='userid=$mail',
                 **updates
             )
             return (True,)
@@ -635,7 +654,8 @@ class User(core.MySQLWrap):
         try:
             result = self.conn.select(
                 'dbmail_aliases',
-                where='alias = %s' % web.sqlquote(self.mail),
+                vars={'mail': self.mail, },
+                where='alias=$mail',
                 what='deliver_to',
             )
             if result:
@@ -661,7 +681,8 @@ class User(core.MySQLWrap):
         try:
             qr = self.conn.select(
                 'dbmail_users',
-                where='userid = %s' % web.sqlquote(self.mail),
+                vars={'mail': self.mail, },
+                where='userid = $mail',
                 what='user_idnr',
                 limit=1,
             )
@@ -675,7 +696,8 @@ class User(core.MySQLWrap):
         try:
             qr = self.conn.select(
                 'dbmail_aliases',
-                where='deliver_to = %s' % web.sqlquote(self.user_idnr),
+                vars={'user_idnr': self.user_idnr, },
+                where='deliver_to=$user_idnr',
                 what='alias',
             )
             if qr:

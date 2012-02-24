@@ -39,8 +39,9 @@ class MySQLWrap:
         try:
             result = self.conn.select(
                 'dbmail_domain_admins',
+                vars={'admin': admin, },
                 what='username',
-                where='''username=%s AND domain="ALL"''' % web.sqlquote(admin),
+                where="""username=$admin AND domain='ALL'""",
                 limit=1,
             )
             if len(result) == 1:
@@ -60,11 +61,9 @@ class MySQLWrap:
         try:
             result = self.conn.select(
                 'dbmail_domain_admins',
+                vars={'domain': domain, 'admin': admin, },
                 what='username',
-                where='domain=%s AND username=%s AND active=1' % (
-                    web.sqlquote(domain),
-                    web.sqlquote(admin),
-                ),
+                where='domain=$domain AND username=$admin AND active=1',
                 limit=1,
             )
             if len(result) == 1:
@@ -94,7 +93,8 @@ class MySQLWrap:
             try:
                 self.conn.update(
                     'dbmail_domains',
-                    where='domain IN %s' % (web.sqlquote(accounts)),
+                    vars={'accounts': accounts, },
+                    where='domain IN $accounts',
                     active=active,
                 )
             except Exception, e:
@@ -104,7 +104,8 @@ class MySQLWrap:
             try:
                 self.conn.update(
                     'dbmail_users',
-                    where='userid IN %s' % (web.sqlquote(accounts)),
+                    vars={'accounts': accounts, },
+                    where='userid IN $accounts',
                     active=active,
                 )
             except Exception, e:
@@ -114,7 +115,8 @@ class MySQLWrap:
             try:
                 self.conn.update(
                     'dbmail_admins',
-                    where='username IN %s' % (web.sqlquote(accounts)),
+                    vars={'accounts': accounts, },
+                    where='username IN $accounts',
                     active=active,
                 )
             except Exception, e:
@@ -124,7 +126,8 @@ class MySQLWrap:
             try:
                 self.conn.update(
                     'alias',
-                    where='address IN %s' % (web.sqlquote(accounts)),
+                    vars={'accounts': accounts, },
+                    where='address IN $accounts',
                     active=active,
                 )
             except Exception, e:
@@ -152,25 +155,37 @@ class MySQLWrap:
         if accountType == 'domain':
             accounts = [str(v) for v in accounts if iredutils.isDomain(v)]
             try:
-                self.conn.delete('dbmail_domains', where='domain IN %s' % (web.sqlquote(accounts)),)
+                self.conn.delete('dbmail_domains',
+                                 vars={'accounts': accounts, },
+                                 where='domain IN $accounts',
+                                )
             except Exception, e:
                 return (False, str(e))
         elif accountType == 'user':
             accounts = [str(v) for v in accounts if iredutils.isEmail(v)]
             try:
-                self.conn.delete('dbmail_users', where='userid IN %s' % (web.sqlquote(accounts)),)
+                self.conn.delete('dbmail_users',
+                                 vars={'accounts': accounts, },
+                                 where='userid IN $accounts',
+                                )
             except Exception, e:
                 return (False, str(e))
         elif accountType == 'admin':
             accounts = [str(v) for v in accounts if iredutils.isEmail(v)]
             try:
-                self.conn.delete('dbmail_admins', where='username IN %s' % (web.sqlquote(accounts)),)
+                self.conn.delete('dbmail_admins',
+                                 vars={'accounts': accounts, },
+                                 where='username IN $accounts',
+                                )
             except Exception, e:
                 return (False, str(e))
         elif accountType == 'alias':
             accounts = [str(v) for v in accounts if iredutils.isEmail(v)]
             try:
-                self.conn.delete('alias', where='address IN %s' % (web.sqlquote(accounts)),)
+                self.conn.delete('alias',
+                                 vars={'accounts': accounts, },
+                                 where='address IN $accounts',
+                                )
             except Exception, e:
                 return (False, str(e))
         else:
@@ -285,7 +300,7 @@ class Auth(MySQLWrap):
                 result = self.conn.select(
                     'dbmail_domain_admins',
                     what='domain',
-                    where='''username=%s AND domain="ALL"''' % web.sqlquote(username),
+                    where="""username=%s AND domain='ALL'""" % web.sqlquote(username),
                     limit=1,
                 )
                 if len(result) == 1:

@@ -20,18 +20,20 @@ class Alias(core.MySQLWrap):
         if not iredutils.isDomain(self.domain):
             raise web.seeother('/domains?msg=INVALID_DOMAIN_NAME')
 
-        self.sqlDomain = web.sqlquote(self.domain)
+        sql_vars = {'domain': self.domain, }
         try:
             if columns:
                 result = self.conn.select(
                     'dbmail_aliases_extra',
-                    where='domain=%s' % (self.sqlDomain),
+                    vars=sql_vars,
+                    where='domain=$domain',
                     what=','.join(columns),
                 )
             else:
                 result = self.conn.select(
                     'dbmail_aliases_extra',
-                    where='domain=%s' % (self.sqlDomain),
+                    vars=sql_vars,
+                    where='domain=$domain',
                 )
 
             return (True, list(result))
@@ -46,13 +48,14 @@ class Alias(core.MySQLWrap):
             return (False, 'INVALID_DOMAIN_NAME')
 
         self.domain = str(domain)
-        self.sqlDomain = web.sqlquote(self.domain)
+        sql_vars = {'domain': self.domain, }
 
         try:
             resultOfRecords = self.conn.select(
                 'dbmail_aliases_extra',
+                vars=sql_vars,
                 what='alias, name',
-                where='domain=%s' % (self.sqlDomain,),
+                where='domain=$domain',
                 limit=settings.PAGE_SIZE_LIMIT,
                 offset=(cur_page-1) * settings.PAGE_SIZE_LIMIT,
             )
@@ -79,7 +82,6 @@ class Alias(core.MySQLWrap):
                       for v in mails
                       if iredutils.isEmail(v) and str(v).endswith('@'+self.domain)
                      ]
-        self.sqlMails = web.sqlquote(self.mails)
 
         # Remove alias from domain.defaultuseraliases.
         # Get domain profile.
@@ -104,9 +106,10 @@ class Alias(core.MySQLWrap):
             self.conn.delete('dbmail_aliases_extra', where='%s' % web.sqlors('alias = ', self.mails),)
             self.conn.delete('dbmail_aliases', where='%s' % web.sqlors('alias = ', self.mails),)
             self.conn.update('dbmail_domains',
+                             vars={'domain': self.domain, },
                              defaultuseraliases=','.join(self.newDefaultAliases),
                              modified=iredutils.sqlNOW,
-                             where='domain = %s' % web.sqlquote(self.domain),
+                             where='domain = $domain',
                             )
 
             web.logger(
@@ -192,7 +195,8 @@ class Alias(core.MySQLWrap):
         try:
             result = self.conn.select(
                 'dbmail_aliases_extra',
-                where='alias = %s' % web.sqlquote(self.mail),
+                vars={'mail': self.mail, },
+                where='alias = $mail',
                 limit=1,
             )
             return (True, list(result)[0])
@@ -212,8 +216,9 @@ class Alias(core.MySQLWrap):
         try:
             qr = self.conn.select(
                 'dbmail_aliases',
+                vars={'mail': self.mail, },
                 what='deliver_to',
-                where='alias = %s' % web.sqlquote(self.mail),
+                where='alias = $mail',
             )
             if qr:
                 members = [str(rcd.deliver_to) for rcd in qr if iredutils.isEmail(str(rcd.deliver_to))]
@@ -235,6 +240,7 @@ class Alias(core.MySQLWrap):
             return (False, 'INVALID_MAIL')
 
         # Pre-defined.
+        sql_vars = {'mail': self.mail, 'domain': self.domain, }
         values = {}
 
         # Get cn.
@@ -291,11 +297,9 @@ class Alias(core.MySQLWrap):
         if len(self.membersInDomain) > 0:
             qr = self.conn.select(
                 'dbmail_users',
+                vars=sql_vars,
                 what='userid',
-                where='domain = %s AND %s' % (
-                    web.sqlquote(self.domain),
-                    web.sqlors('userid = ', self.membersInDomain),
-                ),
+                where='domain = $domain AND %s' % (web.sqlors('userid = ', self.membersInDomain)),
             )
             self.membersInDomain = [str(rcd.userid) for rcd in qr]
 
@@ -320,11 +324,15 @@ class Alias(core.MySQLWrap):
         try:
             self.conn.update(
                 'dbmail_aliases_extra',
-                where='alias=%s' % web.sqlquote(self.mail),
+                vars=sql_vars,
+                where='alias=$mail',
                 **values
             )
 
-            self.conn.delete('dbmail_aliases', where='alias = %s' % web.sqlquote(self.mail))
+            self.conn.delete('dbmail_aliases',
+                             vars=sql_vars,
+                             where='alias = $mail',
+                            )
 
             if self.membersInDomain or self.membersNotInDomain:
                 sql_values = [{'alias': self.mail, 'deliver_to': member,}

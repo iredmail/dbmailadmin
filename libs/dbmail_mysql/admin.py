@@ -46,7 +46,7 @@ class Admin(core.MySQLWrap):
             result = self.conn.select('dbmail_admins', what='COUNT(username) AS total')
             if len(result) > 0:
                 self.total = result[0].total or 0
-        except Exception, e:
+        except Exception:
             pass
 
         try:
@@ -83,6 +83,7 @@ class Admin(core.MySQLWrap):
                 if qr[0] is True:
                     self.domains = qr[1]
 
+        sql_vars = {'admin': self.admin, 'domains': self.domains, }
         if accountType == 'domain':
             try:
                 if self.isGlobalAdmin(self.admin):
@@ -93,8 +94,9 @@ class Admin(core.MySQLWrap):
                         SELECT COUNT(dbmail_domains.domain) AS total
                         FROM dbmail_domains
                         LEFT JOIN dbmail_domain_admins ON (dbmail_domains.domain=dbmail_domain_admins.domain)
-                        WHERE dbmail_domain_admins.username=%s
-                        """ % (web.sqlquote(self.admin))
+                        WHERE dbmail_domain_admins.username=$admin
+                        """,
+                        vars=sql_vars,
                     )
 
                 total = result[0].total or 0
@@ -105,10 +107,12 @@ class Admin(core.MySQLWrap):
             try:
                 if self.isGlobalAdmin(self.admin):
                     if len(self.domains) >= 0:
-                        result = self.conn.select('dbmail_users',
-                                                  what='COUNT(user_idnr) AS total',
-                                                  where='domain IN %s AND user_idnr > 3' % web.sqlquote(self.domains),
-                                                 )
+                        result = self.conn.select(
+                            'dbmail_users',
+                            vars=sql_vars,
+                            what='COUNT(user_idnr) AS total',
+                            where='domain IN $domains AND user_idnr > 3',
+                        )
                     else:
                         result = self.conn.select('dbmail_users', what='COUNT(user_idnr) AS total', where='user_idnr>3')
                 else:
@@ -121,8 +125,9 @@ class Admin(core.MySQLWrap):
                         SELECT COUNT(dbmail_users.user_idnr) AS total
                         FROM dbmail_users
                         LEFT JOIN dbmail_domain_admins ON (dbmail_users.domain = dbmail_domain_admins.domain)
-                        WHERE dbmail_domain_admins.username = %s %s
-                        """ % (web.sqlquote(self.admin), self.sql_append_where,)
+                        WHERE dbmail_domain_admins.username=$admin %s
+                        """ % (self.sql_append_where, ),
+                        vars=sql_vars,
                     )
 
                 total = result[0].total or 0
@@ -140,8 +145,9 @@ class Admin(core.MySQLWrap):
                     else:
                         result = self.conn.select(
                             'dbmail_aliases',
+                            vars=sql_vars,
                             what='COUNT(alias_idnr) AS total',
-                            where='domain IN %s' % web.sqlquote(self.domains),
+                            where='domain IN $domains',
                         )
                 else:
                     self.sql_append_where = ''
@@ -153,8 +159,9 @@ class Admin(core.MySQLWrap):
                         SELECT COUNT(dbmail_aliases.alias_idnr) AS total
                         FROM dbmail_aliases
                         LEFT JOIN dbmail_domain_admins ON (dbmail_aliases.domain = dbmail_domain_admins.domain)
-                        WHERE dbmail_domain_admins.username = %s %s
-                        """ % (web.sqlquote(self.admin), self.sql_append_where,)
+                        WHERE dbmail_domain_admins.username=$admin %s
+                        """ % (self.sql_append_where, ),
+                        vars=sql_vars,
                     )
 
                 total = result[0].total or 0
@@ -170,12 +177,12 @@ class Admin(core.MySQLWrap):
             return (False, 'INVALID_MAIL')
 
         self.mails = [str(v).lower() for v in mails if iredutils.isEmail(v)]
-        self.sqlMails = web.sqlquote(self.mails)
+        sql_vars = {'username': self.mails, }
 
         # Delete domain and related records.
         try:
-            self.conn.delete('dbmail_admins', where='username IN %s' % self.sqlMails)
-            self.conn.delete('domain_domain_admins', where='username IN %s' % self.sqlMails)
+            self.conn.delete('dbmail_admins', vars=sql_vars, where='username IN $username', )
+            self.conn.delete('domain_domain_admins', vars=sql_vars, where='username IN $username', )
 
             web.logger(msg="Delete admin: %s." % ', '.join(self.mails), event='delete',)
             return (True,)
@@ -193,9 +200,12 @@ class Admin(core.MySQLWrap):
         if not iredutils.isEmail(self.mail):
             return (False, 'INVALID_MAIL')
 
-        self.sqladmin = web.sqlquote(self.mail)
         try:
-            result = self.conn.select('dbmail_admins', where='username=%s' % self.sqladmin, limit=1,)
+            result = self.conn.select('dbmail_admins',
+                                      vars={'admin': self.mail, },
+                                      where='username=$admin',
+                                      limit=1,
+                                     )
             if len(result) == 1:
                 if self.isGlobalAdmin(admin=self.mail):
                     self.domainGlobalAdmin = True
@@ -272,6 +282,7 @@ class Admin(core.MySQLWrap):
             # Don't allow to view/update other admins' profile.
             return (False, 'PERMISSION_DENIED')
 
+        sql_vars = {'admin': self.mail, }
         if self.profile_type == 'general':
             # Get name
             self.cn = data.get('cn', '')
@@ -283,7 +294,8 @@ class Admin(core.MySQLWrap):
             try:
                 self.conn.update(
                     'dbmail_admins',
-                    where='username=%s' % web.sqlquote(self.mail),
+                    vars=sql_vars,
+                    where='username=$admin',
                     name=self.cn,
                     language=preferredLanguage,
                 )
@@ -303,7 +315,8 @@ class Admin(core.MySQLWrap):
                 try:
                     self.conn.update(
                         'dbmail_admins',
-                        where='username=%s' % web.sqlquote(self.mail),
+                        vars=sql_vars,
+                        where='username=$admin',
                         active=accountStatus,
                     )
                 except Exception, e:
@@ -318,7 +331,8 @@ class Admin(core.MySQLWrap):
                     try:
                         self.conn.delete(
                             'dbmail_domain_admins',
-                            where='username=%s' % web.sqlquote(self.mail),
+                            vars=sql_vars,
+                            where='username=$admin',
                         )
 
                         self.conn.insert(
@@ -334,7 +348,8 @@ class Admin(core.MySQLWrap):
                     try:
                         self.conn.delete(
                             'dbmail_domain_admins',
-                            where='username=%s AND domain="ALL"' % web.sqlquote(self.mail),
+                            vars=sql_vars,
+                            where="""username=$admin AND domain='ALL'""",
                         )
                     except Exception, e:
                         return (False, str(e))
@@ -347,7 +362,8 @@ class Admin(core.MySQLWrap):
                         # Delete all managed domains.
                         self.conn.delete(
                             'dbmail_domain_admins',
-                            where='username=%s AND domain <> "ALL"' % web.sqlquote(self.mail),
+                            vars=sql_vars,
+                            where="""username=$admin AND domain <> 'ALL'""",
                         )
 
                         # Insert new domains.
@@ -385,7 +401,8 @@ class Admin(core.MySQLWrap):
             try:
                 self.conn.update(
                     'dbmail_admins',
-                    where='username=%s' % web.sqlquote(self.mail),
+                    vars=sql_vars,
+                    where='username=$admin',
                     password=self.passwd,
                 )
             except Exception, e:

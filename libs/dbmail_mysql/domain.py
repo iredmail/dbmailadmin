@@ -46,8 +46,9 @@ class Domain(core.MySQLWrap):
                     dbmail_admins.created, dbmail_admins.active
                 FROM dbmail_admins
                 LEFT JOIN dbmail_domain_admins ON (dbmail_domain_admins.username=dbmail_admins.username)
-                WHERE dbmail_domain_admins.domain=%s
-                ''' % web.sqlquote(self.domain)
+                WHERE dbmail_domain_admins.domain=$domain
+                ''',
+                vars={'domain': self.domain, },
             )
             if mailOnly is True:
                 admins = []
@@ -70,7 +71,10 @@ class Domain(core.MySQLWrap):
                 domains = [domains]
 
         try:
-            qr = self.conn.select('dbmail_alias_domains', where='target_domain IN %s' % web.sqlquote(domains))
+            qr = self.conn.select('dbmail_alias_domains',
+                                  vars={'domains': domains, },
+                                  where='target_domain IN $domains',
+                                 )
             if namesOnly is True:
                 target_domains = {}
                 for r in qr:
@@ -90,21 +94,23 @@ class Domain(core.MySQLWrap):
         if not iredutils.isDomain(domain):
             return (False, 'INVALID_DOMAIN_NAME')
 
-        self.sql_domain = web.sqlquote(domain)
+        sql_vars = {'domain': domain, }
         if accountType == 'user':
             try:
                 qr1 = self.conn.select(
                     'dbmail_users',
+                    vars=sql_vars,
                     what='COUNT(user_idnr) AS mailbox_count',
-                    where='domain = %s AND user_idnr > 3' % self.sql_domain,
+                    where='domain = $domain AND user_idnr > 3',
                 )
                 mailbox_count = qr1[0].mailbox_count or 0
 
                 # Get stored mailbox quota.
                 qr2 = self.conn.select(
                     'dbmail_users',
+                    vars=sql_vars,
                     what='SUM(maxmail_size) AS quota_count',
-                    where='domain = %s AND user_idnr > 3' % self.sql_domain,
+                    where='domain = $domain AND user_idnr > 3',
                 )
                 quota_count = qr2[0].quota_count or 0
                 return (True, mailbox_count, quota_count)
@@ -114,8 +120,9 @@ class Domain(core.MySQLWrap):
             try:
                 result = self.conn.select(
                     'dbmail_aliases_extra',
+                    vars=sql_vars,
                     what='COUNT(id) AS alias_count',
-                    where='domain = %s' % self.sql_domain,
+                    where='domain = $domain',
                 )
                 result = list(result)
                 return (True, result[0].alias_count)
@@ -190,10 +197,9 @@ class Domain(core.MySQLWrap):
             try:
                 resultOfTotal = self.conn.select(
                     ['dbmail_domains', 'dbmail_domain_admins',],
+                    vars={'admin': admin, },
                     what='COUNT(dbmail_domains.domain) AS total',
-                    where='dbmail_domains.domain = dbmail_domain_admins.domain AND dbmail_domain_admins.username = %s' % (
-                        web.sqlquote(admin),
-                    ),
+                    where='dbmail_domains.domain = dbmail_domain_admins.domain AND dbmail_domain_admins.username = $admin',
                 )
 
                 resultOfRecords = self.conn.query(rawSQLOfRecords)
@@ -216,25 +222,28 @@ class Domain(core.MySQLWrap):
                         for v in domains
                         if iredutils.isDomain(v)
                        ]
-        self.sql_domains = web.sqlquote(domains)
+        sql_vars = {'domains': self.domains, }
 
         # Delete domain and related records.
         try:
-            #self.conn.delete('alias', where='domain IN %s' % self.sql_domains)
             self.conn.delete(
                 'dbmail_alias_domains',
-                where='alias_domain IN %s OR target_domain IN %s' % (self.sql_domains,self.sql_domains,),
+                vars=sql_vars,
+                where='alias_domain IN $domains OR target_domain IN $domains',
             )
-            self.conn.delete('dbmail_domain_admins', where='domain IN %s' % self.sql_domains)
-            #self.conn.delete('mailbox', where='domain IN %s' % self.sql_domains)
-            #self.conn.delete('recipient_bcc_domain', where='domain IN %s' % self.sql_domains)
-            #self.conn.delete('recipient_bcc_user', where='domain IN %s' % self.sql_domains)
-            #self.conn.delete('sender_bcc_domain', where='domain IN %s' % self.sql_domains)
-            #self.conn.delete('sender_bcc_user', where='domain IN %s' % self.sql_domains)
+            self.conn.delete(
+                'dbmail_domain_admins',
+                vars=sql_vars,
+                where='domain IN $domains',
+                )
 
             # Finally, delete from table `domain` to make sure all related
             # records were deleted.
-            self.conn.delete('dbmail_domains', where='domain IN %s' % self.sql_domains)
+            self.conn.delete(
+                'dbmail_domains',
+                vars=sql_vars,
+                where='domain IN $domains',
+                )
 
             for d in self.domains:
                 web.logger(msg="Delete domain: %s." % (d), domain=d, event='delete',)
@@ -256,8 +265,9 @@ class Domain(core.MySQLWrap):
 
         try:
             qr = self.conn.select('dbmail_domains',
+                                  vars={'domain': self.domain, },
                                   what=self.sql_what,
-                                  where='domain=%s' % web.sqlquote(self.domain),
+                                  where='domain=$domain',
                                  )
 
             if len(qr) == 1:
@@ -294,7 +304,7 @@ class Domain(core.MySQLWrap):
                 -- LEFT JOIN recipient_bcc_domain AS rbcc ON (rbcc.domain=dbmail_domains.domain)
                 LEFT JOIN dbmail_users ON (dbmail_domains.domain = dbmail_users.domain)
                 LEFT JOIN dbmail_aliases_extra ON (dbmail_domains.domain = dbmail_aliases_extra.alias)
-                WHERE dbmail_domains.domain=%s
+                WHERE dbmail_domains.domain=$domain,
                 GROUP BY
                     dbmail_domains.domain, dbmail_domains.description, dbmail_domains.aliases,
                     dbmail_domains.mailboxes, dbmail_domains.maxquota, dbmail_domains.quota,
@@ -302,7 +312,8 @@ class Domain(core.MySQLWrap):
                     dbmail_domains.active
                 ORDER BY dbmail_domains.domain
                 LIMIT 1
-                ''' % (web.sqlquote(self.domain),)
+                ''',
+                vars={'domain': self.domain, },
             )
 
             if len(qr) == 1:
@@ -348,7 +359,8 @@ class Domain(core.MySQLWrap):
         self.profile_type = str(profile_type)
         self.domain = str(domain)
 
-        # Pre-defined update key:value.
+        # Pre-defined.
+        sql_vars = {'domain': self.domain, }
         updates = {'modified': iredutils.sqlNOW,}
 
         if self.profile_type == 'general':
@@ -388,7 +400,8 @@ class Domain(core.MySQLWrap):
                 try:
                     self.conn.update(
                         'dbmail_domains',
-                        where='domain=%s' % web.sqlquote(self.domain),
+                        vars=sql_vars,
+                        where='domain=$domain',
                         **updates
                     )
                 except Exception, e:
@@ -402,7 +415,10 @@ class Domain(core.MySQLWrap):
 
                 try:
                     # Delete all records first.
-                    self.conn.delete('dbmail_domain_admins', where='domain=%s' % web.sqlquote(self.domain),)
+                    self.conn.delete('dbmail_domain_admins',
+                                     vars=sql_vars,
+                                     where='domain=$domain',
+                                    )
 
                     # Add new admins.
                     if len(domainAdmins) > 0:
@@ -421,8 +437,8 @@ class Domain(core.MySQLWrap):
         elif self.profile_type == 'bcc':
             # Delete old records first.
             try:
-                self.conn.delete('sender_bcc_domain', where='domain=%s' % web.sqlquote(self.domain))
-                self.conn.delete('recipient_bcc_domain', where='domain=%s' % web.sqlquote(self.domain))
+                self.conn.delete('sender_bcc_domain', vars=sql_vars, where='domain=$domain', )
+                self.conn.delete('recipient_bcc_domain', vars=sql_vars, where='domain=$domain', )
             except Exception, e:
                 return (False, str(e))
 
@@ -465,13 +481,17 @@ class Domain(core.MySQLWrap):
             updates['transport'] = self.transport
             self.conn.update(
                 'dbmail_domains',
-                where='domain=%s' % web.sqlquote(self.domain),
+                vars=sql_vars,
+                where='domain=$domain',
                 **updates
             )
         elif self.profile_type == 'catchall':
             # Delete old records first.
             try:
-                self.conn.delete('alias', where='address=%s' % web.sqlquote(self.domain))
+                self.conn.delete('alias',
+                                 vars=sql_vars,
+                                 where='address=$domain',
+                                )
             except Exception, e:
                 return (False, str(e))
 
@@ -502,7 +522,11 @@ class Domain(core.MySQLWrap):
             if session.get('domainGlobalAdmin') is True:
                 # Delete old records first.
                 try:
-                    self.conn.delete('dbmail_alias_domains', where='target_domain=%s' % web.sqlquote(self.domain))
+                    self.conn.delete(
+                        'dbmail_alias_domains',
+                        vars=sql_vars,
+                        where='target_domain=$domain',
+                    )
                 except Exception, e:
                     return (False, str(e))
 
@@ -588,7 +612,8 @@ class Domain(core.MySQLWrap):
                 try:
                     self.conn.update(
                         'dbmail_domains',
-                        where='domain=%s' % web.sqlquote(self.domain),
+                        vars=sql_vars,
+                        where='domain=$domain',
                         **updates
                     )
                 except Exception, e:

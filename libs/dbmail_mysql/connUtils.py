@@ -18,11 +18,13 @@ class Utils(core.MySQLWrap):
         if not iredutils.isDomain(domain):
             return True
 
+        sql_vars = {'domain': domain, }
         try:
             result = self.conn.select(
                 'dbmail_domains',
+                vars=sql_vars,
                 what='domain',
-                where='domain = %s' % web.sqlquote(domain),
+                where='domain = $domain',
                 limit=1,
             )
 
@@ -32,8 +34,9 @@ class Utils(core.MySQLWrap):
 
             result = self.conn.select(
                 'dbmail_alias_domains',
+                vars=sql_vars,
                 what='alias_domain',
-                where='alias_domain = %s' % web.sqlquote(domain),
+                where='alias_domain = $domain',
                 limit=1,
             )
 
@@ -55,8 +58,9 @@ class Utils(core.MySQLWrap):
         try:
             result = self.conn.select(
                 'dbmail_admins',
+                vars={'mail': mail, },
                 what='username',
-                where='username = %s' % web.sqlquote(mail),
+                where='username = $mail',
                 limit=1,
             )
 
@@ -77,20 +81,22 @@ class Utils(core.MySQLWrap):
         if not iredutils.isEmail(self.mail):
             return True
 
-        self.sqlMail = web.sqlquote(self.mail)
+        sql_vars = {'mail': self.mail, }
 
         try:
             resultOfMailbox = self.conn.select(
                 'dbmail_users',
+                vars=sql_vars,
                 what='userid',
-                where='userid=%s' % self.sqlMail,
+                where='userid=$mail',
                 limit=1,
             )
 
             resultOfAlias = self.conn.select(
                 'dbmail_aliases',
+                vars=sql_vars,
                 what='alias',
-                where='alias=%s' % self.sqlMail,
+                where='alias=$mail',
                 limit=1,
             )
 
@@ -127,7 +133,7 @@ class Utils(core.MySQLWrap):
         if listedOnly is True:
             self.sql_where = 'AND dbmail_domain_admins.username=%s' % web.sqlquote(self.admin)
         else:
-            self.sql_left_join = 'OR dbmail_domain_admins.domain="ALL"' % web.sqlquote(self.admin)
+            self.sql_left_join = """OR dbmail_domain_admins.domain='ALL'""" % web.sqlquote(self.admin)
 
         try:
             result = self.conn.query(
@@ -135,9 +141,10 @@ class Utils(core.MySQLWrap):
                 SELECT dbmail_domains.domain
                 FROM dbmail_domains
                 LEFT JOIN dbmail_domain_admins ON (dbmail_domains.domain=dbmail_domain_admins.domain %s)
-                WHERE dbmail_domain_admins.username=%s %s
+                WHERE dbmail_domain_admins.username=$admin %s
                 ORDER BY dbmail_domain_admins.domain
-                """ % (self.sql_left_join, web.sqlquote(self.admin), self.sql_where)
+                """ % (self.sql_left_join, web.sqlquote(self.admin), self.sql_where),
+                vars={'admin': self.admin, },
             )
 
             if domainNameOnly is True:
@@ -165,9 +172,10 @@ class Utils(core.MySQLWrap):
         )
         """
 
-        s = searchString
-        searchString = web.sqlquote('%%'+s+'%%')
-        searchStringExcludeDomain = web.sqlquote('%%'+s+'%%@%%')
+        sql_vars = {
+            'search_str': '%%' + searchString + '%%',
+            'search_str_exclude_domain': '%%' + searchString + '%%@%%',
+        }
 
         if len(accountType) == 0:
             return (True, {})
@@ -209,23 +217,32 @@ class Utils(core.MySQLWrap):
         allGlobalAdmins = []
 
         # Search admin accounts.
-        if 'admin' in accountType and session.get('domainGlobalAdmin') is True:
-            qr_admin = self.conn.select(
-                'dbmail_admins',
-                what='username,name,active',
-                where='(username LIKE %s OR name LIKE %s) %s' % (
-                    searchString, searchString, sql_append_status,
-                ),
-                order='username',
-            )
+        if session.get('domainGlobalAdmin'):
+            if 'domain' in accountType:
+                qr_domain = self.conn.select(
+                    'dbmail_domains',
+                    vars=sql_vars,
+                    what='domain,description,aliases,mailboxes,maxquota,active',
+                    where='(domain LIKE $search_str OR description LIKE $search_str) %s' % (sql_append_status),
+                    order='domain',
+                )
+
+            if 'admin' in accountType:
+                qr_admin = self.conn.select(
+                    'dbmail_admins',
+                    vars=sql_vars,
+                    what='username,name,active,created',
+                    where='(username LIKE $search_str OR name LIKE $search_str) %s' % (sql_append_status),
+                    order='username',
+                )
 
         # Search user accounts.
         if 'user' in accountType:
             qr_user = self.conn.select(
                 'dbmail_users',
+                vars=sql_vars,
                 what='userid,name,maxmail_size,curmail_size,active',
-                where='(userid LIKE %s OR name LIKE %s) %s %s' % (
-                    searchStringExcludeDomain, searchStringExcludeDomain,
+                where='(userid LIKE $search_str_exclude_domain OR name LIKE $search_str) %s %s' % (
                     sql_append_status, sql_append_domains,
                 ),
                 order='user_idnr',
@@ -234,12 +251,10 @@ class Utils(core.MySQLWrap):
         # Search alias accounts.
         if 'alias' in accountType:
             qr_alias= self.conn.select(
-                ['alias'],
+                'alias',
+                vars=sql_vars,
                 what='address,name,accesspolicy,domain,active',
-                where='(address LIKE %s OR name LIKE %s) AND address <> goto %s %s' % (
-                    searchStringExcludeDomain, searchStringExcludeDomain,
-                    sql_append_status, sql_append_domains,
-                ),
+                where='(address LIKE $search_str_exclude_domain OR name LIKE $search_str) AND address <> goto %s %s' % (sql_append_status, sql_append_domains, ),
                 order='address',
             )
 
