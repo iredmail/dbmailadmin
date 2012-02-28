@@ -88,7 +88,7 @@ class Create:
         qr = connutils.getManagedDomains(admin=session.get('username'), domainNameOnly=True,)
 
         if qr[0] is True:
-            allDomains=qr[1]
+            allDomains = qr[1]
         else:
             raise web.seeother('/domains?msg=' % web.urlquote(qr[1]))
 
@@ -146,6 +146,7 @@ class Create:
             raise web.seeother('/profile/alias/general/%s?msg=CREATED' % (self.mail))
         else:
             raise web.seeother('/create/alias/%s?msg=%s' % (self.cur_domain, web.urlquote(result[1])))
+
 
 class Profile:
     @decorators.require_login

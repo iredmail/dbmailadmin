@@ -8,6 +8,7 @@ from libs.dbmail_mysql import core
 
 session = web.config.get('_session')
 
+
 def require_login(func):
     def proxyfunc(self, *args, **kw):
         if session.get('logged') is True:
@@ -17,6 +18,7 @@ def require_login(func):
             raise web.seeother('/login?msg=loginRequired')
     return proxyfunc
 
+
 def require_global_admin(func):
     def proxyfunc(*args, **kw):
         if session.get('domainGlobalAdmin') is True:
@@ -24,6 +26,7 @@ def require_global_admin(func):
         else:
             raise web.seeother('/domains?msg=PERMISSION_DENIED')
     return proxyfunc
+
 
 def require_domain_access(func):
     def proxyfunc(*args, **kw):
@@ -48,10 +51,11 @@ def require_domain_access(func):
                 return (False, 'PERMISSION_DENIED')
     return proxyfunc
 
+
 def csrf_protected(f):
     def decorated(*args, **kw):
         inp = web.input()
-        if not (inp.has_key('csrf_token') and inp.csrf_token == session.pop('csrf_token', None)):
+        if not 'csrf_token' in inp and inp.csrf_token == session.pop('csrf_token', None):
             return web.render('error_csrf.html')
         return f(*args, **kw)
     return decorated

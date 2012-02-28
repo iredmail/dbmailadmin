@@ -18,7 +18,7 @@ class Admin(core.MySQLWrap):
         """Get all admins. Return (True, [records])."""
         try:
             if columns:
-                result = self.conn.select('dbmail_admins', what=','.join(columns),)
+                result = self.conn.select('dbmail_admins', what=','.join(columns), )
             else:
                 result = self.conn.select('dbmail_admins')
 
@@ -39,11 +39,11 @@ class Admin(core.MySQLWrap):
         if cur_page > 0:
             self.sql_limit = 'LIMIT %d OFFSET %d' % (
                 settings.PAGE_SIZE_LIMIT,
-                (cur_page-1)*settings.PAGE_SIZE_LIMIT,
+                (cur_page - 1) * settings.PAGE_SIZE_LIMIT,
             )
 
         try:
-            result = self.conn.select('dbmail_admins', what='COUNT(username) AS total')
+            result = self.conn.select('dbmail_admins', what='COUNT(username) AS total', )
             if len(result) > 0:
                 self.total = result[0].total or 0
         except Exception:
@@ -62,8 +62,6 @@ class Admin(core.MySQLWrap):
         except Exception, e:
             return (False, str(e))
 
-
-    # Get number of domains under control.
     def getNumberOfManagedAccounts(self, admin=None, accountType='domain', domains=[],):
         if admin is None:
             self.admin = session.get('username')
@@ -74,7 +72,7 @@ class Admin(core.MySQLWrap):
             return 0
 
         self.domains = []
-        if accountType in ['user', 'alias',]:
+        if accountType in ['user', 'alias', ]:
             if len(domains) > 0:
                 self.domains = [str(d).lower() for d in domains if iredutils.isDomain(d)]
             else:
@@ -231,7 +229,7 @@ class Admin(core.MySQLWrap):
 
         # Get domainGlobalAdmin setting.
         self.domainGlobalAdmin = web.safestr(data.get('domainGlobalAdmin', 'no'))
-        if self.domainGlobalAdmin not in ['yes', 'no',]:
+        if self.domainGlobalAdmin not in ['yes', 'no', ]:
             self.domainGlobalAdmin = 'no'
 
         # Get language setting.

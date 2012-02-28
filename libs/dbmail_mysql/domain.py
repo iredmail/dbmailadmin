@@ -79,7 +79,7 @@ class Domain(core.MySQLWrap):
                 target_domains = {}
                 for r in qr:
                     target_domain = web.safestr(r.target_domain)
-                    if target_domains.has_key(target_domain):
+                    if target_domain in target_domains:
                         target_domains[target_domain] += [web.safestr(r.alias_domain)]
                     else:
                         target_domains[target_domain] = [web.safestr(r.alias_domain)]
@@ -181,7 +181,7 @@ class Domain(core.MySQLWrap):
             ORDER BY a.domain
             LIMIT %d
             OFFSET %d
-        """ % (sql_where, settings.PAGE_SIZE_LIMIT, (page-1) * settings.PAGE_SIZE_LIMIT,)
+        """ % (sql_where, settings.PAGE_SIZE_LIMIT, (page - 1) * settings.PAGE_SIZE_LIMIT,)
 
         if self.isGlobalAdmin(admin):
             try:
@@ -196,7 +196,7 @@ class Domain(core.MySQLWrap):
         else:
             try:
                 resultOfTotal = self.conn.select(
-                    ['dbmail_domains', 'dbmail_domain_admins',],
+                    ['dbmail_domains', 'dbmail_domain_admins', ],
                     vars={'admin': admin, },
                     what='COUNT(dbmail_domains.domain) AS total',
                     where='dbmail_domains.domain = dbmail_domain_admins.domain AND dbmail_domain_admins.username = $admin',
@@ -361,7 +361,7 @@ class Domain(core.MySQLWrap):
 
         # Pre-defined.
         sql_vars = {'domain': self.domain, }
-        updates = {'modified': iredutils.sqlNOW,}
+        updates = {'modified': iredutils.sqlNOW, }
 
         if self.profile_type == 'general':
             # Get name.
@@ -555,13 +555,13 @@ class Domain(core.MySQLWrap):
 
         elif self.profile_type == 'throttle':
             self.senderThrottlingSetting = throttle.getSenderThrottlingSettingFromForm(
-                account='@'+self.domain,
+                account='@' + self.domain,
                 accountType='domain',
                 form=data,
             )
 
             self.recipientThrottlingSetting = throttle.getRecipientThrottlingSettingFromForm(
-                account='@'+self.domain,
+                account='@' + self.domain,
                 accountType='domain',
                 form=data,
             )
@@ -569,13 +569,13 @@ class Domain(core.MySQLWrap):
             throttleLib = throttle.Throttle()
             try:
                 throttleLib.updateThrottlingSetting(
-                    account='@'+self.domain,
+                    account='@' + self.domain,
                     accountType='sender',
                     setting=self.senderThrottlingSetting,
                 )
 
                 throttleLib.updateThrottlingSetting(
-                    account='@'+self.domain,
+                    account='@' + self.domain,
                     accountType='recipient',
                     setting=self.recipientThrottlingSetting,
                 )

@@ -29,12 +29,12 @@ class List:
         result = domainLib.listAccounts(cur_page=cur_page)
 
         if result[0] is True:
-            allDomains=result[2]
+            allDomains = result[2]
 
             aliasDomains = {}
 
             # Get list of domain names.
-            all_domain_names = [r.domain for r in allDomains] 
+            all_domain_names = [r.domain for r in allDomains]
             qr = domainLib.getAllAliasDomains(all_domain_names, namesOnly=True)
             if qr[0] is True:
                 aliasDomains = qr[1]
@@ -83,6 +83,7 @@ class List:
         else:
             raise web.seeother('/domains?msg=' + web.urlquote(result[1]))
 
+
 class Profile:
     @decorators.require_login
     def GET(self, profile_type, domain):
@@ -128,7 +129,7 @@ class Profile:
         # Get all mail aliases.
         mailsOfAllAliases = []
         aliasLib = aliaslib.Alias()
-        qr = aliasLib.getAllAliases(domain=self.domain, columns=['name', 'alias',])
+        qr = aliasLib.getAllAliases(domain=self.domain, columns=['name', 'alias', ])
         if qr[0] is True:
             allAliases = qr[1]
             for ali in allAliases:
@@ -137,7 +138,7 @@ class Profile:
         # Get sender/recipient throttle data from policyd database.
         if session.get('enablePolicyd'):
             throttleLib = throttle.Throttle()
-            result_throttle = throttleLib.list(sender='@'+self.domain, recipient='@'+self.domain)
+            result_throttle = throttleLib.list(sender='@' + self.domain, recipient='@' + self.domain)
             if result_throttle[0] is True:
                 throttleOfSender = result_throttle[1]
                 throttleOfRecipient = result_throttle[2]

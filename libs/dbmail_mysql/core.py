@@ -6,6 +6,7 @@ from libs import iredutils, md5crypt
 cfg = web.iredconfig
 session = web.config.get('_session')
 
+
 class MySQLWrap:
     def __init__(self, app=web.app, session=session, **settings):
         # Initial DB connection and cursor.

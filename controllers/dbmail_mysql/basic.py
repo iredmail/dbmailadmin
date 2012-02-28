@@ -147,7 +147,7 @@ class Dashboard:
         try:
             tmpConn = core.MySQLWrap()
             totalBytes = tmpConn.getUsedBytesMessages()
-        except Exception, e:
+        except Exception:
             pass
 
         # Get records of quarantined mails.
@@ -220,6 +220,7 @@ class Dashboard:
             removeQuarantinedInDays=settings.AMAVISD_REMOVE_QUARANTINED_IN_DAYS,
         )
 
+
 class Search:
     @decorators.require_login
     def GET(self):
@@ -288,7 +289,7 @@ class OperationsFromSearchPage:
 
         # Get action.
         action = i.get('action', None)
-        if action not in ['enable', 'disable', 'delete',]:
+        if action not in ['enable', 'disable', 'delete', ]:
             raise web.seeother('/search?msg=INVALID_ACTION')
 
         # Get list of accounts which has valid format.
@@ -319,15 +320,14 @@ class OperationsFromSearchPage:
             raise web.seeother('/search?msg=INVALID_MAIL')
 
         conn = core.MySQLWrap()
-        if action in ['enable',]:
+        if action in ['enable', ]:
             qr = conn.setAccountStatus(accounts=accounts, accountType=accountType, active=True)
-        elif action in ['disable',]:
+        elif action in ['disable', ]:
             qr = conn.setAccountStatus(accounts=accounts, accountType=accountType, active=False)
-        elif action in ['delete',]:
+        elif action in ['delete', ]:
             qr = conn.deleteAccounts(accounts=accounts, accountType=accountType)
 
         if qr[0] is True:
             raise web.seeother('/search?msg=SUCCESS')
         else:
             raise web.seeother('/search?msg=%s' % str(qr[1]))
-

@@ -22,6 +22,7 @@ ENABLED_SERVICES = [
     'enabledeliver', 'enableinternal',
 ]
 
+
 class User(core.MySQLWrap):
     def __del__(self):
         pass
@@ -60,7 +61,7 @@ class User(core.MySQLWrap):
                 where='domain=$domain',
                 order='userid ASC',
                 limit=settings.PAGE_SIZE_LIMIT,
-                offset=(cur_page-1) * settings.PAGE_SIZE_LIMIT,
+                offset=(cur_page - 1) * settings.PAGE_SIZE_LIMIT,
             )
 
             return (True, total, list(resultOfRecords))
@@ -80,7 +81,7 @@ class User(core.MySQLWrap):
         if not isinstance(mails, list):
             return (False, 'INVALID_MAIL')
 
-        self.mails = [str(addr).lower() for addr in mails if iredutils.isEmail(addr) and str(addr).endswith('@'+self.domain)]
+        self.mails = [str(addr).lower() for addr in mails if iredutils.isEmail(addr) and str(addr).endswith('@' + self.domain)]
         if not self.mails:
             return (False, 'INVALID_MAIL')
 
@@ -168,7 +169,7 @@ class User(core.MySQLWrap):
             if self.domainProfile.mailboxes <= numberOfExistAccounts:
                 return (False, 'EXCEEDED_DOMAIN_ACCOUNT_LIMIT')
 
-        columns = {'userid': self.mail, 'domain': self.domain,}
+        columns = {'userid': self.mail, 'domain': self.domain, }
 
         # Check spare quota and number of spare account limit.
         # Get quota from form.
@@ -189,7 +190,7 @@ class User(core.MySQLWrap):
             else:
                 return qr
 
-            spareQuota = self.domainProfile.maxquota - self.allocatedQuota/1024/1024
+            spareQuota = self.domainProfile.maxquota - self.allocatedQuota / 1024 / 1024
 
             if spareQuota > 0:
                 if spareQuota < self.mailQuota:
@@ -207,7 +208,7 @@ class User(core.MySQLWrap):
         confirmpw = web.safestr(data.get('confirmpw', ''))
 
         # Get password length limit from domain profile or global setting.
-        self.minPasswordLength = self.domainProfile.get('minpasswordlength',cfg.general.get('min_passwd_length', '0'))
+        self.minPasswordLength = self.domainProfile.get('minpasswordlength', cfg.general.get('min_passwd_length', '0'))
         self.maxPasswordLength = self.domainProfile.get('maxpasswordlength', cfg.general.get('max_passwd_length', '0'))
 
         resultOfPW = iredutils.verifyNewPasswords(
@@ -266,7 +267,7 @@ class User(core.MySQLWrap):
                 self.conn.query('''INSERT INTO dbmail_mailboxes (owner_idnr, name) VALUES %s''' % ','.join(imap_folders))
 
                 # Subscribe to folders by default.
-                self.conn.query('''INSERT INTO dbmail_subscription (user_id, mailbox_id) 
+                self.conn.query('''INSERT INTO dbmail_subscription (user_id, mailbox_id)
                                 SELECT owner_idnr, mailbox_idnr FROM dbmail_mailboxes WHERE owner_idnr = %d
                                 ''' % user_idnr
                                )
@@ -351,7 +352,7 @@ class User(core.MySQLWrap):
             member_of_aliases = [str(addr).lower()
                                  for addr in data.get('memberOfAlias', [])
                                  if iredutils.isEmail(addr)
-                                 and str(addr).endswith('@'+self.domain)
+                                 and str(addr).endswith('@' + self.domain)
                                 ]
 
             newly_assigned_aliases = [str(addr).lower() for addr in member_of_aliases if addr not in old_member_of_aliases]
@@ -380,7 +381,7 @@ class User(core.MySQLWrap):
 
                 for als in alias_profiles:
                     try:
-                        als_members = [str(addr).lower() for addr in str(als.deliver).replace(' ', '').split(',') if str(addr).lower() != self.mail ]
+                        als_members = [str(addr).lower() for addr in str(als.deliver).replace(' ', '').split(',') if str(addr).lower() != self.mail]
 
                         # Remove current user from alias accounts.
                         self.conn.update('dbmail_aliases',
@@ -435,7 +436,7 @@ class User(core.MySQLWrap):
                 forwarding_addresses_in_domain = [self.user_idnr]
 
             if forwarding_addresses_in_domain or forwarding_addresses_not_in_domain:
-                sql_values = [{'alias': self.mail, 'deliver_to': addr,}
+                sql_values = [{'alias': self.mail, 'deliver_to': addr, }
                                for addr in forwarding_addresses_in_domain + forwarding_addresses_not_in_domain
                               ]
                 try:
@@ -482,7 +483,7 @@ class User(core.MySQLWrap):
 
             # Insert new records.
             if user_alias_addresses:
-                sql_values = [{'alias': addr, 'deliver_to': self.user_idnr,}
+                sql_values = [{'alias': addr, 'deliver_to': self.user_idnr, }
                                for addr in user_alias_addresses
                               ]
                 try:
@@ -493,13 +494,14 @@ class User(core.MySQLWrap):
             else:
                 return (True,)
 
-
         elif self.profile_type == 'bcc':
             # Get bcc status
             rbcc_active = 0
             sbcc_active = 0
-            if 'recipientbcc' in data.keys(): rbcc_active = 1
-            if 'senderbcc' in data.keys(): sbcc_active = 1
+            if 'recipientbcc' in data.keys():
+                rbcc_active = 1
+            if 'senderbcc' in data.keys():
+                sbcc_active = 1
 
             # Get sender/recipient bcc.
             senderBccAddress = str(data.get('senderBccAddress', ''))
@@ -638,7 +640,6 @@ class User(core.MySQLWrap):
         except Exception, e:
             return (False, str(e))
 
-
     @decorators.require_domain_access
     def getMailForwardingAddresses(self, domain, mail):
         self.mail = web.safestr(mail)
@@ -706,4 +707,3 @@ class User(core.MySQLWrap):
             return (True, self.userAliasAddresses)
         except Exception, e:
             return (False, str(e))
-

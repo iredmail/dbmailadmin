@@ -57,7 +57,7 @@ class Alias(core.MySQLWrap):
                 what='alias, name',
                 where='domain=$domain',
                 limit=settings.PAGE_SIZE_LIMIT,
-                offset=(cur_page-1) * settings.PAGE_SIZE_LIMIT,
+                offset=(cur_page - 1) * settings.PAGE_SIZE_LIMIT,
             )
             records = list(resultOfRecords)
             return (True, len(records), records)
@@ -80,13 +80,13 @@ class Alias(core.MySQLWrap):
 
         self.mails = [str(v).lower()
                       for v in mails
-                      if iredutils.isEmail(v) and str(v).endswith('@'+self.domain)
+                      if iredutils.isEmail(v) and str(v).endswith('@' + self.domain)
                      ]
 
         # Remove alias from domain.defaultuseraliases.
         # Get domain profile.
         domainLib = domainlib.Domain()
-        qr = domainLib.simpleProfile(domain=self.domain, columns=['domain', 'defaultuseraliases',])
+        qr = domainLib.simpleProfile(domain=self.domain, columns=['domain', 'defaultuseraliases', ])
 
         if qr[0] is True:
             self.domainProfile = qr[1]
@@ -138,7 +138,7 @@ class Alias(core.MySQLWrap):
             return (False, 'INVALID_MAIL')
 
         # Define columns and values used to insert.
-        columns = {'domain': self.domain, 'alias': self.mail,}
+        columns = {'domain': self.domain, 'alias': self.mail, }
 
         # Check account existing.
         connutils = connUtils.Utils()
@@ -203,7 +203,6 @@ class Alias(core.MySQLWrap):
         except Exception, e:
             return (False, str(e))
 
-
     @decorators.require_domain_access
     @decorators.require_login
     def getAliasMembers(self, mail):
@@ -226,7 +225,6 @@ class Alias(core.MySQLWrap):
             return (True, members)
         except Exception, e:
             return (False, str(e))
-
 
     # Update mail alias profile.
     @decorators.require_domain_access
@@ -335,7 +333,7 @@ class Alias(core.MySQLWrap):
                             )
 
             if self.membersInDomain or self.membersNotInDomain:
-                sql_values = [{'alias': self.mail, 'deliver_to': member,}
+                sql_values = [{'alias': self.mail, 'deliver_to': member, }
                                for member in self.membersInDomain + self.membersNotInDomain
                               ]
                 self.conn.multiple_insert('dbmail_aliases', sql_values)

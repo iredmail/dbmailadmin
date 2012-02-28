@@ -1,7 +1,7 @@
 # Author: Zhang Huangbin <zhb@iredmail.org>
 
 from libs.iredutils import reEmail, reDomain
- 
+
 urls = [
     # Make url ending with or without '/' going to the same class.
     '/(.*)/',                           'controllers.base.redirect',
@@ -38,7 +38,7 @@ urls = [
     # /domain.ltd/users
     '/users',                           'controllers.dbmail_mysql.user.List',
     '/users/(%s$)' % reDomain,           'controllers.dbmail_mysql.user.List',
-    '/users/(%s)/page/(\d+)' % reDomain,'controllers.dbmail_mysql.user.List',
+    '/users/(%s)/page/(\d+)' % reDomain, 'controllers.dbmail_mysql.user.List',
     # Create user.
     '/create/user/(%s$)' % reDomain,     'controllers.dbmail_mysql.user.Create',
     '/create/user',                     'controllers.dbmail_mysql.user.Create',

@@ -9,6 +9,7 @@ from libs.dbmail_mysql import decorators, admin as adminlib, domain as domainlib
 cfg = web.iredconfig
 session = web.config.get('_session')
 
+
 class List:
     @decorators.require_global_admin
     @decorators.require_login
@@ -71,6 +72,7 @@ class List:
         else:
             raise web.seeother('/admins?msg=?' + web.urlquote(result[1]))
 
+
 class Profile:
     @decorators.require_login
     def GET(self, profile_type, mail):
@@ -122,7 +124,6 @@ class Profile:
             )
         else:
             raise web.seeother('/admins?msg=' + web.urlquote(result[1]))
-
 
     @decorators.csrf_protected
     @decorators.require_login

@@ -159,7 +159,6 @@ class Utils(core.MySQLWrap):
         except Exception, e:
             return (False, str(e))
 
-
     # Search accounts with display name, email.
     def search(self, searchString, accountType=[], accountStatus=[],):
         """Return search result in dict.
@@ -207,7 +206,7 @@ class Utils(core.MySQLWrap):
             'admin': [],
             'user': [],
             'alias': [],
-            'allGlobalAdmins': [], # List of email addresses of global admins.
+            'allGlobalAdmins': [],  # List of email addresses of global admins.
         }
 
         # SQL query result sets.
@@ -250,7 +249,7 @@ class Utils(core.MySQLWrap):
 
         # Search alias accounts.
         if 'alias' in accountType:
-            qr_alias= self.conn.select(
+            qr_alias = self.conn.select(
                 'alias',
                 vars=sql_vars,
                 what='address,name,accesspolicy,domain,active',

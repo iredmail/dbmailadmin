@@ -12,6 +12,7 @@ session = web.config.get('_session')
 if session.get('enablePolicyd'):
     from libs.policyd import throttle
 
+
 class List:
     @decorators.require_login
     def GET(self, domain, cur_page=1):
@@ -53,7 +54,7 @@ class List:
         self.mails = [str(v)
                       for v in i.get('username', [])
                       if iredutils.isEmail(v)
-                      and str(v).endswith('@'+self.domain)
+                      and str(v).endswith('@' + self.domain)
                      ]
 
         self.action = i.get('action', None)
@@ -77,6 +78,7 @@ class List:
             raise web.seeother('/users/%s?msg=%s' % (self.domain, msg,))
         else:
             raise web.seeother('/users/%s?msg=%s' % (self.domain, web.urlquote(result[1]),))
+
 
 class Profile:
     @decorators.require_login
