@@ -5,6 +5,7 @@
 import email
 from email.Header import decode_header
 
+
 def _decodeHeaders(msg, defaultCharacterSet='ascii'):
     """Decode message into (header, value) pairs."""
 
@@ -35,6 +36,7 @@ def _decodeHeaders(msg, defaultCharacterSet='ascii'):
 
     return headers_values
 
+
 def _getCharsetOfMessagePart(part, default="ascii"):
     """Get charset of message part."""
 
@@ -47,6 +49,7 @@ def _getCharsetOfMessagePart(part, default="ascii"):
         pass
 
     return default
+
 
 def parseRawMessage(msg):
     '''Read RAW message from string. Return tuple of:

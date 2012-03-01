@@ -121,7 +121,7 @@ SQL_ALIAS_ACCESS_POLICIES = [
     'subdomain',    # Domain and sub-domain users only.
     'membersonly',  # Members only
     'allowedonly',  # Moderators only
-    'membersandmoderatorsonly', # Members and moderators only
+    'membersandmoderatorsonly',  # Members and moderators only
 ]
 
 ###################################
@@ -182,7 +182,7 @@ DBMAIL_DEFAULT_DOMAIN_TRANSPORT = 'dbmail-lmtp:127.0.0.1:24'
 
 # Create and subscribe to default IMAP folders after creating new mail user.
 DBMAIL_CREATE_DEFAULT_IMAP_FOLDERS = True
-DBMAIL_DEFAULT_IMAP_FOLDERS = ['INBOX', 'Sent', 'Drafts', 'Trash', 'Junk',]
+DBMAIL_DEFAULT_IMAP_FOLDERS = ['INBOX', 'Sent', 'Drafts', 'Trash', 'Junk', ]
 
 ###################################
 # Minor settings. You do not need to change them.
@@ -199,5 +199,5 @@ PRIORITY_OF_OVERRIDE_THROTTLING = 30
 # Import local settings.
 try:
     from libs.settings_local import *
-except:
+except Exception:
     pass

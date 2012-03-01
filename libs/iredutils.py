@@ -39,6 +39,7 @@ sqlUnixTimestamp = web.sqlliteral('UNIX_TIMESTAMP()')
 INVALID_EMAIL_CHARS = '~!#$%^&*()\\/\ '
 INVALID_DOMAIN_CHARS = '~!#$%^&*()+\\/\ '
 
+
 def isEmail(s):
     s = str(s)
     if len(set(s) & set(INVALID_EMAIL_CHARS)) > 0 \
@@ -52,6 +53,7 @@ def isEmail(s):
     else:
         return False
 
+
 def isDomain(s):
     s = str(s)
     if len(set(s) & set(INVALID_DOMAIN_CHARS)) > 0 or '.' not in s:
@@ -62,6 +64,7 @@ def isDomain(s):
         return True
     else:
         return False
+
 
 def isStrictIP(s):
     s = str(s)
@@ -112,13 +115,13 @@ def filesizeformat(value, baseMB=False):
         ret = '%d Bytes' % (bytes)
     elif bytes < base * base:
         ret = '%d KB' % (bytes / base)
-    elif bytes < base*base*base:
+    elif bytes < base * base * base:
         ret = '%d MB' % (bytes / (base * base))
-    elif bytes < base*base*base*base:
-        if bytes % (base*base*base) == 0:
+    elif bytes < base * base * base * base:
+        if bytes % (base * base * base) == 0:
             ret = '%d GB' % (bytes / (base * base * base))
         else:
-            ret = "%d MB" % (bytes / (base*base))
+            ret = "%d MB" % (bytes / (base * base))
     else:
         ret = '%.1f TB' % (bytes / (base * base * base * base))
 
@@ -126,7 +129,7 @@ def filesizeformat(value, baseMB=False):
 
 
 def setDatetimeFormat(t, hour=True,):
-    """Format LDAP timestamp and Amavisd msgs.time_iso into YYYY-MM-DD HH:MM:SS.
+    """Format LDAP timestamp and Amavisd msgs.time_iso to YYYY-MM-DD HH:MM:SS.
 
     >>> setDatetimeFormat('20100925T113256Z')
     '2010-09-25 11:32:56'
@@ -181,10 +184,11 @@ def setDatetimeFormat(t, hour=True,):
 
     return t
 
+
 def cutString(s, length=40):
     try:
         if len(s) != len(s.encode('utf-8', 'replace')):
-            length = length/2
+            length = length / 2
 
         if len(s) >= length:
             return s[:length] + '...'
@@ -322,7 +326,7 @@ def getRandomPassword(length=10):
 
     # Characters used to generate the random password
     chars = 'abcdefghjkmnpqrstuvwxyz' + '23456789' + \
-            'ABCDEFGHJKLMNPQRSTUVWXYZ' + '23456789' #+ '@#&*-+'
+            'ABCDEFGHJKLMNPQRSTUVWXYZ' + '23456789'     # + '@#&*-+'
 
     return "".join(random.choice(chars) for x in range(length))
 
@@ -372,11 +376,17 @@ def setMailMessageStore(mail,
 
     if hashedMaildir is True:
         if len(username) >= 3:
-            maildir = "%s/%s/%s/%s%s/" % (username[0], username[1], username[2], username, timestamp,)
+            maildir = "%s/%s/%s/%s%s/" % (
+                username[0], username[1], username[2], username, timestamp,
+            )
         elif len(username) == 2:
-            maildir = "%s/%s/%s/%s%s/" % (username[0], username[1], username[1], username, timestamp,)
+            maildir = "%s/%s/%s/%s%s/" % (
+                username[0], username[1], username[1], username, timestamp,
+            )
         else:
-            maildir = "%s/%s/%s/%s%s/" % (username[0], username[0], username[0], username, timestamp,)
+            maildir = "%s/%s/%s/%s%s/" % (
+                username[0], username[0], username[0], username, timestamp,
+            )
 
         mailMessageStore = maildir
     else:
@@ -412,7 +422,10 @@ def getNewVersion(urlOfXML):
     '''Checking new version via parsing XML string to extract version number.
 
     >>> getNewVersion('http://xxx/sample.xml')  # New version available.
-    (True, {'version': '1.3.0', 'date': '2010-10-01', 'url': 'http://xxx/release-notes-1.3.0.html'})
+    (True, {'version': '1.3.0',
+            'date': '2010-10-01',
+            'url': 'http://xxx/release-notes-1.3.0.html'
+            })
 
     >>> getNewVersion('http://xxx/sample.xml')  # Error while checking.
     (False, 'HTTP Error 404: Not Found')
@@ -426,14 +439,17 @@ def getNewVersion(urlOfXML):
         date = dom.documentElement.getElementsByTagName('date')[0].childNodes[0].data
         urlOfReleaseNotes = dom.documentElement.getElementsByTagName('releasenotes')[0].childNodes[0].data
 
-        d = {'version': str(version), 'date': str(date), 'url': str(urlOfReleaseNotes),}
+        d = {'version': str(version),
+             'date': str(date),
+             'url': str(urlOfReleaseNotes),
+            }
         return (True, d)
     except Exception, e:
         return (False, str(e))
+
 
 def convShadowLastChangeToDate(day):
     if not isinstance(day, int):
         return '0'
 
     return (datetime.date(1970, 1, 1) + datetime.timedelta(day)).isoformat()
-

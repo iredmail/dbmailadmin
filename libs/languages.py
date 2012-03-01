@@ -24,7 +24,7 @@ langmaps = {
     'de_CH': u'Deutsch (Schweiz)',
     'en_GB': u'English (GB)',
     'es_ES': u'Español',
-    'eo':    u'Esperanto',
+    'eo': u'Esperanto',
     'et_EE': u'Estonian',
     'eu_ES': u'Euskara (Basque)',
     'fi_FI': u'Finnish (Suomi)',
@@ -42,7 +42,7 @@ langmaps = {
     'it_IT': u'Italiano',
     'ja_JP': u'Japanese (日本語)',
     'ko_KR': u'Korean',
-    'ku':    u'Kurdish (Kurmancî)',
+    'ku': u'Kurdish (Kurmancî)',
     'lv_LV': u'Latvian',
     'lt_LT': u'Lithuanian',
     'mk_MK': u'Macedonian',
@@ -51,7 +51,7 @@ langmaps = {
     'ne_NP': u'Nepali',
     'nb_NO': u'Norsk (Bokmål)',
     'nn_NO': u'Norsk (Nynorsk)',
-    'fa':    u'Persian (Farsi)',
+    'fa': u'Persian (Farsi)',
     'pl_PL': u'Polski',
     'pt_BR': u'Portuguese (Brazilian)',
     'pt_PT': u'Portuguese (Standard)',
@@ -114,24 +114,24 @@ allTimezonesOffsets = {
     'GMT+14:00': 840,
 }
 
+
 # Get available languages.
 def getLanguageMaps():
     # Get available languages.
     available_langs = [web.safestr(os.path.basename(v))
-                       for v in glob.glob(cfg.get('rootdir')+'i18n/[a-z][a-z]_[A-Z][A-Z]')
+                       for v in glob.glob(cfg.get('rootdir') + 'i18n/[a-z][a-z]_[A-Z][A-Z]')
                        if os.path.basename(v) in langmaps
                       ]
     available_langs += [web.safestr(os.path.basename(v))
-                        for v in glob.glob(cfg.get('rootdir')+'i18n/[a-z][a-z]')
+                        for v in glob.glob(cfg.get('rootdir') + 'i18n/[a-z][a-z]')
                         if os.path.basename(v) in langmaps
                        ]
     available_langs.sort()
 
     # Get language maps.
     languagemaps = {}
-    [ languagemaps.update({i: langmaps[i]})
-            for i in available_langs
-            if i in langmaps
-            ]
+    [languagemaps.update({i: langmaps[i]})
+     for i in available_langs
+     if i in langmaps
+    ]
     return languagemaps
-

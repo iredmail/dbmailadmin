@@ -35,7 +35,7 @@ webmaster = cfg.general.get('webmaster', 'root')
 backend = cfg.general.get('backend', 'ldap')
 
 # Set debug mode.
-if cfg.general.get('debug', 'False').lower() in ['true',]:
+if cfg.general.get('debug', 'False').lower() in ['true', ]:
     web.config.debug = True
 else:
     web.config.debug = False
@@ -58,37 +58,42 @@ enableShowUsedQuota = False
 if backend in ['mysql', 'dbmail_mysql']:
     enableShowUsedQuota = True
 else:
-    if cfg.general.get('show_used_quota', 'False').lower() in ['true',]:
+    if cfg.general.get('show_used_quota', 'False').lower() in ['true', ]:
         enableShowUsedQuota = True
 
 # Get value of 'enabled' in [policyd].
 enablePolicyd = False
-if cfg.policyd.get('enabled', 'False').lower() in ['true',]:
+if cfg.policyd.get('enabled', 'False').lower() in ['true', ]:
     enablePolicyd = True
 
 # Get value of 'quarantine' in [amavisd].
 enableAmavisdQuarantine = False
 enableAmavisdLoggingIntoSQL = False
-if cfg.amavisd.get('quarantine', 'False').lower() in ['true',]:
+if cfg.amavisd.get('quarantine', 'False').lower() in ['true', ]:
     enableAmavisdQuarantine = True
 
 # Get value of 'logging_into_sql' in [amavisd].
-if cfg.amavisd.get('logging_into_sql', 'False').lower() in ['true',]:
+if cfg.amavisd.get('logging_into_sql', 'False').lower() in ['true', ]:
     enableAmavisdLoggingIntoSQL = True
 
 # Set session parameters.
+web.config.session_parameters['cookie_name'] = 'iRedAdmin-Pro'
 web.config.session_parameters['cookie_domain'] = None
 web.config.session_parameters['ignore_expiry'] = False
 web.config.session_parameters['ignore_change_ip'] = False
 
 # Initialize session object.
+session_dbn = 'mysql'
+if backend in ['pgsql', ]:
+    session_dbn = 'postgres'
+
 db_iredadmin = web.database(
-    host=cfg.dbmailadmin.get('host', 'localhost'),
-    port=int(cfg.dbmailadmin.get('port', '3306')),
-    dbn='mysql',
-    db=cfg.dbmailadmin.get('db', 'iredadmin'),
-    user=cfg.dbmailadmin.get('user', 'iredadmin'),
-    pw=cfg.dbmailadmin.get('passwd'),
+    host=cfg.iredadmin.get('host', 'localhost'),
+    port=int(cfg.iredadmin.get('port', '3306')),
+    dbn=session_dbn,
+    db=cfg.iredadmin.get('db', 'iredadmin'),
+    user=cfg.iredadmin.get('user', 'iredadmin'),
+    pw=cfg.iredadmin.get('passwd'),
 )
 
 # Store session data in 'iredadmin.sessions'.
@@ -103,8 +108,12 @@ if backend == 'ldap':
     from controllers.ldap.urls import urls as backendUrls
 elif backend == 'mysql':
     from controllers.mysql.urls import urls as backendUrls
+elif backend == 'pgsql':
+    from controllers.pgsql.urls import urls as backendUrls
 elif backend == 'dbmail_mysql':
     from controllers.dbmail_mysql.urls import urls as backendUrls
+else:
+    backendUrls = []
 
 # Import policyd related urls.
 if enablePolicyd is True:
@@ -153,16 +162,19 @@ session = web.session.Session(
 
 web.config._session = session
 
+
 # Generate CSRF token and store it in session.
 def csrf_token():
-    if not session.has_key('csrf_token'):
+    if not 'csrf_token' in session:
         session['csrf_token'] = iredutils.getRandomPassword(32)
 
     return session['csrf_token']
 
+
 # Hooks.
 def hook_lang():
     web.ctx.lang = web.input(lang=None, _method="GET").lang or session.get('lang', 'en_US')
+
 
 # Define template render.
 def render_template(template_name, **context):
@@ -194,10 +206,12 @@ def render_template(template_name, **context):
 
     return jinja_env.get_template(template_name).render(context)
 
+
 class sessionExpired(web.HTTPError):
     def __init__(self, message):
         message = web.seeother('/login?msg=SESSION_EXPIRED')
         web.HTTPError.__init__(self, '303 See Other', {}, data=message)
+
 
 # Logger. Logging into SQL database.
 def logIntoSQL(msg, admin='', domain='', username='', event='', loglevel='info',):
@@ -217,6 +231,7 @@ def logIntoSQL(msg, admin='', domain='', username='', event='', loglevel='info',
         )
     except Exception, e:
         pass
+
 
 # Log error message. default log to sys.stderr.
 def logError(*args):
