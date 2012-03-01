@@ -115,22 +115,20 @@ elif backend == 'dbmail_mysql':
 else:
     backendUrls = []
 
+urls = backendUrls
+
 # Import policyd related urls.
 if enablePolicyd is True:
     from controllers.policyd.urls import urls as policydUrls
-else:
-    policydUrls = []
+    urls += policydUrls
 
 # Import amavisd related urls.
 if enableAmavisdQuarantine or enableAmavisdLoggingIntoSQL:
     from controllers.amavisd.urls import urls as amavisdUrls
-else:
-    amavisdUrls = []
+    urls += amavisdUrls
 
 from controllers.panel.urls import urls as panelUrls
-
-# Merge urls.
-urls = backendUrls + policydUrls + amavisdUrls + panelUrls
+urls += panelUrls
 
 # Initialize application object.
 app = web.application(urls, globals(),)
@@ -165,7 +163,7 @@ web.config._session = session
 
 # Generate CSRF token and store it in session.
 def csrf_token():
-    if not 'csrf_token' in session:
+    if not 'csrf_token' in session.keys():
         session['csrf_token'] = iredutils.getRandomPassword(32)
 
     return session['csrf_token']

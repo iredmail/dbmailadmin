@@ -4,10 +4,10 @@ from libs.iredutils import reEmail, reDomain
 
 urls = [
     # Make url ending with or without '/' going to the same class.
-    '/(.*)/',                           'controllers.base.redirect',
+    '/(.*)/',                           'controllers.utils.redirect',
 
     # used to display jpegPhoto.
-    '/img/(.*)',                        'controllers.base.img',
+    '/img/(.*)',                        'controllers.utils.img',
 
     '/',                                'controllers.dbmail_mysql.basic.Login',
     '/login',                           'controllers.dbmail_mysql.basic.Login',

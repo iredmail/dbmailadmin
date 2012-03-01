@@ -1,15 +1,16 @@
 # Author: Zhang Huangbin <zhb@iredmail.org>
 
 import web
-from controllers import base
+from controllers import decorators
 from libs import iredutils, settings
 from libs.panel import LOG_EVENTS
 
 db = web.admindb
 session = web.config.get('_session')
 
+
 class Log:
-    @base.require_login
+    @decorators.require_login
     def listLogs(self, event='all', domain='all', admin='all', cur_page=1):
         self.event = web.safestr(event)
         self.domain = web.safestr(domain)
@@ -32,9 +33,9 @@ class Log:
 
         # Get number of total records.
         if len(queryDict) == 0:
-            qr = db.select('log', what='COUNT(id) AS total',)
+            qr = db.select('log', what='COUNT(timestamp) AS total',)
         else:
-            qr = db.select('log', what='COUNT(id) AS total', where=web.db.sqlwhere(queryDict),)
+            qr = db.select('log', what='COUNT(timestamp) AS total', where=web.db.sqlwhere(queryDict),)
 
         self.total = qr[0].total or 0
 
@@ -58,8 +59,8 @@ class Log:
 
         return (self.total, list(self.entries))
 
-    @base.require_global_admin
-    @base.require_login
+    @decorators.require_global_admin
+    @decorators.require_login
     def delete(self, data, deleteAll=False,):
         if deleteAll is True:
             try:

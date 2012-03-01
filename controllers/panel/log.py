@@ -1,7 +1,7 @@
 # Author: Zhang Huangbin <zhb@iredmail.org>
 
 import web
-from controllers import base
+from controllers import decorators
 from libs.panel import LOG_EVENTS, log as loglib
 
 cfg = web.iredconfig
@@ -14,8 +14,9 @@ elif cfg.general.backend == 'mysql':
 elif cfg.general.backend == 'dbmail_mysql':
     from libs.dbmail_mysql import admin as adminlib, connUtils
 
+
 class Log:
-    @base.require_login
+    @decorators.require_login
     def GET(self):
         i = web.input(_unicode=False,)
 
@@ -54,11 +55,11 @@ class Log:
                 adminLib = adminlib.Admin()
                 result = adminLib.listAccounts(attrs=['mail'])
                 if result[0] is not False:
-                    allAdmins = [ v[1]['mail'][0] for v in result[1] ]
+                    allAdmins = [v[1]['mail'][0] for v in result[1]]
             else:
                 allAdmins = [self.admin]
 
-        elif cfg.general.backend in ['mysql', 'dbmail_mysql',]:
+        elif cfg.general.backend in ['mysql', 'dbmail_mysql', ]:
             # Get all managed domains under control.
             connutils = connUtils.Utils()
             qr = connutils.getManagedDomains(admin=session.get('username'), domainNameOnly=True,)
@@ -89,9 +90,9 @@ class Log:
             msg=i.get('msg'),
         )
 
-    @base.require_global_admin
-    @base.csrf_protected
-    @base.require_login
+    @decorators.require_global_admin
+    @decorators.csrf_protected
+    @decorators.require_login
     def POST(self):
         i = web.input(_unicode=False, id=[],)
         action = web.safestr(i.get('action', 'delete'))
