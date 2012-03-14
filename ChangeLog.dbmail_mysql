@@ -1,3 +1,10 @@
+= 1.0.3 =
+    * Improvements:
+        + Show search string in search result page.
+
+    * Updated translations:
+        + Polish (pl_PL). Thanks Adrian (adi _at_ zwami.pl)
+
 = 1.0.2 =
     * Fixed:
         + Cannot delete alias account.
