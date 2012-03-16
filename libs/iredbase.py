@@ -119,13 +119,20 @@ urls = backendUrls
 
 # Import policyd related urls.
 if enablePolicyd is True:
-    from controllers.policyd.urls import urls as policydUrls
-    urls += policydUrls
+    try:
+        from controllers.policyd.urls import urls as policydUrls
+        urls += policydUrls
+    except Exception:
+        enablePolicyd = False
 
 # Import amavisd related urls.
 if enableAmavisdQuarantine or enableAmavisdLoggingIntoSQL:
-    from controllers.amavisd.urls import urls as amavisdUrls
-    urls += amavisdUrls
+    try:
+        from controllers.amavisd.urls import urls as amavisdUrls
+        urls += amavisdUrls
+    except Exception:
+        enableAmavisdQuarantine = False
+        enableAmavisdLoggingIntoSQL = False
 
 from controllers.panel.urls import urls as panelUrls
 urls += panelUrls
@@ -188,9 +195,8 @@ def render_template(template_name, **context):
         'backend': backend,
         'csrf_token': csrf_token,
         'pageSizeLimit': settings.PAGE_SIZE_LIMIT,
-        'priorityOfUserThrottling': settings.PRIORITY_OF_USER_THROTTLING,
-        'priorityOfDomainThrottling': settings.PRIORITY_OF_DOMAIN_THROTTLING,
-        'priorityOfOverrideThrottling': settings.PRIORITY_OF_OVERRIDE_THROTTLING,
+        'policyPriorityOfUser': settings.POLICY_PRIORITY_OF_USER,
+        'policyPriorityOfDomain': settings.POLICY_PRIORITY_OF_DOMAIN,
     })
 
     jinja_env.filters.update({
