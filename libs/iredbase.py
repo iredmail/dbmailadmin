@@ -88,12 +88,12 @@ if backend in ['pgsql', ]:
     session_dbn = 'postgres'
 
 db_iredadmin = web.database(
-    host=cfg.iredadmin.get('host', 'localhost'),
-    port=int(cfg.iredadmin.get('port', '3306')),
+    host=cfg.dbmailadmin.get('host', 'localhost'),
+    port=int(cfg.dbmailadmin.get('port', '3306')),
     dbn=session_dbn,
-    db=cfg.iredadmin.get('db', 'iredadmin'),
-    user=cfg.iredadmin.get('user', 'iredadmin'),
-    pw=cfg.iredadmin.get('passwd'),
+    db=cfg.dbmailadmin.get('db', 'iredadmin'),
+    user=cfg.dbmailadmin.get('user', 'iredadmin'),
+    pw=cfg.dbmailadmin.get('passwd'),
 )
 
 # Store session data in 'iredadmin.sessions'.
