@@ -2,6 +2,11 @@
     * Improvements:
         + Show search string in search result page.
 
+    * Fixed:
+        + Fix possible 'internal server error' caused by incorrect timestamp
+          of dbmail_users.last_login.
+          Thanks Jure Pečar <jure.pecar _at_ arctur.si> for the report.
+
     * Updated translations:
         + Polish (pl_PL). Thanks Adrian (adi _at_ zwami.pl)
 
