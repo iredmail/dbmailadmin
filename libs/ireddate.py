@@ -178,7 +178,11 @@ def convert_utc_to_timezone(dt, format='%Y-%m-%d %H:%M:%S'):
     t = to_datetime_with_tzinfo(dt, tzinfo=UTC)
 
     # Convert original timestamp (with UTC timezone) to timestamp with local timezone.
-    return to_datetime_with_tzinfo(t, tzinfo=LOCAL_TIMEZONE).strftime(format)
+    ft = to_datetime_with_tzinfo(t, tzinfo=LOCAL_TIMEZONE)
+    if ft:
+        return ft.strftime(format)
+    else:
+        return '--'
 
 
 if __name__ == '__main__':
