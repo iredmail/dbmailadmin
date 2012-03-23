@@ -92,7 +92,7 @@
                             <td class="vcenter">{{ _('Unlimited') }}</td>
                         {% endif %}
                     {% else %}
-                        {% set percent = r.curmail_size |getPercentage(r.maxmail_size |int * 1024 * 1024) %}
+                        {% set percent = r.curmail_size |getPercentage(r.maxmail_size |int) %}
                         <td class="vcenter">
                             <div>
                                 <span title="{{ _('Edit quota setting') }}"><a href="{{ctx.homepath}}/profile/user/general/{{username}}">{{ percent }}%</a></span>

@@ -3,6 +3,8 @@
         + Show search string in search result page.
 
     * Fixed:
+        + Incorrect per-user quota usage calculation.
+          Thanks paparaciz <helpaz@gmail> for the report and suggested fix.
         + Fix possible 'internal server error' caused by incorrect timestamp
           of dbmail_users.last_login.
           Thanks Jure Pečar <jure.pecar _at_ arctur.si> for the report.
