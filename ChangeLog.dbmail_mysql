@@ -9,7 +9,8 @@
           of dbmail_users.last_login.
           Thanks Jure Pečar <jure.pecar _at_ arctur.si> for the report.
 
-    * Updated translations:
+    * New and updated translations:
+        + Slovenian (sl_SI). Thanks Marko Kobal <marko.kobal _at_ arctur.si>.
         + Polish (pl_PL). Thanks Adrian (adi _at_ zwami.pl)
 
 = 1.0.2 =
