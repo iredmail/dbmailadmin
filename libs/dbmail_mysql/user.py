@@ -284,13 +284,13 @@ class User(core.MySQLWrap):
                     except:
                         pass
 
+            vars_addition_sql = {'user_idnr': user_idnr,
+                                 'mail': self.mail,
+                                 'username': self.username,
+                                 'domain': self.domain,
+                                }
             # Execute addition SQL commands after successfully created new users.
             if settings.DBMAIL_SQL_FOR_NEWLY_CREATED_USER:
-                vars_addition_sql = {'user_idnr': user_idnr,
-                                     'mail': self.mail,
-                                     'username': self.username,
-                                     'domain': self.domain,
-                                    }
                 try:
                     for sql_cmd in settings.DBMAIL_SQL_FOR_NEWLY_CREATED_USER:
                         self.conn.query(sql_cmd, vars=vars_addition_sql)
@@ -299,16 +299,11 @@ class User(core.MySQLWrap):
 
             # Create Amavisd policy for newly created user.
             if settings.AMAVISD_EXECUTE_SQL_WITHOUT_ENABLED and settings.AMAVISD_SQL_FOR_NEWLY_CREATED_USER:
-                vars_amavisd = {
-                    'mail': self.mail,
-                    'username': web.sqlquote(self.username),
-                    'domain': web.sqlquote(self.domain),
-                }
                 try:
                     from libs.amavisd.core import AmavisdWrap
                     amwrap = AmavisdWrap()
                     for sql_cmd in settings.AMAVISD_SQL_FOR_NEWLY_CREATED_USER:
-                        amwrap.db.query(sql_cmd % vars_amavisd)
+                        amwrap.db.query(sql_cmd, vars=vars_addition_sql)
                 except:
                     pass
 
