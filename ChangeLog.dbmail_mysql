@@ -1,6 +1,7 @@
 = 1.0.3 =
     * Improvements:
         + Show search string in search result page.
+        + Able to execute addition SQL commands after creating user.
 
     * Fixed:
         + Incorrect per-user quota usage calculation.

@@ -75,6 +75,28 @@ MAILDIR_PREPEND_DOMAIN = True
 # - without timestamp: domain.ltd/username/
 MAILDIR_APPEND_TIMESTAMP = True
 
+# Execute addition SQL commands after successfully created new users.
+#
+# Available placeholders:
+#   - $user_idnr: value of dbmail_users.user_idnr
+#   - $mail:     replaced by email address of newly created user
+#   - $username: replaced by username part of email address
+#   - $domain:   replaced by domain part of email address
+#
+# For example:
+#
+#   DBMAIL_SQL_FOR_NEWLY_CREATED_USER = [
+#       """INSERT INTO dbmail_sievescripts (owner_idnr, name, script, active)
+#               VALUES (
+#                       $user_idnr,
+#                       'Move SPAM to Junk folder',
+#                       'require ["fileinto"]; if header :is "X-Spam-Flag" "YES" {fileinto "Junk"; stop;}',
+#                       1)
+#       """,
+#   ]
+#
+DBMAIL_SQL_FOR_NEWLY_CREATED_USER = []
+
 
 #######################################
 # OpenLDAP backend related settings.
