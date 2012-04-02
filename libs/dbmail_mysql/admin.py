@@ -253,7 +253,7 @@ class Admin(core.MySQLWrap):
                 name=self.cn,
                 password=iredutils.getSQLPassword(self.passwd),
                 language=preferredLanguage,
-                created=iredutils.sqlNOW,
+                created=iredutils.getGMTTime(),
                 active='1',
             )
 
@@ -262,7 +262,7 @@ class Admin(core.MySQLWrap):
                     'dbmail_domain_admins',
                     username=self.mail,
                     domain='ALL',
-                    created=iredutils.sqlNOW,
+                    created=iredutils.getGMTTime(),
                     active='1',
                 )
 
@@ -336,7 +336,7 @@ class Admin(core.MySQLWrap):
                         self.conn.insert(
                             'dbmail_domain_admins',
                             username=self.mail,
-                            created=iredutils.sqlNOW,
+                            created=iredutils.getGMTTime(),
                             domain='ALL',
                             active=accountStatus,
                         )
@@ -371,7 +371,7 @@ class Admin(core.MySQLWrap):
                                 username=self.mail,
                                 domain=d,
                                 active=accountStatus,
-                                created=iredutils.sqlNOW,
+                                created=iredutils.getGMTTime(),
                             )
                     except Exception, e:
                         return (False, str(e))

@@ -269,6 +269,10 @@ def getServerUptime():
     return (days, hours, minutes)
 
 
+def getGMTTime():
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())
+
+
 def convertSQLQueryRecords(qr=[]):
     """Convert SQL record value to avoid incorrect unicode handle in Jinja2.
 
@@ -325,7 +329,7 @@ def getRandomPassword(length=10):
         length = 10
 
     # Characters used to generate the random password
-    chars = 'abcdefghjkmnpqrstuvwxyz' + '23456789' + \
+    chars = '23456789' + 'abcdefghjkmnpqrstuvwxyz' + '23456789' + \
             'ABCDEFGHJKLMNPQRSTUVWXYZ' + '23456789'     # + '@#&*-+'
 
     return "".join(random.choice(chars) for x in range(length))

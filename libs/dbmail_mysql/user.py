@@ -521,7 +521,7 @@ class User(core.MySQLWrap):
                 updates_sender_bcc = {'username': self.mail,
                                       'bcc_address': senderBccAddress,
                                       'domain': self.domain,
-                                      'created': iredutils.sqlNOW,
+                                      'created': iredutils.getGMTTime(),
                                       'active': sbcc_active,
                                      }
 
@@ -529,7 +529,7 @@ class User(core.MySQLWrap):
                 updates_recipient_bcc = {'username': self.mail,
                                          'bcc_address': recipientBccAddress,
                                          'domain': self.domain,
-                                         'created': iredutils.sqlNOW,
+                                         'created': iredutils.getGMTTime(),
                                          'active': rbcc_active,
                                         }
 

@@ -108,7 +108,7 @@ class Alias(core.MySQLWrap):
             self.conn.update('dbmail_domains',
                              vars={'domain': self.domain, },
                              defaultuseraliases=','.join(self.newDefaultAliases),
-                             modified=iredutils.sqlNOW,
+                             modified=iredutils.getGMTTime(),
                              where='domain = $domain',
                             )
 

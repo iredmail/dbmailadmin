@@ -361,7 +361,7 @@ class Domain(core.MySQLWrap):
 
         # Pre-defined.
         sql_vars = {'domain': self.domain, }
-        updates = {'modified': iredutils.sqlNOW, }
+        updates = {'modified': iredutils.getGMTTime(), }
 
         if self.profile_type == 'general':
             # Get name.
@@ -426,7 +426,7 @@ class Domain(core.MySQLWrap):
                         for adm in domainAdmins:
                             v += [{'username': adm,
                                   'domain': self.domain,
-                                  'created': iredutils.sqlNOW,
+                                  'created': iredutils.getGMTTime(),
                                   'active': 1,
                                  }]
 
@@ -457,7 +457,7 @@ class Domain(core.MySQLWrap):
                     self.conn.insert('sender_bcc_domain',
                                      domain=self.domain,
                                      bcc_address=senderBccAddress,
-                                     created=iredutils.sqlNOW,
+                                     created=iredutils.getGMTTime(),
                                      active=self.sbcc_status
                                     )
                 except Exception, e:
@@ -469,7 +469,7 @@ class Domain(core.MySQLWrap):
                     self.conn.insert('recipient_bcc_domain',
                                      domain=self.domain,
                                      bcc_address=recipientBccAddress,
-                                     created=iredutils.sqlNOW,
+                                     created=iredutils.getGMTTime(),
                                      active=self.rbcc_status
                                     )
                 except Exception, e:
@@ -513,7 +513,7 @@ class Domain(core.MySQLWrap):
                         address=self.domain,
                         goto=','.join(catchallAddress),
                         domain=self.domain,
-                        created=iredutils.sqlNOW,
+                        created=iredutils.getGMTTime(),
                         active=self.status,
                     )
                 except Exception, e:
@@ -542,7 +542,7 @@ class Domain(core.MySQLWrap):
                     for ad in aliasDomains:
                         v += [{'alias_domain': ad,
                                'target_domain': self.domain,
-                               'created': iredutils.sqlNOW,
+                               'created': iredutils.getGMTTime(),
                                'active': 1,
                               }]
                     try:
