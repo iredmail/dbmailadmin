@@ -62,7 +62,7 @@
 
         <div class="box-wrap clear">
             <div id="profile_general">
-                <form method="post" action="{{ctx.homepath}}/profile/admin/general/{{mail}}">
+                <form name="general" method="post" action="{{ctx.homepath}}/profile/admin/general/{{mail}}">
                     {{ input_csrf_token }}
                     {% if profile.language != '' %}
                         {% set preferredLanguage = profile.language |string |e %}
@@ -93,7 +93,7 @@
             </div>
 
             <div id="profile_password">
-                <form method="post" action="{{ctx.homepath}}/profile/admin/password/{{mail}}">
+                <form name="password" method="post" action="{{ctx.homepath}}/profile/admin/password/{{mail}}">
                     {{ input_csrf_token }}
                     <div class="columns clear">
                         <div class="col3-4">

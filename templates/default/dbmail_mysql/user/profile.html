@@ -78,7 +78,7 @@
 
         <div class="box-wrap clear">
             <div id="profile_general">
-                <form method="post" action="{{ctx.homepath}}/profile/user/general/{{mail}}">
+                <form name="general" method="post" action="{{ctx.homepath}}/profile/user/general/{{mail}}">
                     {{ input_csrf_token }}
                     <div class="columns clear">
                         <div class="col2-3">
@@ -169,7 +169,7 @@
 
             {# profile_type == 'forwarding' #}
             <div id="profile_forwarding">
-                <form method="post" action="{{ctx.homepath}}/profile/user/forwarding/{{mail}}">
+                <form name="forwarding" method="post" action="{{ctx.homepath}}/profile/user/forwarding/{{mail}}">
                     {{ input_csrf_token }}
 
                     <div class="form-field clear">
@@ -195,7 +195,7 @@
 
             {# profile_type == 'aliases' #}
             <div id="profile_aliases">
-                <form method="post" action="{{ctx.homepath}}/profile/user/aliases/{{mail}}">
+                <form name="aliases" method="post" action="{{ctx.homepath}}/profile/user/aliases/{{mail}}">
                     {{ input_csrf_token }}
 
                     <div class="col2-3">
@@ -226,7 +226,7 @@
             {# profile_type: bcc #}
             {#
             <div id="profile_bcc">
-                <form method="post" action="{{ctx.homepath}}/profile/user/bcc/{{mail}}">
+                <form name="bcc" method="post" action="{{ctx.homepath}}/profile/user/bcc/{{mail}}">
                     {{ input_csrf_token }}
 
                     <div class="columns clear">
@@ -266,7 +266,7 @@
 
             {#
             <div id="profile_relay">
-                <form method="post" action="{{ctx.homepath}}/profile/user/relay/{{mail}}">
+                <form name="relay" method="post" action="{{ctx.homepath}}/profile/user/relay/{{mail}}">
                     {{ input_csrf_token }}
 
                     <div class="columns clear">
@@ -353,7 +353,7 @@
 
 
             <div id="profile_password">
-                <form method="post" action="{{ctx.homepath}}/profile/user/password/{{mail}}">
+                <form name="password" method="post" action="{{ctx.homepath}}/profile/user/password/{{mail}}">
                     {{ input_csrf_token }}
                     <div class="columns clear">
                         <div class="col3-4">
@@ -374,7 +374,7 @@
 
             {#
             <div id="profile_advanced">
-                <form method="post" action="{{ctx.homepath}}/profile/user/advanced/{{mail}}">
+                <form name="advanced" method="post" action="{{ctx.homepath}}/profile/user/advanced/{{mail}}">
                     {{ input_csrf_token }}
 
                     <div class="bt-space0">&nbsp;</div>

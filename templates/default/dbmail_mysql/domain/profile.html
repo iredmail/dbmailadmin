@@ -75,7 +75,7 @@
         <div class="box-wrap clear">
             {# profile_type: general #}
             <div id="profile_general">
-                <form method="post" action="{{ctx.homepath}}/profile/domain/general/{{cur_domain}}">
+                <form name="general" method="post" action="{{ctx.homepath}}/profile/domain/general/{{cur_domain}}">
                     {{ input_csrf_token }}
                     <div class="columns clear">
                         <div class="col2-3 ">
@@ -176,7 +176,7 @@
             {# profile_type: bcc #}
             {#
             <div id="profile_bcc">
-                <form method="post" action="{{ctx.homepath}}/profile/domain/bcc/{{cur_domain}}">
+                <form name="bcc" method="post" action="{{ctx.homepath}}/profile/domain/bcc/{{cur_domain}}">
                     {{ input_csrf_token }}
                     <div class="columns clear">
                         <div class="col2-3 ">
@@ -217,7 +217,7 @@
             {#
             {% if session.get('domainGlobalAdmin') is sameas true %}
                 <div id="profile_relay">
-                    <form method="post" action="{{ctx.homepath}}/profile/domain/relay/{{cur_domain}}">
+                    <form name="relay" method="post" action="{{ctx.homepath}}/profile/domain/relay/{{cur_domain}}">
                         {{ input_csrf_token }}
                         {{ display_domain_transport(profile.transport |string) }}
                         {{ display_button_submit() }}
@@ -229,7 +229,7 @@
             {# profile_type: catchall #}
             {#
             <div id="profile_catchall">
-                <form method="post" action="{{ctx.homepath}}/profile/domain/catchall/{{cur_domain}}">
+                <form name="catchall" method="post" action="{{ctx.homepath}}/profile/domain/catchall/{{cur_domain}}">
                     {{ input_csrf_token }}
                     <div class="columns clear">
                         <div class="col2-3 ">
@@ -270,7 +270,7 @@
             {#
             {% if session.get('domainGlobalAdmin') is sameas true %}
                 <div id="profile_aliases">
-                    <form method="post" action="{{ctx.homepath}}/profile/domain/aliases/{{cur_domain}}">
+                    <form name="aliases" method="post" action="{{ctx.homepath}}/profile/domain/aliases/{{cur_domain}}">
                         {{ input_csrf_token }}
                         <div class="columns clear">
                             <div class="col2-3 ">
@@ -317,7 +317,7 @@
 
             {# profile_type: advanced #}
                 <div id="profile_advanced">
-                    <form method="post" action="{{ctx.homepath}}/profile/domain/advanced/{{cur_domain}}">
+                    <form name="advanced" method="post" action="{{ctx.homepath}}/profile/domain/advanced/{{cur_domain}}">
                         {{ input_csrf_token }}
                         <div class="columns clear">
                         <div class="col2-3 ">
