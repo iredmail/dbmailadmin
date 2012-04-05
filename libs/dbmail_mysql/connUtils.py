@@ -123,17 +123,14 @@ class Utils(core.MySQLWrap):
 
     # Get domains under control.
     def getManagedDomains(self, admin, domainNameOnly=False, listedOnly=False,):
-        self.admin = web.safestr(admin)
+        admin = web.safestr(admin)
 
-        if not iredutils.isEmail(self.admin):
+        if not iredutils.isEmail(admin):
             return (False, 'INCORRECT_USERNAME')
 
-        self.sql_where = ''
-        self.sql_left_join = ''
-        if listedOnly is True:
-            self.sql_where = 'AND dbmail_domain_admins.username=%s' % web.sqlquote(self.admin)
-        else:
-            self.sql_left_join = """OR dbmail_domain_admins.domain='ALL'""" % web.sqlquote(self.admin)
+        sql_left_join = ''
+        if listedOnly is False:
+            sql_left_join = """OR domain_admins.domain='ALL'"""
 
         try:
             result = self.conn.query(
@@ -141,10 +138,10 @@ class Utils(core.MySQLWrap):
                 SELECT dbmail_domains.domain
                 FROM dbmail_domains
                 LEFT JOIN dbmail_domain_admins ON (dbmail_domains.domain=dbmail_domain_admins.domain %s)
-                WHERE dbmail_domain_admins.username=$admin %s
+                WHERE dbmail_domain_admins.username=$admin
                 ORDER BY dbmail_domain_admins.domain
-                """ % (self.sql_left_join, web.sqlquote(self.admin), self.sql_where),
-                vars={'admin': self.admin, },
+                """ % (sql_left_join),
+                vars={'admin': admin, },
             )
 
             if domainNameOnly is True:
