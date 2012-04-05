@@ -589,7 +589,7 @@
 
 {% macro display_add_admin(min_passwd_length='0', max_passwd_length='0', lang='en_US', languagemaps=['en_US',]) -%}
     <div id="admin_add" class="box-wrap clear">
-        <form method="post" action="{{ctx.homepath}}/create/admin">
+        <form name="create" method="post" action="{{ctx.homepath}}/create/admin">
             {{ display_csrf_token() }}
             {{ display_input_mail(required=true) }}
 
@@ -641,7 +641,7 @@
         {% if label is sameas true %}
             <h3>{{ _('Add domain') }}</h3>
         {% endif %}
-        <form method="post" action="{{ctx.homepath}}/create/domain">
+        <form name="create" method="post" action="{{ctx.homepath}}/create/domain">
 
             {{ display_csrf_token() }}
             {{ display_input_domain(required=true) }}
@@ -802,6 +802,8 @@
         {{ _('Disable account') }}
     {% elif event == 'active' %}
         {{ _('Active account') }}
+    {% elif event == 'update' %}
+        {{ _('Edit account profile') }}
     {% else %}
         {{ event |e }}
     {% endif %}

@@ -40,7 +40,7 @@
         </div>{# -- box-header -- #}
 
     {# List all aliases. #}
-    <form id="list_table" action="{{ctx.homepath}}/aliases/{{cur_domain}}" method="post">
+    <form name="aliases" id="list_table" action="{{ctx.homepath}}/aliases/{{cur_domain}}" method="post">
     {{ display_csrf_token() }}
     <table class="style1 tablesorter" cellspacing="0">
         <thead>

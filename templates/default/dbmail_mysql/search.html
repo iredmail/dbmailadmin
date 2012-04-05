@@ -29,7 +29,7 @@
 <div class="content-box">
     <div class="box-body">
         <div class="box-wrap clear">
-            <form action="{{ctx.homepath}}/search" method="post">
+            <form name="search" method="post" action="{{ctx.homepath}}/search">
                 {{ csrf_token }}
                 <div class="form-field clear">
                     <h4 class="size-150 fl-space">{{ _('Keyword') }} <span class="required">*</span></h4>
@@ -70,7 +70,7 @@
             {% if admins |length > 0 and session.get('domainGlobalAdmin') is sameas true %}
                 <h2>{{ _('%d admin(s) found.') |format(admins |length) }}</h2>
 
-                <form id="admin_table" method="post" action="{{ctx.homepath}}/admins">
+                <form name="admins" id="admin_table" method="post" action="{{ctx.homepath}}/admins">
                     {{ csrf_token }}
 
                     <table class="style1 tablesorter" cellspacing="0">
@@ -136,7 +136,7 @@
             {% if users |length > 0 %}
                 <h2>{{ _('%d user(s) found.') |format( users |length ) }}</h2>
 
-                <form id="user_table" method="post" action="{{ctx.homepath}}/action/user">
+                <form name="users" id="user_table" method="post" action="{{ctx.homepath}}/action/user">
                     {{ csrf_token }}
                     <table class="style1 tablesorter" cellspacing="0">
                         <thead>
@@ -212,7 +212,7 @@
             {% if aliases |length > 0 %}
                 <h2>{{ _('%d mail alias(es) found.') |format( aliases |length ) }}</h2>
 
-                <form id="alias_table" method="post" action="{{ctx.homepath}}/action/alias">
+                <form name="aliases" id="alias_table" method="post" action="{{ctx.homepath}}/action/alias">
                     {{ csrf_token }}
 
                     <table class="style1 tablesorter" cellspacing="0">

@@ -44,7 +44,7 @@
 
             <div class="box-wrapper clear">
             <div id="user_list">
-    <form id="account_list" method="post" action="{{ctx.homepath}}/users/{{cur_domain}}">
+    <form name="users" id="account_list" method="post" action="{{ctx.homepath}}/users/{{cur_domain}}">
     {{ display_csrf_token() }}
     <table class="style1 tablesorter" cellspacing="0">
         <thead>
