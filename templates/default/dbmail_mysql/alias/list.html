@@ -61,7 +61,7 @@
             {% set address = r.alias |e %}
             {% set name = r.name |e %}
             <tr>
-                <td class="checkbox"><input type="checkbox" name="username" value="{{ address }}" /></td>
+                <td class="checkbox"><input type="checkbox" name="mail" value="{{ address }}" /></td>
                 <td>
                     <a href="{{ctx.homepath}}/profile/alias/general/{{address}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/action_edit.png" class="fr-space" title="{{ _('Edit account profile') }}" /></a>
                     {#{{ set_account_status_img(r.active) }}#}

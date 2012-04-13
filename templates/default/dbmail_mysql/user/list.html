@@ -66,7 +66,7 @@
             {% for r in users %}
                 {% set username = r.userid |e %}
                 <tr>
-                    <td class="checkbox"><input type="checkbox" name="username" value="{{username}}" /></td>
+                    <td class="checkbox"><input type="checkbox" name="mail" value="{{username}}" /></td>
                     <td class="vcenter">
                         <a href="{{ctx.homepath}}/profile/user/general/{{username}}"><img src="{{ctx.homepath}}/static/{{skin}}/images/action_edit.png" title="{{ _('Edit account profile') }}" class="fr-space"/></a>
                         {{ set_account_activity_img('sent', 'user', username) }}

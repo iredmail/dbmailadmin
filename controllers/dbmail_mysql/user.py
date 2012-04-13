@@ -44,7 +44,7 @@ class List:
     @decorators.csrf_protected
     @decorators.require_login
     def POST(self, domain):
-        i = web.input(_unicode=False, username=[])
+        i = web.input(_unicode=False, mail=[])
 
         self.domain = str(domain)
 
@@ -52,7 +52,7 @@ class List:
             raise web.seeother('/domains?msg=INVALID_DOMAIN_NAME')
 
         self.mails = [str(v)
-                      for v in i.get('username', [])
+                      for v in i.get('mail', [])
                       if iredutils.isEmail(v)
                       and str(v).endswith('@' + self.domain)
                      ]
@@ -136,7 +136,7 @@ class Profile:
         if session.get('enablePolicyd'):
             # Get sender/recipient throttle data from policyd database.
             throttleLib = throttle.Throttle()
-            result_throttle = throttleLib.list(sender=mail, recipient=mail)
+            result_throttle = throttleLib.getThrottling(sender=self.mail, recipient=self.mail)
             if result_throttle[0] is True:
                 throttleOfSender = result_throttle[1]
                 throttleOfRecipient = result_throttle[2]

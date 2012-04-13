@@ -41,13 +41,13 @@ class List:
     @decorators.csrf_protected
     @decorators.require_login
     def POST(self, domain):
-        i = web.input(_unicode=False, username=[])
+        i = web.input(_unicode=False, mail=[])
 
         self.domain = str(domain)
         if not iredutils.isDomain(self.domain):
             raise web.seeother('/domains?msg=INVALID_DOMAIN_NAME')
 
-        self.mails = i.get('username', [])
+        self.mails = i.get('mail', [])
         self.action = i.get('action', None)
         msg = i.get('msg', None)
 
