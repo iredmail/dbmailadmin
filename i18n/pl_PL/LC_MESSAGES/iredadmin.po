@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2012-03-14 15:52+0800\n"
+"POT-Creation-Date: 2012-04-17 21:24+0800\n"
 "PO-Revision-Date: 2011-10-05 11:27+0200\n"
 "Last-Translator: Krzysztof Skurzyński <k.skurzynski@kospel.pl>\n"
 "Language-Team: pl_PL <LL@li.org>\n"
@@ -154,10 +154,10 @@ msgstr "Konto NIE istnieje"
 msgid "Account activities"
 msgstr "Aktywność na koncie"
 
-#: ../templates/default/macros/msgHandlers.html:174
-#: ../templates/default/macros/msgHandlers.html:198
-#: ../templates/default/macros/msgHandlers.html:210
-#: ../templates/default/macros/msgHandlers.html:232
+#: ../templates/default/macros/msgHandlers.html:177
+#: ../templates/default/macros/msgHandlers.html:203
+#: ../templates/default/macros/msgHandlers.html:215
+#: ../templates/default/macros/msgHandlers.html:239
 msgid "Account already exists, please choose another username."
 msgstr "Konto już istnieje, wybierz inną nazwę użytkownika"
 
@@ -341,6 +341,14 @@ msgstr "Dodaj moderatorów"
 msgid "Add one"
 msgstr "Dodaj jeden"
 
+#: ../templates/default/macros/msgHandlers.html:108
+#: ../templates/default/macros/msgHandlers.html:149
+#: ../templates/default/macros/msgHandlers.html:184
+#: ../templates/default/macros/msgHandlers.html:224
+#: ../templates/default/macros/msgHandlers.html:256
+msgid "Add one more?"
+msgstr "dodaj jeden"
+
 #: ../templates/default/dbmail_mysql/user/create.html:13
 #: ../templates/default/dbmail_mysql/user/create.html:78
 #: ../templates/default/ldap/user/create.html:13
@@ -379,20 +387,15 @@ msgstr "Administrator"
 msgid "Admin Log"
 msgstr "Log administracyjny"
 
-#: ../templates/default/macros/msgHandlers.html:180
-#, python-format
-msgid ""
-"Admin created. Would you like to <a href=\"%s/create/admin\">add one "
-"more</a>?"
-msgstr ""
-"Administrator dodany. Czy <a href=\"%s/create/admin\">dodać "
-"następnego</a>?"
+#: ../templates/default/macros/msgHandlers.html:184
+msgid "Admin created."
+msgstr "Domena utworzona."
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
 msgstr "Logowanie administracyjne"
 
-#: ../templates/default/macros/msgHandlers.html:175
+#: ../templates/default/macros/msgHandlers.html:178
 msgid "Admin not exist."
 msgstr "Administrator nie istnieje"
 
@@ -515,7 +518,7 @@ msgstr "Wszystkie czarne listy"
 msgid "All Whitelists"
 msgstr "Wszystkie białe listy"
 
-#: ../templates/default/ldap/user/profile.html:377
+#: ../templates/default/ldap/user/profile.html:364
 msgid "All accounts"
 msgstr "Wszystkie konta"
 
@@ -715,11 +718,11 @@ msgstr "Pozycje czarnej listy"
 msgid "Blacklists"
 msgstr "Czarne listy"
 
-#: ../templates/default/ldap/user/profile.html:333
+#: ../templates/default/ldap/user/profile.html:320
 msgid "Bypass mails from below senders"
 msgstr "Przepuść pocztę z następujących adresów"
 
-#: ../templates/default/ldap/user/profile.html:347
+#: ../templates/default/ldap/user/profile.html:334
 msgid "Bypass mails sent to below recipients"
 msgstr "Przepuść pocztę wysłaną na następujące adresy"
 
@@ -790,7 +793,7 @@ msgstr "Zaznacz to pole aby aktywować inne procesy związane z pocztą."
 msgid "Choose Action"
 msgstr "Wybierz zachowanie"
 
-#: ../templates/default/macros/amavisd.html:62
+#: ../templates/default/macros/amavisd.html:60
 msgid "Choose activity type"
 msgstr "Wybierz typ zachowań"
 
@@ -847,8 +850,8 @@ msgid "Created"
 msgstr "Utworzono"
 
 #: ../templates/default/macros/msgHandlers.html:135
-#: ../templates/default/macros/msgHandlers.html:169
-#: ../templates/default/macros/msgHandlers.html:170
+#: ../templates/default/macros/msgHandlers.html:172
+#: ../templates/default/macros/msgHandlers.html:173
 msgid "Current password is incorrect."
 msgstr "Bieżące hasło jest nieprawidłowe."
 
@@ -902,7 +905,7 @@ msgid "Dashboard"
 msgstr "Podsumowanie"
 
 #: ../templates/default/amavisd/inout.html:110
-#: ../templates/default/macros/amavisd.html:15
+#: ../templates/default/macros/amavisd.html:13
 msgid "Date"
 msgstr "Data"
 
@@ -1102,23 +1105,23 @@ msgstr "Aktywność w domenie"
 msgid "Domain alias"
 msgstr "Alias domeny"
 
-#: ../templates/default/macros/msgHandlers.html:98
+#: ../templates/default/macros/msgHandlers.html:97
 msgid "Domain already exists. Please check both primary or alias domains."
 msgstr "Domena już istnieje. Sprawdź na liście domen podstawowych i aliasów."
 
-#: ../templates/default/ldap/user/profile.html:376
+#: ../templates/default/ldap/user/profile.html:363
 msgid "Domain and its sub-domains"
 msgstr "Domena i poddomeny"
 
-#: ../templates/default/macros/msgHandlers.html:109
+#: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
 msgstr "Domena utworzona."
 
-#: ../templates/default/macros/msgHandlers.html:96
+#: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
 msgstr "Pusta nazwa domeny."
 
-#: ../templates/default/macros/amavisd.html:58
+#: ../templates/default/macros/amavisd.html:56
 msgid "Domain name or mail address"
 msgstr "Nazwa domeny lub adres email"
 
@@ -1185,7 +1188,8 @@ msgstr "Automatyczne zrzeczenie odpowiedzialności"
 #: ../templates/default/ldap/maillist/profile.html:293
 #: ../templates/default/ldap/user/list.html:90
 #: ../templates/default/ldap/user/profile.html:40
-#: ../templates/default/macros/amavisd.html:101
+#: ../templates/default/macros/amavisd.html:99
+#: ../templates/default/macros/general.html:806
 #: ../templates/default/mysql/search.html:94
 #: ../templates/default/mysql/search.html:175
 #: ../templates/default/mysql/search.html:240
@@ -1227,7 +1231,7 @@ msgstr "Zmień profil konta"
 #: ../templates/default/ldap/maillist/list.html:41
 #: ../templates/default/ldap/user/create.html:102
 #: ../templates/default/ldap/user/list.html:50
-#: ../templates/default/macros/amavisd.html:99
+#: ../templates/default/macros/amavisd.html:97
 #: ../templates/default/mysql/alias/create.html:56
 #: ../templates/default/mysql/alias/list.html:37
 #: ../templates/default/mysql/user/create.html:76
@@ -1256,13 +1260,13 @@ msgid "Edit quota setting"
 msgstr "Zmień przydział dysku"
 
 #: ../templates/default/dbmail_mysql/user/profile.html:218
-#: ../templates/default/ldap/user/profile.html:321
+#: ../templates/default/ldap/user/profile.html:308
 #, python-format
 msgid "Email address of alias account must end with domain name(s): %s."
 msgstr "Adres email konta aliasowego musi się kończyć nazwą domeny: %s."
 
 #: ../templates/default/dbmail_mysql/user/profile.html:203
-#: ../templates/default/ldap/user/profile.html:308
+#: ../templates/default/ldap/user/profile.html:295
 msgid "Email addresses of alias accounts"
 msgstr "Adresy kont aliasowych"
 
@@ -1295,12 +1299,12 @@ msgstr ""
 " będą przekazanedo <em><strong>użytkownik@%s</strong></em>."
 
 #: ../templates/default/dbmail_mysql/user/profile.html:217
-#: ../templates/default/ldap/user/profile.html:320
+#: ../templates/default/ldap/user/profile.html:307
 #, python-format
 msgid "Emails sent to alias accounts will be delivered to user %s."
 msgstr "Poczta wysłana na konto aliasowe będzie przekazana do użytkownika %s."
 
-#: ../templates/default/macros/msgHandlers.html:241
+#: ../templates/default/macros/msgHandlers.html:249
 msgid "Empty address is not allowed."
 msgstr "Puste adresy są niedozwolone"
 
@@ -1341,7 +1345,7 @@ msgstr "Puste hasła nie są dowolone."
 msgid "Enable"
 msgstr "Włącz"
 
-#: ../templates/default/ldap/user/profile.html:303
+#: ../templates/default/ldap/user/profile.html:290
 msgid "Enable alias account"
 msgstr "Włącz konto aliasowe"
 
@@ -1387,7 +1391,7 @@ msgstr "Domena jest aktywna"
 msgid "Enabled Services"
 msgstr "Usługi włączone"
 
-#: ../templates/default/ldap/user/profile.html:375
+#: ../templates/default/ldap/user/profile.html:362
 #: ../templates/default/policyd/blacklist/create.html:67
 #: ../templates/default/policyd/whitelist/create.html:61
 msgid "Entire domain"
@@ -1481,12 +1485,12 @@ msgstr "Filtr:"
 msgid "First Page"
 msgstr "Pierwsza strona"
 
-#: ../templates/default/ldap/user/profile.html:372
+#: ../templates/default/ldap/user/profile.html:359
 msgid "Format of sender and recipient"
 msgstr "Format nadawcy i odbiorcy"
 
 #: ../templates/default/dbmail_mysql/user/profile.html:185
-#: ../templates/default/ldap/user/profile.html:283
+#: ../templates/default/ldap/user/profile.html:278
 #: ../templates/default/mysql/user/profile.html:184
 #: ../templates/default/pgsql/user/profile.html:184
 msgid "Forward mails to address"
@@ -1538,7 +1542,7 @@ msgstr "Administrator globalny"
 #: ../templates/default/macros/ldap.html:118
 #: ../templates/default/macros/mysql.html:78
 msgid "Greylisting"
-msgstr "Szara lista"
+msgstr ""
 
 #: ../templates/default/policyd/wblist.html:27
 msgid "HELO Identities"
@@ -1586,7 +1590,7 @@ msgstr ""
 "Przy wprowadzaniu większej liczby adresów należy je rozdzielić "
 "przecinkami, spacjami lub wprowadzić w nowej linii"
 
-#: ../templates/default/ldap/user/profile.html:362
+#: ../templates/default/ldap/user/profile.html:349
 msgid "Install iRedAPD"
 msgstr "Zainstaluj iRedAPD"
 
@@ -1598,14 +1602,20 @@ msgstr "Użytkownicy wewnętrzni."
 msgid "Internal Moderators"
 msgstr "Moderatorzy wewnętrzni."
 
-#: ../templates/default/macros/msgHandlers.html:94
+#: ../templates/default/macros/msgHandlers.html:89
+#: ../templates/default/macros/msgHandlers.html:126
+#: ../templates/default/macros/msgHandlers.html:166
 #: ../templates/default/macros/msgHandlers.html:206
-#: ../templates/default/macros/msgHandlers.html:285
-#: ../templates/default/macros/msgHandlers.html:327
+#: ../templates/default/macros/msgHandlers.html:241
+#: ../templates/default/macros/msgHandlers.html:275
+#: ../templates/default/macros/msgHandlers.html:298
+#: ../templates/default/macros/msgHandlers.html:317
+#: ../templates/default/macros/msgHandlers.html:341
 msgid "Invalid action."
 msgstr "Nieprawidłowe działanie"
 
-#: ../templates/default/macros/msgHandlers.html:304
+#: ../templates/default/macros/msgHandlers.html:297
+#: ../templates/default/macros/msgHandlers.html:318
 msgid "Invalid domain name or mail address."
 msgstr "Niewłaściwa domena lub adres."
 
@@ -1613,18 +1623,18 @@ msgstr "Niewłaściwa domena lub adres."
 msgid "Invalid domain name."
 msgstr "Niewłaściwa domena."
 
-#: ../templates/default/macros/msgHandlers.html:95
+#: ../templates/default/macros/msgHandlers.html:94
 #: ../templates/default/macros/msgHandlers.html:129
-#: ../templates/default/macros/msgHandlers.html:173
-#: ../templates/default/macros/msgHandlers.html:325
+#: ../templates/default/macros/msgHandlers.html:176
+#: ../templates/default/macros/msgHandlers.html:339
 msgid "Invalid mail address."
 msgstr "Niewłaściwy adres."
 
-#: ../templates/default/macros/msgHandlers.html:286
+#: ../templates/default/macros/msgHandlers.html:299
 msgid "Invalid request data."
 msgstr "Niewłaściwe zapytanie."
 
-#: ../templates/default/macros/msgHandlers.html:199
+#: ../templates/default/macros/msgHandlers.html:204
 msgid "Invalid username."
 msgstr "Niewłaściwa nazwa użytkownika."
 
@@ -1772,7 +1782,7 @@ msgstr "Wyloguj"
 msgid "Mail Address"
 msgstr "Adres email"
 
-#: ../templates/default/macros/msgHandlers.html:109
+#: ../templates/default/macros/msgHandlers.html:108
 msgid "Mail Alias"
 msgstr "Alias pocztowy"
 
@@ -1804,7 +1814,7 @@ msgstr "Nagłówki"
 #: ../templates/default/ldap/maillist/list.html:32
 #: ../templates/default/ldap/user/create.html:96
 #: ../templates/default/ldap/user/list.html:41
-#: ../templates/default/macros/msgHandlers.html:109
+#: ../templates/default/macros/msgHandlers.html:108
 msgid "Mail List"
 msgstr "Lista mailingowa"
 
@@ -1832,6 +1842,14 @@ msgstr "Użytkownicy poczty"
 #: ../templates/default/macros/msgHandlers.html:140
 msgid "Mail address already exists, please choose another one."
 msgstr "Adres pocztowy już istnieje. Proszę wybrać inny."
+
+#: ../templates/default/macros/msgHandlers.html:256
+msgid "Mail alias created."
+msgstr "Domena utworzona."
+
+#: ../templates/default/macros/msgHandlers.html:224
+msgid "Mail list created."
+msgstr "Domena utworzona."
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -1871,11 +1889,11 @@ msgstr "Wiadomości wysłane w domenie: %s"
 msgid "Mails Sent by User: %s"
 msgstr "Wiadomości wysłane przez użytkownika: %s"
 
-#: ../templates/default/macros/msgHandlers.html:284
+#: ../templates/default/macros/msgHandlers.html:296
 msgid "Mails were deleted."
 msgstr "Wiadomości zostały usunięte."
 
-#: ../templates/default/macros/msgHandlers.html:283
+#: ../templates/default/macros/msgHandlers.html:295
 msgid "Mails were released."
 msgstr "Wiadomosci zostały wysłane."
 
@@ -1885,7 +1903,7 @@ msgstr ""
 "Upewnij się, że zrzeczenie odpowiedzialności działa zgodnie z "
 "oczekiwaniami"
 
-#: ../templates/default/ldap/user/profile.html:362
+#: ../templates/default/ldap/user/profile.html:349
 msgid "Make sure you have iRedAPD work as expected:"
 msgstr "Upewnij się, że iRedAPD dizała tak jak powinien."
 
@@ -1909,8 +1927,8 @@ msgstr "Maksymalny rozmiar wiadomości wychodzącej"
 msgid "Maximal password length"
 msgstr "Maksymalna długość hasła"
 
-#: ../templates/default/macros/msgHandlers.html:202
-#: ../templates/default/macros/msgHandlers.html:238
+#: ../templates/default/macros/msgHandlers.html:208
+#: ../templates/default/macros/msgHandlers.html:246
 msgid "Member assigned success."
 msgstr "Użytkownik wprowadzony prawidłowo."
 
@@ -1925,8 +1943,8 @@ msgstr "Używa aliasów"
 msgid "Member of Mail Lists"
 msgstr "Należy do list mailingowych"
 
-#: ../templates/default/macros/msgHandlers.html:203
-#: ../templates/default/macros/msgHandlers.html:239
+#: ../templates/default/macros/msgHandlers.html:209
+#: ../templates/default/macros/msgHandlers.html:247
 msgid "Member removed success."
 msgstr "Użytkownik usunięty"
 
@@ -1971,11 +1989,11 @@ msgstr "Tel. komórkowy"
 msgid "Moderators"
 msgstr "Moderatorzy"
 
-#: ../templates/default/macros/msgHandlers.html:204
+#: ../templates/default/macros/msgHandlers.html:210
 msgid "Moderators assigned success."
 msgstr "Moderator dodany."
 
-#: ../templates/default/macros/msgHandlers.html:205
+#: ../templates/default/macros/msgHandlers.html:211
 msgid "Moderators removed success."
 msgstr "Moderator usunięty"
 
@@ -2002,7 +2020,7 @@ msgid "Multiple addresses MUST be seperated by comma (,)."
 msgstr "Kilka adresów musi być rozdzielone przecinkiem."
 
 #: ../templates/default/ldap/domain/profile.html:275
-#: ../templates/default/ldap/user/profile.html:495
+#: ../templates/default/ldap/user/profile.html:482
 #: ../templates/default/mysql/domain/profile.html:202
 #: ../templates/default/mysql/user/profile.html:223
 #: ../templates/default/pgsql/domain/profile.html:203
@@ -2032,18 +2050,18 @@ msgstr "Sieć"
 msgid "New password"
 msgstr "Nowe hasło"
 
-#: ../templates/default/macros/msgHandlers.html:184
+#: ../templates/default/macros/msgHandlers.html:189
 #, python-format
 msgid "New password must NOT contain more than %s characters."
 msgstr "Nowe hasło musi zawierać mniej niż %s znaków."
 
-#: ../templates/default/macros/msgHandlers.html:182
+#: ../templates/default/macros/msgHandlers.html:187
 #, python-format
 msgid "New password must contain at least %s characters."
 msgstr "Nowe hasło musi zawierać minimum %s znaków."
 
 #: ../templates/default/macros/msgHandlers.html:136
-#: ../templates/default/macros/msgHandlers.html:171
+#: ../templates/default/macros/msgHandlers.html:174
 msgid "New passwords are not match."
 msgstr "Nowa hasła różnią się."
 
@@ -2055,7 +2073,7 @@ msgstr "Wiadomości i ogłoszenia"
 msgid "Next Page"
 msgstr "Następna strona"
 
-#: ../templates/default/macros/msgHandlers.html:168
+#: ../templates/default/macros/msgHandlers.html:171
 msgid "No account selected."
 msgstr "Nie wybrano żadnego konta"
 
@@ -2063,10 +2081,10 @@ msgstr "Nie wybrano żadnego konta"
 msgid "No admin log."
 msgstr "Brak logu administracyjnego"
 
-#: ../templates/default/macros/msgHandlers.html:103
+#: ../templates/default/macros/msgHandlers.html:102
 #: ../templates/default/macros/msgHandlers.html:127
-#: ../templates/default/macros/msgHandlers.html:211
-#: ../templates/default/macros/msgHandlers.html:234
+#: ../templates/default/macros/msgHandlers.html:216
+#: ../templates/default/macros/msgHandlers.html:242
 msgid "No domain under control."
 msgstr "Niekontrolujesz żadnej domeny"
 
@@ -2127,7 +2145,7 @@ msgstr "Nie utworzono list mailingowych"
 msgid "No mail user available."
 msgstr "Nie utworzono użytkowników poczty."
 
-#: ../templates/default/macros/msgHandlers.html:212
+#: ../templates/default/macros/msgHandlers.html:217
 msgid "No moderator selected."
 msgstr "Nie wybrano moderatora."
 
@@ -2140,7 +2158,7 @@ msgstr "Nie więcej niż %s znaków"
 msgid "No outgoing mails."
 msgstr "Brak wiadomości wychodzących"
 
-#: ../templates/default/macros/amavisd.html:39
+#: ../templates/default/macros/amavisd.html:37
 msgid "No quarantined mails."
 msgstr "Brak wiadomości w kwarantannie"
 
@@ -2148,7 +2166,7 @@ msgstr "Brak wiadomości w kwarantannie"
 msgid "No records."
 msgstr "Brak danych"
 
-#: ../templates/default/macros/msgHandlers.html:101
+#: ../templates/default/macros/msgHandlers.html:100
 msgid "No such domain."
 msgstr "Niewłaściwa domena"
 
@@ -2159,7 +2177,7 @@ msgstr "To nie jest administrator globalny"
 #: ../templates/default/dbmail_mysql/alias/create.html:23
 #: ../templates/default/dbmail_mysql/user/create.html:32
 #: ../templates/default/ldap/alias/create.html:26
-#: ../templates/default/macros/msgHandlers.html:242
+#: ../templates/default/macros/msgHandlers.html:250
 #: ../templates/default/mysql/alias/create.html:23
 #: ../templates/default/mysql/user/create.html:29
 #: ../templates/default/pgsql/alias/create.html:23
@@ -2168,7 +2186,7 @@ msgid "Not allowed to create mail alias under this domain."
 msgstr "Nie masz uprawnień do tworzenia aliasów w tej domenie."
 
 #: ../templates/default/ldap/maillist/create.html:26
-#: ../templates/default/macros/msgHandlers.html:213
+#: ../templates/default/macros/msgHandlers.html:218
 msgid "Not allowed to create mail list under this domain."
 msgstr "Nie masz uprawnień do tworzenia list mailingowych w tej domenie."
 
@@ -2178,7 +2196,7 @@ msgstr "Nie masz uprawnień do tworzenia list mailingowych w tej domenie."
 msgid "Not allowed to create mail user under this domain."
 msgstr "Nie masz uprawnień do tworzenia użytkowników poczty w tej domenie."
 
-#: ../templates/default/ldap/user/profile.html:362
+#: ../templates/default/ldap/user/profile.html:349
 #: ../templates/default/policyd/blacklist/create.html:83
 #: ../templates/default/policyd/whitelist/create.html:72
 msgid "Note"
@@ -2230,7 +2248,8 @@ msgstr "Stare hasło"
 #: ../templates/default/dbmail_mysql/user/profile.html:186
 #: ../templates/default/dbmail_mysql/user/profile.html:204
 #: ../templates/default/ldap/alias/profile.html:114
-#: ../templates/default/ldap/user/profile.html:309
+#: ../templates/default/ldap/user/profile.html:279
+#: ../templates/default/ldap/user/profile.html:296
 #: ../templates/default/mysql/alias/profile.html:170
 #: ../templates/default/mysql/alias/profile.html:178
 #: ../templates/default/mysql/user/profile.html:185
@@ -2240,22 +2259,22 @@ msgstr "Stare hasło"
 msgid "One mail address per line."
 msgstr "Jeden adres email w linii."
 
-#: ../templates/default/macros/general.html:815
+#: ../templates/default/macros/general.html:817
 #: ../templates/default/policyd/blacklist/create.html:40
 #: ../templates/default/policyd/blacklist/create.html:46
 #: ../templates/default/policyd/whitelist/create.html:40
 msgid "One record per line."
 msgstr "Jeden rekord w linii."
 
-#: ../templates/default/macros/msgHandlers.html:321
+#: ../templates/default/macros/msgHandlers.html:335
 msgid "Operation completed."
 msgstr "Operacja zakończona"
 
-#: ../templates/default/macros/msgHandlers.html:109
+#: ../templates/default/macros/msgHandlers.html:108
 msgid "Or create other mail accounts:"
 msgstr "Lub utwórz inne konta pocztowe:"
 
-#: ../templates/default/ldap/user/profile.html:479
+#: ../templates/default/ldap/user/profile.html:466
 #: ../templates/default/mysql/user/profile.html:252
 #: ../templates/default/pgsql/user/profile.html:252
 #, python-format
@@ -2275,7 +2294,7 @@ msgid "Password"
 msgstr "Hasło"
 
 #: ../templates/default/macros/msgHandlers.html:137
-#: ../templates/default/macros/msgHandlers.html:172
+#: ../templates/default/macros/msgHandlers.html:175
 msgid "Password is empty."
 msgstr "Hasło jest puste."
 
@@ -2291,14 +2310,14 @@ msgstr "Hasło jest za krótkie"
 msgid "Password of cn=vmailadmin is incorrect."
 msgstr "Hasło cn=vmailadmin jest nieprawidłowe."
 
-#: ../templates/default/ldap/user/profile.html:458
+#: ../templates/default/ldap/user/profile.html:445
 #: ../templates/default/mysql/user/profile.html:402
 #: ../templates/default/pgsql/user/profile.html:402
 msgid "Path to mailbox"
 msgstr "Ścieżka do skrzynki pocztowej"
 
 #: ../templates/default/ldap/domain/profile.html:276
-#: ../templates/default/ldap/user/profile.html:496
+#: ../templates/default/ldap/user/profile.html:483
 #: ../templates/default/mysql/domain/profile.html:203
 #: ../templates/default/mysql/user/profile.html:224
 #: ../templates/default/pgsql/domain/profile.html:204
@@ -2323,10 +2342,10 @@ msgstr "Ustawienia domenowe zastąpią ustawienia użytkownika"
 msgid "Per-user sender throttling has higher priority."
 msgstr "Wyższy priorytet mają ograniczenia dla nadawcy."
 
-#: ../templates/default/macros/msgHandlers.html:99
-#: ../templates/default/macros/msgHandlers.html:164
-#: ../templates/default/macros/msgHandlers.html:287
-#: ../templates/default/macros/msgHandlers.html:305
+#: ../templates/default/macros/msgHandlers.html:98
+#: ../templates/default/macros/msgHandlers.html:167
+#: ../templates/default/macros/msgHandlers.html:300
+#: ../templates/default/macros/msgHandlers.html:319
 msgid "Permission denied."
 msgstr "Odmowa dostępu"
 
@@ -2338,7 +2357,7 @@ msgstr "Tylko czysty tekst"
 msgid "Please select at least one account."
 msgstr "Wybierz przynajmniej jedno konto"
 
-#: ../templates/default/macros/msgHandlers.html:102
+#: ../templates/default/macros/msgHandlers.html:101
 msgid "Please select at least one domain to apply action."
 msgstr "Aby wykonać działanie wybierz przynajmniej jedną domeną"
 
@@ -2403,30 +2422,30 @@ msgstr "Profil listy:"
 msgid "Profile of user:"
 msgstr "Profil użytkownika"
 
-#: ../templates/default/macros/msgHandlers.html:126
-#: ../templates/default/macros/msgHandlers.html:201
-#: ../templates/default/macros/msgHandlers.html:240
+#: ../templates/default/macros/msgHandlers.html:125
+#: ../templates/default/macros/msgHandlers.html:207
+#: ../templates/default/macros/msgHandlers.html:248
 msgid "Profile updated failed."
 msgstr "Aktualizacja profilu nieudana"
 
 #: ../templates/default/macros/msgHandlers.html:88
-#: ../templates/default/macros/msgHandlers.html:125
-#: ../templates/default/macros/msgHandlers.html:163
-#: ../templates/default/macros/msgHandlers.html:200
-#: ../templates/default/macros/msgHandlers.html:233
+#: ../templates/default/macros/msgHandlers.html:124
+#: ../templates/default/macros/msgHandlers.html:165
+#: ../templates/default/macros/msgHandlers.html:205
+#: ../templates/default/macros/msgHandlers.html:240
 msgid "Profile updated success."
 msgstr "Aktualizacja profilu zakończona sukcesem."
 
 #: ../templates/default/dashboard.html:35
-#: ../templates/default/macros/amavisd.html:63
+#: ../templates/default/macros/amavisd.html:61
 msgid "Quarantined"
 msgstr "W kwarantannie"
 
 #: ../templates/default/layout.html:70
 #: ../templates/default/amavisd/quarantined.html:18
 #: ../templates/default/amavisd/quarantined.html:44
+#: ../templates/default/macros/amavisd.html:84
 #: ../templates/default/macros/amavisd.html:86
-#: ../templates/default/macros/amavisd.html:88
 #: ../templates/default/panel/log.html:39
 msgid "Quarantined Mails"
 msgstr "Poczta w kwarantannie"
@@ -2482,15 +2501,15 @@ msgid "Quota size of all outgoing emails"
 msgstr "Przydział dysku na wszystkie wychodzące maile"
 
 #: ../templates/default/dashboard.html:17
-#: ../templates/default/macros/amavisd.html:64
+#: ../templates/default/macros/amavisd.html:62
 msgid "Received"
 msgstr "Otrzymane"
 
 #: ../templates/default/layout.html:66
 #: ../templates/default/amavisd/inout.html:21
 #: ../templates/default/amavisd/inout.html:62
-#: ../templates/default/macros/amavisd.html:76
-#: ../templates/default/macros/amavisd.html:80
+#: ../templates/default/macros/amavisd.html:74
+#: ../templates/default/macros/amavisd.html:78
 #: ../templates/default/panel/log.html:35
 msgid "Received Mails"
 msgstr "Otrzymanych wiadomości"
@@ -2511,7 +2530,7 @@ msgid "Receiving mails for this account on mail server"
 msgstr "Odbiór wiadomosci dla tego konta na serwerze"
 
 #: ../templates/default/amavisd/inout.html:108
-#: ../templates/default/macros/amavisd.html:12
+#: ../templates/default/macros/amavisd.html:10
 msgid "Recipient"
 msgstr "Odbiorca"
 
@@ -2520,18 +2539,18 @@ msgstr "Odbiorca"
 msgid "Record format"
 msgstr "Format pola"
 
-#: ../templates/default/macros/msgHandlers.html:261
+#: ../templates/default/macros/msgHandlers.html:271
 #, python-format
 msgid "Records are added. <a href=\"%s\" target=\"_blank\">View them now</a>"
 msgstr ""
 "Pola zostały dodany. <a href=\"%s\" target=\"_blank\">Przejrzyj je "
 "teraz</a>"
 
-#: ../templates/default/ldap/user/profile.html:340
+#: ../templates/default/ldap/user/profile.html:327
 msgid "Reject mails from below senders"
 msgstr "Odrzuć pocztę od następujących nadawaców"
 
-#: ../templates/default/ldap/user/profile.html:354
+#: ../templates/default/ldap/user/profile.html:341
 msgid "Reject mails sent to below recipients"
 msgstr "Odrzuć wiadomości wysłane do poniższych odbiorców"
 
@@ -2545,7 +2564,7 @@ msgstr "Odrzuć wiadomości wysłane do poniższych odbiorców"
 msgid "Relay"
 msgstr "Przekazy"
 
-#: ../templates/default/ldap/user/profile.html:468
+#: ../templates/default/ldap/user/profile.html:455
 #: ../templates/default/macros/general.html:511
 #: ../templates/default/mysql/user/profile.html:241
 #: ../templates/default/pgsql/user/profile.html:241
@@ -2568,7 +2587,7 @@ msgid "Remove from list"
 msgstr "Usuń z listy"
 
 #: ../templates/default/ldap/domain/profile.html:501
-#: ../templates/default/ldap/user/profile.html:478
+#: ../templates/default/ldap/user/profile.html:465
 #: ../templates/default/macros/general.html:522
 #: ../templates/default/mysql/user/profile.html:251
 #: ../templates/default/pgsql/user/profile.html:251
@@ -2600,11 +2619,11 @@ msgstr "Zapisz zmiany"
 msgid "Search"
 msgstr "Szukaj"
 
-#: ../templates/default/macros/amavisd.html:51
+#: ../templates/default/macros/amavisd.html:49
 msgid "Search activities"
 msgstr "Wyszukiwania"
 
-#: ../templates/default/macros/msgHandlers.html:323
+#: ../templates/default/macros/msgHandlers.html:337
 msgid "Search keyword could not be empty."
 msgstr "Poszukiwane określenie nie może być puste."
 
@@ -2628,49 +2647,49 @@ msgstr ""
 " operacje."
 
 #: ../templates/default/macros/msgHandlers.html:132
-#: ../templates/default/macros/msgHandlers.html:165
-#: ../templates/default/macros/msgHandlers.html:207
-#: ../templates/default/macros/msgHandlers.html:235
+#: ../templates/default/macros/msgHandlers.html:168
+#: ../templates/default/macros/msgHandlers.html:212
+#: ../templates/default/macros/msgHandlers.html:243
 msgid "Selected accounts were deleted."
 msgstr "Wybrane konta zostały usunięte."
 
 #: ../templates/default/macros/msgHandlers.html:133
-#: ../templates/default/macros/msgHandlers.html:166
-#: ../templates/default/macros/msgHandlers.html:208
-#: ../templates/default/macros/msgHandlers.html:236
+#: ../templates/default/macros/msgHandlers.html:169
+#: ../templates/default/macros/msgHandlers.html:213
+#: ../templates/default/macros/msgHandlers.html:244
 msgid "Selected accounts were disabled."
 msgstr "Wybrane konta zostały wyłączone"
 
 #: ../templates/default/macros/msgHandlers.html:134
-#: ../templates/default/macros/msgHandlers.html:167
-#: ../templates/default/macros/msgHandlers.html:209
-#: ../templates/default/macros/msgHandlers.html:237
+#: ../templates/default/macros/msgHandlers.html:170
+#: ../templates/default/macros/msgHandlers.html:214
+#: ../templates/default/macros/msgHandlers.html:245
 msgid "Selected accounts were enabled."
 msgstr "Wybrane konta zostały usunięte."
 
-#: ../templates/default/macros/msgHandlers.html:89
+#: ../templates/default/macros/msgHandlers.html:90
 msgid "Selected domains were deleted."
 msgstr "Wybrane domeny zostały usunięte."
 
-#: ../templates/default/macros/msgHandlers.html:90
+#: ../templates/default/macros/msgHandlers.html:91
 msgid "Selected domains were disabled."
 msgstr "Wybrane domeny są teraz nieaktywne."
 
-#: ../templates/default/macros/msgHandlers.html:91
+#: ../templates/default/macros/msgHandlers.html:92
 msgid "Selected domains were enabled."
 msgstr "Wybrane domeny są teraz aktywne."
 
-#: ../templates/default/macros/msgHandlers.html:273
-#: ../templates/default/macros/msgHandlers.html:303
+#: ../templates/default/macros/msgHandlers.html:285
+#: ../templates/default/macros/msgHandlers.html:316
 msgid "Selected log records were deleted."
 msgstr "Wybrane wpisy zostały usunięte."
 
-#: ../templates/default/macros/msgHandlers.html:263
+#: ../templates/default/macros/msgHandlers.html:273
 msgid "Selected records were deleted."
 msgstr "Wybrane pola zostały usunięte."
 
 #: ../templates/default/amavisd/inout.html:107
-#: ../templates/default/macros/amavisd.html:11
+#: ../templates/default/macros/amavisd.html:9
 #: ../templates/default/policyd/wblist.html:25
 msgid "Sender"
 msgstr "Nadawca"
@@ -2691,15 +2710,15 @@ msgid "Sending mails via SMTP over TLS/SSL"
 msgstr "Wysyłanie wiadomości przez SMTP z użyciem TLS/SSL"
 
 #: ../templates/default/dashboard.html:22
-#: ../templates/default/macros/amavisd.html:65
+#: ../templates/default/macros/amavisd.html:63
 msgid "Sent"
 msgstr "Wysłane"
 
 #: ../templates/default/layout.html:65
 #: ../templates/default/amavisd/inout.html:19
 #: ../templates/default/amavisd/inout.html:51
-#: ../templates/default/macros/amavisd.html:75
-#: ../templates/default/macros/amavisd.html:79
+#: ../templates/default/macros/amavisd.html:73
+#: ../templates/default/macros/amavisd.html:77
 #: ../templates/default/panel/log.html:34
 msgid "Sent Mails"
 msgstr "Wysłane wiadomości"
@@ -2708,7 +2727,7 @@ msgstr "Wysłane wiadomości"
 msgid "Server Load"
 msgstr "Obciążenie serwera"
 
-#: ../templates/default/macros/msgHandlers.html:97
+#: ../templates/default/macros/msgHandlers.html:96
 msgid ""
 "Server-side size limit exceeded. Please increase \"sizelimit\" in your "
 "LDAP server."
@@ -2741,7 +2760,7 @@ msgstr "Wpisz 0 aby znieść limity"
 #: ../templates/default/dbmail_mysql/domain/profile.html:364
 #: ../templates/default/dbmail_mysql/user/profile.html:118
 #: ../templates/default/ldap/domain/profile.html:367
-#: ../templates/default/ldap/user/profile.html:427
+#: ../templates/default/ldap/user/profile.html:414
 #: ../templates/default/mysql/domain/profile.html:124
 #: ../templates/default/mysql/domain/profile.html:351
 #: ../templates/default/mysql/domain/profile.html:426
@@ -2767,18 +2786,18 @@ msgstr "Pojedynczy adres IP"
 msgid "Single domain"
 msgstr "Pojedyncza domena"
 
-#: ../templates/default/ldap/user/profile.html:374
+#: ../templates/default/ldap/user/profile.html:361
 #: ../templates/default/policyd/blacklist/create.html:66
 #: ../templates/default/policyd/whitelist/create.html:60
 msgid "Single user"
 msgstr "Pojedynczy użytkownik"
 
 #: ../templates/default/amavisd/inout.html:109
-#: ../templates/default/macros/amavisd.html:14
+#: ../templates/default/macros/amavisd.html:12
 msgid "Size"
 msgstr "Wielkość"
 
-#: ../templates/default/macros/amavisd.html:13
+#: ../templates/default/macros/amavisd.html:11
 msgid "Spam Level"
 msgstr "Poziom spamu"
 
@@ -2802,7 +2821,7 @@ msgid "Stored Emails"
 msgstr "Wiadomości pocztowych"
 
 #: ../templates/default/amavisd/inout.html:106
-#: ../templates/default/macros/amavisd.html:10
+#: ../templates/default/macros/amavisd.html:8
 msgid "Subject"
 msgstr "Temat"
 
@@ -2812,7 +2831,7 @@ msgstr "Temat"
 msgid "Submit"
 msgstr "Zapisz"
 
-#: ../templates/default/macros/msgHandlers.html:100
+#: ../templates/default/macros/msgHandlers.html:99
 msgid "Submited domain name is incorrect."
 msgstr "Wprowadzona domena jest nieprawidłowa"
 
@@ -2845,7 +2864,7 @@ msgstr ""
 "Domeny prosta i odwrotna muszą sobie odpowiadać. W przeciwnym razie "
 "ustawienia nie zadziałają."
 
-#: ../templates/default/ldap/user/profile.html:368
+#: ../templates/default/ldap/user/profile.html:355
 msgid "This is per-user white/blacklist."
 msgstr "To jest biała/czarna lista użytkowników"
 
@@ -2955,7 +2974,7 @@ msgstr "Użycie"
 #: ../templates/default/ldap/maillist/list.html:31
 #: ../templates/default/ldap/user/create.html:95
 #: ../templates/default/ldap/user/list.html:40
-#: ../templates/default/macros/msgHandlers.html:109
+#: ../templates/default/macros/msgHandlers.html:108
 #: ../templates/default/mysql/search.html:42
 #: ../templates/default/mysql/alias/create.html:50
 #: ../templates/default/mysql/alias/list.html:27
@@ -2981,6 +3000,10 @@ msgstr "Użytkownik"
 #: ../templates/default/pgsql/user/list.html:63
 msgid "User ID"
 msgstr "ID użytkownika"
+
+#: ../templates/default/macros/msgHandlers.html:149
+msgid "User created."
+msgstr "Domena utworzona."
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3074,7 +3097,7 @@ msgstr "Biała/Czarna lista"
 msgid "Whitelist"
 msgstr "Biała lista"
 
-#: ../templates/default/ldap/user/profile.html:369
+#: ../templates/default/ldap/user/profile.html:356
 msgid "Whitelist has higher priority than blacklist."
 msgstr "Biała lista ma wyższy priorytet niż czarna"
 
@@ -3144,10 +3167,6 @@ msgstr "Nie można utworzyć więcej list w domenie %s."
 #: ../templates/default/pgsql/search.html:331
 msgid "Your search returned no hits."
 msgstr "Wyszukiwanie nie dało wyniku"
-
-#: ../templates/default/macros/msgHandlers.html:109
-msgid "add one more"
-msgstr "dodaj jeden"
 
 #: ../templates/default/layout.html:46
 msgid "iRedMail Admin Panel"

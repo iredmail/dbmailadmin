@@ -105,7 +105,7 @@
 
     {% if msg == 'CREATED' %}
         <div class='notification note-success'><a href='#' class='close'></a>
-            <p>{{ _('Domain created.') }} <a href='{{ctx.homepath}}/create/domain'>{{ _('add one more') }}</a>? {{ _('Or create other mail accounts:') }} <a href='{{ctx.homepath}}/create/user/{{cur_domain}}'>{{ _('User') }}</a>, {% if backend == 'ldap' %}<a href='{{ctx.homepath}}/create/maillist/{{cur_domain}}'>{{ _('Mail List') }}</a>{% else %}<a href='{{ctx.homepath}}/create/alias/{{cur_domain}}'>{{ _('Mail Alias') }}</a>{% endif %}.</p>
+            <p>{{ _('Domain created.') }} <a href='{{ctx.homepath}}/create/domain'>{{ _('Add one more?') }}</a> {{ _('Or create other mail accounts:') }} <a href='{{ctx.homepath}}/create/user/{{cur_domain}}'>{{ _('User') }}</a>, {% if backend == 'ldap' %}<a href='{{ctx.homepath}}/create/maillist/{{cur_domain}}'>{{ _('Mail List') }}</a>{% else %}<a href='{{ctx.homepath}}/create/alias/{{cur_domain}}'>{{ _('Mail Alias') }}</a>{% endif %}.</p>
         </div>
     {% else %}
         {% if msg in handlers %}
@@ -145,7 +145,9 @@
     %}
 
     {% if msg == 'CREATED' %}
-        {{ successInfo( _('User created. Would you like to <a href="%s/create/user/%s">add one more</a>?' |format(ctx.homepath, mail.split('@', 1)[1] )), trusted=true) }}
+        <div class='notification note-success'><a href='#' class='close'></a>
+            <p>{{ _('User created.') }} <a href="{{ctx.homepath}}/create/user/{{mail.split('@',1)[-1]}}">{{ _('Add one more?') }}</a></p>
+        </div>
     {% else %}
         {% if msg in handlers %}
             {{ handlers[msg] }}
@@ -178,7 +180,9 @@
     %}
 
     {% if msg == 'CREATED' %}
-        {{ successInfo( _('Admin created. Would you like to <a href="%s/create/admin">add one more</a>?') |format(ctx.homepath), trusted=true) }}
+        <div class='notification note-success'><a href='#' class='close'></a>
+            <p>{{ _('Admin created.') }} <a href="{{ctx.homepath}}/create/admin">{{ _('Add one more?') }}</a></p>
+        </div>
     {% elif msg == 'PW_LESS_THAN_MIN_LENGTH' %}
         {{ errorInfo( _('New password must contain at least %s characters.') |format(min_passwd_length) ) }}
     {% elif msg == 'PW_GREATER_THAN_MAX_LENGTH' %}
@@ -216,7 +220,9 @@
     %}
 
     {% if msg == 'CREATED' %}
-        {{ successInfo( _('Mail list created. Would you like to <a href="%s/create/maillist/%s">add one more</a>?' |format(ctx.homepath, mail.split('@', 1)[1] )), trusted=true) }}
+        <div class='notification note-success'><a href='#' class='close'></a>
+            <p>{{ _('Mail list created.') }} <a href="{{ctx.homepath}}/create/maillist/{{mail.split('@', 1)[-1]}}">{{ _('Add one more?') }}</a></p>
+        </div>
     {% else %}
         {% if msg in handlers %}
             {{ handlers[msg] }}
@@ -246,7 +252,9 @@
     %}
 
     {% if msg == 'CREATED' %}
-        {{ successInfo(_('Mail alias created. Would you like to <a href="%s/create/alias/%s">add one more</a>?' |format(ctx.homepath, mail.split('@', 1)[1] )), trusted=true) }}
+        <div class='notification note-success'><a href='#' class='close'></a>
+            <p>{{ _('Mail alias created.') }} <a href="{{ctx.homepath}}/create/alias/{{mail.split('@', 1)[-1]}}">{{ _('Add one more?') }}</a></p>
+        </div>
     {% else %}
         {% if msg in handlers %}
             {{ handlers[msg] }}

@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-# =========================================================
-# Author:    Zhang Huangbin (zhb@iredmail.org)
-# =========================================================
+# Author:    Zhang Huangbin (zhb _at_ iredmail.org)
 
 #---------------------------------------------------------------------
 # This file is part of iRedAdmin-Pro, which is official web-based admin

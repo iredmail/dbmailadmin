@@ -4,7 +4,7 @@
         + Able to execute addition SQL commands after creating user.
 
     * Fixed:
-        + Missing msg handler in account list pages.
+        + Add missed msg handlers in account list pages.
           Thanks Jure Pečar <jure.pecar _at_ arctur.si> for the report.
         + Incorrect per-user quota usage calculation.
           Thanks paparaciz <helpaz@gmail> for the report and suggested fix.
