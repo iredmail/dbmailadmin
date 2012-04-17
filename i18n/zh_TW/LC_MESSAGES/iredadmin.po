@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2012-04-17 21:24+0800\n"
+"POT-Creation-Date: 2012-04-17 21:41+0800\n"
 "PO-Revision-Date: 2011-09-09 16:39+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: zh_TW <LL@li.org>\n"
@@ -346,7 +346,7 @@ msgstr "新增一個"
 #: ../templates/default/macros/msgHandlers.html:224
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Add one more?"
-msgstr "新增一個"
+msgstr "新增一個？"
 
 #: ../templates/default/dbmail_mysql/user/create.html:13
 #: ../templates/default/dbmail_mysql/user/create.html:78
@@ -388,7 +388,7 @@ msgstr "管理員日誌"
 
 #: ../templates/default/macros/msgHandlers.html:184
 msgid "Admin created."
-msgstr "郵件網域已建立。"
+msgstr ""
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
@@ -1828,11 +1828,11 @@ msgstr "帳號已存在，請選擇其他用戶名。"
 
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Mail alias created."
-msgstr "郵件網域已建立。"
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:224
 msgid "Mail list created."
-msgstr "郵件網域已建立。"
+msgstr ""
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -2969,7 +2969,7 @@ msgstr "用戶 ID"
 
 #: ../templates/default/macros/msgHandlers.html:149
 msgid "User created."
-msgstr "郵件網域已建立。"
+msgstr ""
 
 #: ../templates/default/login.html:55
 msgid "Username"

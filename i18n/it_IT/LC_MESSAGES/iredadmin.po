@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iRedAdmin Pro 1.6.2\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2012-04-17 21:24+0800\n"
+"POT-Creation-Date: 2012-04-17 21:41+0800\n"
 "PO-Revision-Date: 2011-08-18 23:16+0100\n"
 "Last-Translator: Alberto Baudacci <a.baudacci@gmail.com>\n"
 "Language-Team: Graphite <alberto@graphite.eu>\n"
@@ -391,7 +391,7 @@ msgstr "Log Admin"
 
 #: ../templates/default/macros/msgHandlers.html:184
 msgid "Admin created."
-msgstr "Dominio creato."
+msgstr ""
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
@@ -1849,11 +1849,11 @@ msgstr "Indirizzo mail già esistente, sceglietene uno diverso."
 
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Mail alias created."
-msgstr "Dominio creato."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:224
 msgid "Mail list created."
-msgstr "Dominio creato."
+msgstr ""
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -3009,7 +3009,7 @@ msgstr "ID utente"
 
 #: ../templates/default/macros/msgHandlers.html:149
 msgid "User created."
-msgstr "Dominio creato."
+msgstr ""
 
 #: ../templates/default/login.html:55
 msgid "Username"

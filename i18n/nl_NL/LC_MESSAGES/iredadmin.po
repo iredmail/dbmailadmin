@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-\n"
 "Report-Msgid-Bugs-To: lverhoeven@vcn.nl\n"
-"POT-Creation-Date: 2012-04-17 21:24+0800\n"
+"POT-Creation-Date: 2012-04-17 21:41+0800\n"
 "PO-Revision-Date: 2011-06-10 23:46+0800\n"
 "Last-Translator: Luc Verhoeven <lverhoeven@vcn>\n"
 "Language-Team: nl_NL <LL@li.org>\n"
@@ -348,7 +348,7 @@ msgstr "Voeg er een toe"
 #: ../templates/default/macros/msgHandlers.html:224
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Add one more?"
-msgstr "Nog een toevoegen"
+msgstr "Nog een toevoegen?"
 
 #: ../templates/default/dbmail_mysql/user/create.html:13
 #: ../templates/default/dbmail_mysql/user/create.html:78
@@ -390,7 +390,7 @@ msgstr "Beheerders log"
 
 #: ../templates/default/macros/msgHandlers.html:184
 msgid "Admin created."
-msgstr "Domein aangemaakt."
+msgstr ""
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
@@ -1116,7 +1116,7 @@ msgstr "Domein en sub-domeinen"
 
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
-msgstr "Domein aangemaakt."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
@@ -1848,11 +1848,11 @@ msgstr "Het e-mail adres bestaat reeds, kies a.u.b. een andere."
 
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Mail alias created."
-msgstr "Domein aangemaakt."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:224
 msgid "Mail list created."
-msgstr "Domein aangemaakt."
+msgstr ""
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -3005,7 +3005,7 @@ msgstr "Gebruikers ID"
 
 #: ../templates/default/macros/msgHandlers.html:149
 msgid "User created."
-msgstr "Domein aangemaakt."
+msgstr ""
 
 #: ../templates/default/login.html:55
 msgid "Username"

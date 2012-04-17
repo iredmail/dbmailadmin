@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-LDAP-1.6.2\n"
 "Report-Msgid-Bugs-To: suds77@gmail.com\n"
-"POT-Creation-Date: 2012-04-17 21:24+0800\n"
+"POT-Creation-Date: 2012-04-17 21:41+0800\n"
 "PO-Revision-Date: 2011-06-10 23:46+0800\n"
 "Last-Translator: Dmitry Sukharev <suds77@gmail.com>\n"
 "Language-Team: ru_RU <suds77@gmail.com>\n"
@@ -346,7 +346,7 @@ msgstr "Добавить"
 #: ../templates/default/macros/msgHandlers.html:224
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Add one more?"
-msgstr "Добавить еще"
+msgstr "Добавить еще?"
 
 #: ../templates/default/dbmail_mysql/user/create.html:13
 #: ../templates/default/dbmail_mysql/user/create.html:78
@@ -388,7 +388,7 @@ msgstr "Логи админа"
 
 #: ../templates/default/macros/msgHandlers.html:184
 msgid "Admin created."
-msgstr "Имя домена"
+msgstr ""
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
@@ -1116,7 +1116,7 @@ msgstr "Только пользователи домена и субдомена
 
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
-msgstr "Имя домена"
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
@@ -1844,11 +1844,11 @@ msgstr "Аккаунт уже существует, выберите друго�
 
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Mail alias created."
-msgstr "Имя домена"
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:224
 msgid "Mail list created."
-msgstr "Имя домена"
+msgstr ""
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -2993,7 +2993,7 @@ msgstr "ID пользователя"
 
 #: ../templates/default/macros/msgHandlers.html:149
 msgid "User created."
-msgstr "Имя домена"
+msgstr ""
 
 #: ../templates/default/login.html:55
 msgid "Username"

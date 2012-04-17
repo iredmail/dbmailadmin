@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-1.4.1\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2012-04-17 21:24+0800\n"
+"POT-Creation-Date: 2012-04-17 21:41+0800\n"
 "PO-Revision-Date: 2011-08-08 13:02+0100\n"
 "Last-Translator: Lucas <lucas@landm.net>\n"
 "Language-Team: es_ES <LL@li.org>\n"
@@ -348,7 +348,7 @@ msgstr "Añadir uno"
 #: ../templates/default/macros/msgHandlers.html:224
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Add one more?"
-msgstr "Añadir uno más"
+msgstr "Añadir uno más?"
 
 #: ../templates/default/dbmail_mysql/user/create.html:13
 #: ../templates/default/dbmail_mysql/user/create.html:78
@@ -390,7 +390,7 @@ msgstr "Log del administrador"
 
 #: ../templates/default/macros/msgHandlers.html:184
 msgid "Admin created."
-msgstr "Dominio creado."
+msgstr ""
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
@@ -1116,7 +1116,7 @@ msgstr "Dominios y sus sub-dominios"
 
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
-msgstr "Dominio creado."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
@@ -1847,11 +1847,11 @@ msgstr "La cuenta ya existe, elija otro nombre de usuario"
 
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Mail alias created."
-msgstr "Dominio creado."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:224
 msgid "Mail list created."
-msgstr "Dominio creado."
+msgstr ""
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -3007,7 +3007,7 @@ msgstr "ID de usuario"
 
 #: ../templates/default/macros/msgHandlers.html:149
 msgid "User created."
-msgstr "Dominio creado."
+msgstr ""
 
 #: ../templates/default/login.html:55
 msgid "Username"

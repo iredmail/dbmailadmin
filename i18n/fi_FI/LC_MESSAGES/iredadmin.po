@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2012-04-17 21:24+0800\n"
+"POT-Creation-Date: 2012-04-17 21:41+0800\n"
 "PO-Revision-Date: 2011-09-22 08:40+0200\n"
 "Last-Translator: Teemu Harjula <teemu.harjula@tietovirta.fi>\n"
 "Language-Team: fi_FI <LL@li.org>\n"
@@ -390,7 +390,7 @@ msgstr "Ylläpitäjän logi"
 
 #: ../templates/default/macros/msgHandlers.html:184
 msgid "Admin created."
-msgstr "Domain luotu."
+msgstr ""
 
 #: ../templates/default/macros/general.html:796
 msgid "Admin login"
@@ -1116,7 +1116,7 @@ msgstr "Domain ja sen ali-domainit"
 
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
-msgstr "Domain luotu."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
@@ -1847,11 +1847,11 @@ msgstr "Sähköpostiosoite on käytössä, valitse jokin muu."
 
 #: ../templates/default/macros/msgHandlers.html:256
 msgid "Mail alias created."
-msgstr "Domain luotu."
+msgstr ""
 
 #: ../templates/default/macros/msgHandlers.html:224
 msgid "Mail list created."
-msgstr "Domain luotu."
+msgstr ""
 
 #: ../templates/default/ldap/maillist/list.html:37
 #, python-format
@@ -3003,7 +3003,7 @@ msgstr "Käyttäjä ID"
 
 #: ../templates/default/macros/msgHandlers.html:149
 msgid "User created."
-msgstr "Domain luotu."
+msgstr ""
 
 #: ../templates/default/login.html:55
 msgid "Username"
