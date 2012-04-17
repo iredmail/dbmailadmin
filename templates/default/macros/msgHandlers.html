@@ -86,12 +86,11 @@
 {% if msg is defined and msg is not sameas none and msg|string != '' %}
     {% set handlers = {
         'UPDATED': successInfo(_('Profile updated success.')),
+        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'DELETED': successInfo(_('Selected domains were deleted.')),
         'DISABLED': successInfo(_('Selected domains were disabled.')),
         'ENABLED': successInfo(_('Selected domains were enabled.')),
-
         'INVALID_DOMAIN_NAME': errorInfo(_('Invalid domain name.')),
-        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'INVALID_MAIL': errorInfo(_('Invalid mail address.')),
         'EMPTY_DOMAIN': errorInfo(_('Domain name is empty.')),
         'EXCEEDED_LDAP_SERVER_SIZELIMIT': errorInfo(_('Server-side size limit exceeded. Please increase "sizelimit" in your LDAP server.')),
@@ -124,6 +123,7 @@
     {% set handlers = {
         'UPDATED': successInfo(_('Profile updated success.')),
         'UPDATED_FAILED':  errorInfo( _('Profile updated failed.')),
+        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'NO_DOMAIN_AVAILABLE': generalInfo( _('No domain under control.') ),
         'MISSING_DOMAIN_OR_USERNAME': errorInfo( _('Domain name or username is missed.') ),
         'INVALID_MAIL': errorInfo(_('Invalid mail address.')),
@@ -161,6 +161,7 @@
 {% if msg is defined and msg is not sameas none and msg|string != '' %}
     {% set handlers = {
         'UPDATED': successInfo(_('Profile updated success.')),
+        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'PERMISSION_DENIED': errorInfo(_("Permission denied.")),
         'DELETED': successInfo(_('Selected accounts were deleted.')),
         'DISABLED': successInfo(_('Selected accounts were disabled.')),
@@ -198,12 +199,12 @@
         'ALREADY_EXISTS': errorInfo(_('Account already exists, please choose another username.')),
         'INVALID_USERNAME': errorInfo(_('Invalid username.')),
         'UPDATED': successInfo(_('Profile updated success.')),
+        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'UPDATED_FAILED': errorInfo(_('Profile updated failed.')),
         'MEMBER_ASSIGNED': successInfo(_('Member assigned success.')),
         'MEMBER_REMOVED': successInfo(_('Member removed success.')),
         'MODERATOR_ASSIGNED_SUCCESS': successInfo(_('Moderators assigned success.')),
         'MODERATOR_REMOVED_SUCCESS': successInfo(_('Moderators removed success.')),
-        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'DELETED': successInfo(_('Selected accounts were deleted.')),
         'DISABLED': successInfo(_('Selected accounts were disabled.')),
         'ENABLED': successInfo(_('Selected accounts were enabled.')),
@@ -231,6 +232,7 @@
     {% set handlers = {
         'ALREADY_EXISTS': errorInfo(_('Account already exists, please choose another username.')),
         'UPDATED': successInfo(_('Profile updated success.')),
+        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'NO_DOMAIN_AVAILABLE': generalInfo(_('No domain under control.')),
         'DELETED': successInfo(_('Selected accounts were deleted.')),
         'DISABLED': successInfo(_('Selected accounts were disabled.')),
@@ -261,6 +263,8 @@
         {{ successInfo( _('Records are added. <a href="%s" target="_blank">View them now</a>') |format(ctx.homepath + '/system/' + listname), trusted=true) }}
     {% elif msg == 'DELETED' %}
         {{ successInfo( _('Selected records were deleted.') ) }}
+    {% elif msg == 'INVALID_ACTION' %}
+        {{ errorInfo(_('Invalid action.')) }}
     {% else %}
         {{ errorInfo( msg ) }}
     {% endif %}
@@ -282,6 +286,7 @@
     {% set handlers = {
         'RELEASED': successInfo(_('Mails were released.')),
         'DELETED': successInfo(_('Mails were deleted.')),
+        'INVALID_ACCOUNT': errorInfo(_('Invalid domain name or mail address.')),
         'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'INVALID_MAILID': errorInfo(_('Invalid request data.')),
         'PERMISSION_DENIED': errorInfo(_('Permission denied.')),
@@ -301,6 +306,7 @@
 {% if msg is defined and msg is not sameas none and msg |string != '' %}
     {% set handlers = {
         'DELETED': successInfo(_('Selected log records were deleted.')),
+        'INVALID_ACTION': errorInfo(_('Invalid action.')),
         'INVALID_ACCOUNT': errorInfo(_('Invalid domain name or mail address.')),
         'PERMISSION_DENIED': errorInfo(_('Permission denied.')),
         }
@@ -323,7 +329,7 @@
         {{ errorInfo( _('Search keyword could not be empty.') ) }}
     {% elif msg == 'INVALID_MAIL' %}
         {{ errorInfo( _('Invalid mail address.') ) }}
-    {% elif msg == 'INVALID_MAIL' %}
+    {% elif msg == 'INVALID_ACTION' %}
         {{ errorInfo(_('Invalid action.')) }}
     {% else %}
         {{ errorInfo( msg ) }}
