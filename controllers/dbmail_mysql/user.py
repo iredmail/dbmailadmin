@@ -17,13 +17,7 @@ class List:
     @decorators.require_login
     def GET(self, domain, cur_page=1):
         self.domain = web.safestr(domain).split('/', 1)[0]
-        cur_page = int(cur_page)
-
-        if not iredutils.isDomain(self.domain):
-            raise web.seeother('/domains?msg=INVALID_DOMAIN_NAME')
-
-        if cur_page == 0:
-            cur_page = 1
+        cur_page = int(cur_page) or 1
 
         userLib = userlib.User()
         result = userLib.listAccounts(domain=self.domain, cur_page=cur_page,)
@@ -45,11 +39,7 @@ class List:
     @decorators.require_login
     def POST(self, domain):
         i = web.input(_unicode=False, mail=[])
-
-        self.domain = str(domain)
-
-        if not iredutils.isDomain(self.domain):
-            raise web.seeother('/domains?msg=INVALID_DOMAIN_NAME')
+        self.domain = web.safestr(domain)
 
         self.mails = [str(v)
                       for v in i.get('mail', [])

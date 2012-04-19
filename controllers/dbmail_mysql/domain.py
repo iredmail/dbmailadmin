@@ -91,9 +91,6 @@ class Profile:
         self.domain = web.safestr(domain.split('/', 1)[0])
         self.profile_type = web.safestr(profile_type)
 
-        if not iredutils.isDomain(self.domain):
-            raise web.seeother('/domains?msg=EMPTY_DOMAIN')
-
         domainLib = domainlib.Domain()
         result = domainLib.profile(domain=self.domain)
 
@@ -138,7 +135,7 @@ class Profile:
         # Get sender/recipient throttle data from policyd database.
         if session.get('enablePolicyd'):
             throttleLib = throttle.Throttle()
-            result_throttle = throttleLib.list(sender='@' + self.domain, recipient='@' + self.domain)
+            result_throttle = throttleLib.getThrottling(sender='@' + self.domain, recipient='@' + self.domain)
             if result_throttle[0] is True:
                 throttleOfSender = result_throttle[1]
                 throttleOfRecipient = result_throttle[2]
