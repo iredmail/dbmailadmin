@@ -1,4 +1,4 @@
-= 1.0.3 =
+= 1.1.0 =
     * Improvements:
         + Show search string in search result page.
         + Able to execute addition SQL commands after creating user.
