@@ -180,7 +180,7 @@ class Admin(core.MySQLWrap):
         # Delete domain and related records.
         try:
             self.conn.delete('dbmail_admins', vars=sql_vars, where='username IN $username', )
-            self.conn.delete('domain_domain_admins', vars=sql_vars, where='username IN $username', )
+            self.conn.delete('dbmail_domain_admins', vars=sql_vars, where='username IN $username', )
 
             web.logger(msg="Delete admin: %s." % ', '.join(self.mails), event='delete',)
             return (True,)
