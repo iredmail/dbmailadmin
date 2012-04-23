@@ -52,8 +52,8 @@ def to64(v, n):
     ret = ''
     while (n - 1 >= 0):
         n = n - 1
-    ret = ret + ITOA64[v & 0x3f]
-    v = v >> 6
+        ret = ret + ITOA64[v & 0x3f]
+        v = v >> 6
     return ret
 
 
