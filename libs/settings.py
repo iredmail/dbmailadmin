@@ -75,6 +75,7 @@ MAILDIR_PREPEND_DOMAIN = True
 # - without timestamp: domain.ltd/username/
 MAILDIR_APPEND_TIMESTAMP = True
 
+
 #######################################
 # OpenLDAP backend related settings.
 #
@@ -93,10 +94,11 @@ LDAP_DEFAULT_PASSWD_SCHEME = 'SSHA'
 # MySQL backend related settings. Note: Not applicable for DBMail.
 #
 
-# Default password scheme: MD5, PLAIN.
+# Default password scheme: MD5, PLAIN-MD5, PLAIN.
 #
 # Passwords of new accounts (admin, user) will be crypted by specified scheme.
 # - MD5: MD5 based salted password hash. e.g. '$1$ozdpg0V0$0fb643pVsPtHVPX8mCZYW/'.
+# - PLAIN-MD5: MD5 based password without salt. e.g. 900150983cd24fb0d6963f7d28e17f72.
 # - PLAIN: Plain text.
 #
 # Reference:
@@ -206,16 +208,23 @@ DBMAIL_DEFAULT_IMAP_FOLDERS = ['INBOX', 'Sent', 'Drafts', 'Trash', 'Junk', ]
 DBMAIL_SQL_FOR_NEWLY_CREATED_USER = []
 
 ###################################
+# Policyd related settings.
+#
+
+# Priority of Policyd policies, includes throttling, greylist opt-in, etc.
+POLICY_PRIORITY_OF_DOMAIN = 10
+POLICY_PRIORITY_OF_USER = 20
+
+# If you turn off greylisting in Policyd config file (policyd.conf), please
+# turn below setting to False.
+POLICY_GREYLISTED_BY_DEFAULT = True
+
+###################################
 # Minor settings. You do not need to change them.
 #
 # List how many items in one page. e.g. domain list, user list.
 PAGE_SIZE_LIMIT = 50
 LOG_PAGE_SIZE_LIMIT = 100
-
-# Priority of different policyd throttling.
-PRIORITY_OF_USER_THROTTLING = 10
-PRIORITY_OF_DOMAIN_THROTTLING = 20
-PRIORITY_OF_OVERRIDE_THROTTLING = 30
 
 # Import local settings.
 try:
