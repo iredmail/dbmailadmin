@@ -7,7 +7,7 @@ webmaster = zhb@iredmail.org
 debug = False
 
 # Mail detail message of '500 internal server error' to webmaster: True, False.
-# If set to True, iredadmin will mail detail error to webmaster when
+# If set to True, DBMailAdmin will mail detail error to webmaster when
 # it catches 'internal server error' via LOCAL mail server to aid
 # in debugging production servers.
 mail_error_to_webmaster = False
@@ -27,7 +27,7 @@ min_passwd_length = 0
 max_passwd_length = 0
 
 [dbmailadmin]
-# Database used to store iRedAdmin data. e.g. sessions, log.
+# Database used to store DBMailAdmin data. e.g. sessions, log.
 host = 127.0.0.1
 port = 3306
 db = dbmailadmin
@@ -50,6 +50,7 @@ passwd = password_of_dbmail
 #
 [policyd]
 
+# Policyd support is not yet finished, please disable it.
 # Enable policyd integration: True, False.
 enabled = False
 
@@ -96,7 +97,7 @@ passwd = passwd
 
 # #### Quarantining ####
 # Release quarantined SPAM/Virus mails: True, False.
-# iRedAdmin-Pro will connect to @quarantine_server to release quarantined mails.
+# DBMailAdmin will connect to @quarantine_server to release quarantined mails.
 # How to enable quarantining in Amavisd-new:
 # http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/Quarantining.SPAM
 quarantine = False

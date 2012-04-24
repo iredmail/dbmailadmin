@@ -28,7 +28,6 @@ reDomain = r'''[\w\-][\w\-\.]*\.[a-z]{2,6}'''
 
 #####################################
 # Pre-defined values of SQL functions.
-sqlNOW = web.sqlliteral('NOW()')
 sqlUnixTimestamp = web.sqlliteral('UNIX_TIMESTAMP()')
 
 #####
@@ -270,6 +269,7 @@ def getServerUptime():
 
 
 def getGMTTime():
+    # Convert local time to UTC
     return time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime())
 
 
@@ -340,12 +340,26 @@ def getMD5Password(p):
     return md5crypt.unix_md5_crypt(p, getRandomPassword(length=8))
 
 
+def getPlainMD5Password(p):
+    p = str(p)
+    try:
+        from hashlib import md5
+        return md5(p).hexdigest()
+    except ImportError:
+        import md5
+        return md5.new(p).hexdigest()
+
+    return p
+
+
 def getSQLPassword(p, pwscheme=settings.SQL_DEFAULT_PASSWD_SCHEME):
     p = str(p)
     pw = p
 
     if pwscheme == 'MD5':
         pw = getMD5Password(p)
+    elif pwscheme == 'PLAIN-MD5':
+        pw = getPlainMD5Password(p)
     elif pwscheme == 'PLAIN':
         backend = cfg.general.get('backend', 'mysql')
         if backend == 'mysql':

@@ -44,7 +44,7 @@
 {# List all pages. #}
 <div class="clear"></div>
 <div class="top-space5 bt-space5 left-space5">
-    <form method="get" action="{{ctx.homepath}}/system/log">
+    <form name="pages" method="get" action="{{ctx.homepath}}/system/log">
     {{ _('Filter:') }}
     <select name="domain">
         <option value="all">{{ _('Domains') }}</option>
@@ -72,8 +72,8 @@
     </form>
 </div>
 
-{# List all whitelist under control. #}
-    <form id="list_table" method="post" action="{{ctx.homepath}}/system/log">
+{# List all logs #}
+    <form name="log" id="list_table" method="post" action="{{ctx.homepath}}/system/log">
     {{ display_csrf_token() }}
 
     <table class="style1" cellspacing="0">

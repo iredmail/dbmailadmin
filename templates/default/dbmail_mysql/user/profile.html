@@ -20,11 +20,6 @@
         with context
         %}
 
-{% from "macros/mysql.html" import
-        display_enabled_services,
-        with context
-        %}
-
 {% from "macros/msgHandlers.html" import userMsgHandler with context %}
 
 {% block title %}{{ _('Edit account profile') }}{% endblock %}
@@ -371,19 +366,6 @@
                     {{ display_button_submit() }}
                 </form>
             </div>
-
-            {#
-            <div id="profile_advanced">
-                <form name="advanced" method="post" action="{{ctx.homepath}}/profile/user/advanced/{{mail}}">
-                    {{ input_csrf_token }}
-
-                    <div class="bt-space0">&nbsp;</div>
-                    {{ display_enabled_services(accountType='user', profile=profile) }}
-
-                    {{ display_button_submit() }}
-                </form>
-            </div>
-            #}
         </div>
     </div>
 </div>

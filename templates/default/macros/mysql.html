@@ -55,7 +55,7 @@
     </div>
 {%- endmacro %}
 
-{% macro display_enabled_services(accountType, profile) -%}
+{% macro display_enabled_services(accountType, profile, greylisted=False) -%}
     {% if accountType == 'user' %}
         {% set available_services = [
                 ('checkbox', 'enabledeliver', _('Receiving mails for this account on mail server')),
@@ -67,16 +67,27 @@
                 ('checkbox', 'enableimapsecured', _('Fetching mails via IMAP over TLS/SSL')),
                 ('checkbox', 'enablemanagesieve', _('Customize mail filter rule')),
                 ('checkbox', 'enablemanagesievesecured', _('Customize mail filter rule over TLS/SSL')),
-                ('hidden', 'enableinternal', ''),
                 ] %}
     {% endif %}
 
 <div class="form-field clear">
-    <h4 class="size-250 fl-space">{{ _('Enabled Services') }}</h4>
+    {% if session.get('enablePolicyd') is sameas true %}
+        <h4 class="size-250 fl-space">{{ _('Enabled Services') }}</h4>
+        <div class="form-checkbox-item clear">
+            <input type="checkbox" name="greylisting" value="greylisting" {% if greylisted is sameas true %}checked{%endif%} class="checkbox fl-space" rel="checkboxhorizont" />
+            <label>{{ _('Greylisting') }}</label>
+        </div>
+    {% else %}
+        <h4 class="size-250 fl-space">{{ _('Enabled Services') }}</h4>
+    {% endif %}
 
     {% for srv in available_services %}
-        {% if not loop.first and srv[0] != 'hidden' %}
+        {% if session.get('enablePolicyd') is sameas true %}
             <h4 class="size-250 fl-space">&nbsp;</h4>
+        {% else %}
+            {% if not loop.first %}
+                <h4 class="size-250 fl-space">&nbsp;</h4>
+            {% endif %}
         {% endif %}
 
         <div class="form-checkbox-item clear">
@@ -90,5 +101,13 @@
             <label>{{ srv[2] }}</label>
         </div>
     {% endfor %}
+
+    {% if accountType == 'user' %}
+        <h4 class="size-250 fl-space">&nbsp;</h4>
+        <div class="form-checkbox-item clear">
+            <input type="hidden" name="enabledService" value="enableinternal" rel="checkboxhorizont" />
+            <label>&nbsp;</label>
+        </div>
+    {% endif %}
 </div>
 {%- endmacro %}
