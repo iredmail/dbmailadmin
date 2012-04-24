@@ -1,3 +1,8 @@
+= 1.1.1 =
+    * Fixed:
+        * Incorrect SQL syntax.
+          Thanks losinggeneration _at_ gmail.com for the report and patch.
+
 = 1.1.0 =
     * Improvements:
         + Show search string in search result page.

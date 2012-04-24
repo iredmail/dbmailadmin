@@ -130,7 +130,7 @@ class Utils(core.MySQLWrap):
 
         sql_left_join = ''
         if listedOnly is False:
-            sql_left_join = """OR domain_admins.domain='ALL'"""
+            sql_left_join = """OR dbmail_domain_admins.domain='ALL'"""
 
         try:
             result = self.conn.query(

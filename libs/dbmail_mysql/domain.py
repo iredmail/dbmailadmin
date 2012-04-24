@@ -304,7 +304,7 @@ class Domain(core.MySQLWrap):
                 -- LEFT JOIN recipient_bcc_domain AS rbcc ON (rbcc.domain=dbmail_domains.domain)
                 LEFT JOIN dbmail_users ON (dbmail_domains.domain = dbmail_users.domain)
                 LEFT JOIN dbmail_aliases_extra ON (dbmail_domains.domain = dbmail_aliases_extra.alias)
-                WHERE dbmail_domains.domain=$domain,
+                WHERE dbmail_domains.domain=$domain
                 GROUP BY
                     dbmail_domains.domain, dbmail_domains.description, dbmail_domains.aliases,
                     dbmail_domains.mailboxes, dbmail_domains.maxquota, dbmail_domains.quota,
