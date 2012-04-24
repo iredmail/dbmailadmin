@@ -51,6 +51,15 @@ class Alias(core.MySQLWrap):
         sql_vars = {'domain': self.domain, }
 
         try:
+            resultOfTotal = self.conn.select(
+                'dbmail_aliases_extra',
+                vars=sql_vars,
+                what='COUNT(id) AS total',
+                where='domain=$domain',
+            )
+            if len(resultOfTotal) == 1:
+                total = resultOfTotal[0].total or 0
+
             resultOfRecords = self.conn.select(
                 'dbmail_aliases_extra',
                 vars=sql_vars,
@@ -60,7 +69,7 @@ class Alias(core.MySQLWrap):
                 offset=(cur_page - 1) * settings.PAGE_SIZE_LIMIT,
             )
             records = list(resultOfRecords)
-            return (True, len(records), records)
+            return (True, total, records)
         except Exception, e:
             return (False, str(e))
 

@@ -4,6 +4,9 @@
         + Able to execute addition SQL commands after creating user.
 
     * Fixed:
+        + Incorrect URL handlers in controllers/dbmail_mysql/{alias,user}.py.
+        + Incorrect count of alias accounts.
+        + Incorrect indent in libs/md5crypt.py.
         + Incorrect SQL table name used for deleting admin accounts.
         + Missing some msg handlers in account list pages.
           Thanks Jure Pečar <jure.pecar _at_ arctur.si> for the report.
