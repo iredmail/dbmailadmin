@@ -6,6 +6,11 @@
 # upgrading iRedAdmin-Pro.
 #################################### WARNING ####################################
 
+# Set http proxy server address if iRedAdmin cannot access iredmail.org directly.
+# Sample:
+#   HTTP_PROXY = 'http://192.168.1.1:3128'
+HTTP_PROXY = ''
+
 # Local timezone. It must be one of below:
 #   GMT-12:00
 #   GMT-11:00

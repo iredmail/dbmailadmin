@@ -50,6 +50,10 @@ import iredutils
 import settings
 from ireddate import convert_utc_to_timezone
 
+# Set http_proxy
+if settings.HTTP_PROXY:
+    os.environ['http_proxy'] = settings.HTTP_PROXY
+
 #####################################
 # Store all 'true/false' in session.
 #
