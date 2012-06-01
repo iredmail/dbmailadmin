@@ -4,6 +4,9 @@
           if iRedAdmin cannot access internet (iredmail.org) directly.
           Thanks Bernhard Roth <broth _at_ roth-itk.de> for helping test.
 
+    * Fixed:
+        + Not convert timestamp of admin logs to LOCAL_TIMEZONE.
+
 = 1.1.1 =
     * Fixed:
         * Incorrect SQL syntax.
