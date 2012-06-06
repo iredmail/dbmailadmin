@@ -5,6 +5,9 @@
           Thanks Bernhard Roth <broth _at_ roth-itk.de> for helping test.
 
     * Fixed:
+        + Local variable 'forwarding_addresses_not_in_domain' referenced before
+          assignment in libs/dbmail_mysql/user.py.
+          Thanks Marko Kobal <marko.kobal _at_ arctur.si> for the report.
         + Not convert timestamp of admin logs to LOCAL_TIMEZONE.
 
 = 1.1.1 =

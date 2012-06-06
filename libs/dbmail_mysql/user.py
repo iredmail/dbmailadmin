@@ -418,6 +418,8 @@ class User(core.MySQLWrap):
             except Exception, e:
                 return (False, str(e))
 
+            forwarding_addresses_in_domain = []
+            forwarding_addresses_not_in_domain = []
             if len(mailForwardingAddresses) > 0:
                 forwarding_addresses_in_domain = [addr for addr in mailForwardingAddresses if addr.endswith('@' + self.domain)]
                 forwarding_addresses_not_in_domain = [addr for addr in mailForwardingAddresses if not addr.endswith('@' + self.domain)]
