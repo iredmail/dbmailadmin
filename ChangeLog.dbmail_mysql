@@ -1,4 +1,4 @@
-= 1.1.2 =
+= 1.1.1 =
     * Improvements:
         + Set http proxy server address in libs/settings.py (HTTP_PROXY)
           if iRedAdmin cannot access internet (iredmail.org) directly.
@@ -9,10 +9,7 @@
           assignment in libs/dbmail_mysql/user.py.
           Thanks Marko Kobal <marko.kobal _at_ arctur.si> for the report.
         + Not convert timestamp of admin logs to LOCAL_TIMEZONE.
-
-= 1.1.1 =
-    * Fixed:
-        * Incorrect SQL syntax.
+        + Incorrect SQL syntax.
           Thanks losinggeneration _at_ gmail.com for the report and patch.
 
 = 1.1.0 =
