@@ -52,7 +52,7 @@ class Admin(core.MySQLWrap):
         try:
             result = self.conn.query(
                 """
-                SELECT name, username, language, created, active
+                SELECT name, username, language, active
                 FROM dbmail_admins
                 ORDER BY username ASC
                 %s

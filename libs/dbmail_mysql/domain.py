@@ -43,7 +43,7 @@ class Domain(core.MySQLWrap):
                 '''
                 SELECT
                     dbmail_admins.username, dbmail_admins.name, dbmail_admins.language,
-                    dbmail_admins.created, dbmail_admins.active
+                    dbmail_admins.active
                 FROM dbmail_admins
                 LEFT JOIN dbmail_domain_admins ON (dbmail_domain_admins.username=dbmail_admins.username)
                 WHERE dbmail_domain_admins.domain=$domain
@@ -308,8 +308,7 @@ class Domain(core.MySQLWrap):
                 GROUP BY
                     dbmail_domains.domain, dbmail_domains.description, dbmail_domains.aliases,
                     dbmail_domains.mailboxes, dbmail_domains.maxquota, dbmail_domains.quota,
-                    dbmail_domains.transport, dbmail_domains.backupmx, dbmail_domains.created,
-                    dbmail_domains.active
+                    dbmail_domains.transport, dbmail_domains.backupmx, dbmail_domains.active
                 ORDER BY dbmail_domains.domain
                 LIMIT 1
                 ''',

@@ -48,9 +48,6 @@
             <th class="checkbox"><input type="checkbox" class="checkbox select-all" /></th>
             <th>{{ _('Display Name') }}</th>
             <th>{{ _('Mail Address') }}</th>
-            {#
-            <th>{{ _('Created') }}</th>
-            #}
         </tr>
         </thead>
 
@@ -68,9 +65,6 @@
                     {% if name %}{{ name |cutString |e }}{% else %}{{ address.split('@', 1)[0] }}{% endif %}
                 </td>
                 <td>{{ highlight_username_in_mail(address) }}</td>
-                {#
-                <td>{{ r.created |setDatetimeFormat(hour=False) }}</td>
-                #}
             </tr>
         {% endfor %}
     {% else %}

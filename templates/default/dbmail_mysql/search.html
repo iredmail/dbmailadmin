@@ -80,7 +80,6 @@
                                 <th>{{ _('Display Name') }}</th>
                                 <th>{{ _('Mail Address') }}</th>
                                 <th>{{ _('Global Admin') }}</th>
-                                <th>{{ _('Created') }}</th>
                             </tr>
                         </thead>
 
@@ -108,7 +107,6 @@
                                     {% else %}
                                         <td>{{ set_admin_type_img('no') }}</td>
                                     {% endif %}
-                                    <td>{{ r.created |setDatetimeFormat(hour=False) }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -146,7 +144,6 @@
                                 <th>{{ _('Mail Address') }}</th>
                                 <th>{{ _('User ID') }}</th>
                                 <th>{{ _('Quota') }}</th>
-                                <th>{{ _('Created') }}</th>
                             </tr>
                         </thead>
 
@@ -183,7 +180,6 @@
                                             {{ display_progress_bar(percent, show_zero=true, width='60%', style='thin') }}
                                         </td>
                                     {% endif %}
-                                    <td class="vcenter">{{ r.created |setDatetimeFormat(hour=False) }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -221,7 +217,6 @@
                                 <th class="checkbox"><input type="checkbox" class="checkbox select-all" /></th>
                                 <th>{{ _('Display Name') }}</th>
                                 <th>{{ _('Mail Address') }}</th>
-                                <th>{{ _('Created') }}</th>
                             </tr>
                         </thead>
 
@@ -238,7 +233,6 @@
                                         {% if name %}{{ name |cutString |e }}{% else %}{{ address.split('@', 1)[0] }}{% endif %}
                                     </td>
                                     <td>{{ highlight_username_in_mail(address) }}</td>
-                                    <td>{{ r.created |setDatetimeFormat(hour=False) }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>

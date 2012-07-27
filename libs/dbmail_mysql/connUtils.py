@@ -227,7 +227,7 @@ class Utils(core.MySQLWrap):
                 qr_admin = self.conn.select(
                     'dbmail_admins',
                     vars=sql_vars,
-                    what='username,name,active,created',
+                    what='username,name,active',
                     where='(username LIKE $search_str OR name LIKE $search_str) %s' % (sql_append_status),
                     order='username',
                 )
@@ -264,6 +264,9 @@ class Utils(core.MySQLWrap):
                     allGlobalAdmins = qr[1]
 
             result['allGlobalAdmins'] = allGlobalAdmins
+
+        if len(qr_domain) > 0:
+            result['domain'] = iredutils.convertSQLQueryRecords(qr_domain) or []
 
         if len(qr_user) > 0:
             result['user'] = iredutils.convertSQLQueryRecords(qr_user) or []
