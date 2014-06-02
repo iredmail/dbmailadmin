@@ -18,10 +18,10 @@ cfg = web.iredconfig
 # Regular expressions.
 #
 # Email.
-reEmail = r'''[\w\-][\w\-\.]*@[\w\-][\w\-\.]+[a-zA-Z]{2,6}'''
+reEmail = r'''[\w\-][\w\-\.\+\=]*@[\w\-][\w\-\.]*\.[a-zA-Z]{2,15}'''
 
 # Domain.
-reDomain = r'''[\w\-][\w\-\.]*\.[a-z]{2,6}'''
+reDomain = r'''[\w\-][\w\-\.]*\.[a-z]{2,15}'''
 
 # End Regular expressions.
 ####

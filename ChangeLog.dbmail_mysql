@@ -1,3 +1,8 @@
+= 1.1.2 =
+    * Fixed:
+        + Not allow to use longer top domain name in regular expression used to
+          verify domain name and email address.
+
 = 1.1.1 =
     * Improvements:
         + Set http proxy server address in libs/settings.py (HTTP_PROXY)
