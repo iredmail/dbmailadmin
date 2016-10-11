@@ -811,7 +811,7 @@
 
 
 {# iRedAPD: per-user wblist #}
-{% macro display_per_user_wblist(values=[], htmlInputName, label) -%}
+{% macro display_per_user_wblist(values, htmlInputName, label) -%}
     <div class="form-field clear">
         <h4 class="size-250 fl-space">{{ label |e }}</h4>
         <small>{{ _('One record per line.') }}</small>
