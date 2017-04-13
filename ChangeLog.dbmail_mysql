@@ -1,3 +1,9 @@
+= 1.1.3 =
+    * Fixed:
+        + Don't set a default value for TEXT/BLOG type SQL column (not
+          supported by recent MySQL releases).
+          Thanks Kazuki Hashimoto for the fix.
+
 = 1.1.2 =
     * Fixed:
         + Not allow to use longer top domain name in regular expression used to
